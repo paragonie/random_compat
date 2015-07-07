@@ -157,7 +157,7 @@ if (!function_exists('random_int')) {
         /**
          * Equivalent to (PHP_INT_MAX + 1) % range, but avoids int overflows
          */
-        $reject = (-$range & PHP_INT_MAX) % $range;
+        $reject = ((-$range & PHP_INT_MAX) % $range) << 1;
 
         /**
          * Now that we have our parameters set up, let's begin generating
