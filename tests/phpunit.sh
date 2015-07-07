@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-clean=1 # Clean up?
+clean=0 # Clean up?
 
 gpg --fingerprint D8406D0D82947747293778314AA394086372C20A
 if [ $? -ne 0 ]; then
