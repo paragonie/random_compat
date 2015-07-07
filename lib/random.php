@@ -154,10 +154,6 @@ if (!function_exists('random_int')) {
             $tmp >>= 1;
             $mask = $mask << 1 | 1;
         }
-        /**
-         * Equivalent to (PHP_INT_MAX + 1) % range, but avoids int overflows
-         */
-        $reject = ((-$range & PHP_INT_MAX) % $range) << 1;
 
         /**
          * Now that we have our parameters set up, let's begin generating
@@ -168,7 +164,7 @@ if (!function_exists('random_int')) {
              * The rejection probability is at most 0.5, so this corresponds
              * to a failure probability of 2^-128 for a working RNG
              */
-            if ($rejections > 128) {
+            if ($rejections > 256) {
                 throw new Exception('random_int: RNG is broken - too many rejections');
             }
             $rval = random_bytes($bytes);
@@ -199,7 +195,7 @@ if (!function_exists('random_int')) {
             }
             // If $val is larger than the maximum acceptable number for
             // $min and $max, we discard and try again.
-        } while ($val > $reject);
+        } while ($val > $range);
         return (int) ($min + $val) & PHP_INT_MAX;
     }
 }
