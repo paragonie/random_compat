@@ -35,17 +35,18 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
      */
     public function testCoverage()
     {
-        $integers = array_fill(0, 100, 0);
-        for ($i = 0; $i < 100; ++$i) {
-            ++$integers[random_int(0,99)];
+        $integers = array_fill(0, 2000, 0);
+        for ($i = 0; $i < 2000; ++$i) {
+            ++$integers[random_int(0,1999)];
         }
         $coverage = 0;
-        for ($i = 0; $i < 100; ++$i) {
+        for ($i = 0; $i < 2000; ++$i) {
             if ($integers[$i] > 0) {
                 ++$coverage;
             }
         }
-        $this->assertTrue($coverage > 55);
-        $this->assertTrue($coverage < 75);
+        var_dump($coverage);
+        $this->assertTrue($coverage >= 1150);
+        $this->assertTrue($coverage <= 1350);
     }
 }
