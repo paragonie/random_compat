@@ -10,7 +10,7 @@ if (!function_exists('random_bytes')) {
     function random_bytes($bytes)
     {
         if (!is_int($bytes) || $bytes < 1) {
-             throw new Exception('random_bytes() expects a positive integer');
+             throw new Exception('Length must be greater than 0');
         }
         $buf = '';
         if (function_exists('openssl_random_pseudo_bytes')) {
@@ -103,7 +103,7 @@ if (!function_exists('random_int')) {
              throw new Exception('random_int(): $max must be an integer');
         }
         if ($min > $max) {
-             throw new Exception('$min must be less than or equal to $max');
+             throw new Exception('Minimum value must be less than or equal to the maximum value');
         }
         $range = $max - $min;
 
