@@ -29,4 +29,23 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             $this->assertFalse($integers[$i] > 170);
         }
     }
+    
+    /**
+     * This should be between 55% and 75%, always
+     */
+    public function testCoverage()
+    {
+        $integers = array_fill(0, 100, 0);
+        for ($i = 0; $i < 100; ++$i) {
+            ++$integers[random_int(0,99)];
+        }
+        $coverage = 0;
+        for ($i = 0; $i < 100; ++$i) {
+            if ($integers[$i] > 0) {
+                ++$coverage;
+            }
+        }
+        $this->assertTrue($coverage > 55);
+        $this->assertTrue($coverage < 75);
+    }
 }
