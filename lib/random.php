@@ -164,7 +164,7 @@ if (!function_exists('random_int')) {
              * The rejection probability is at most 0.5, so this corresponds
              * to a failure probability of 2^-128 for a working RNG
              */
-            if ($rejections > 256) {
+            if ($rejections > 128) {
                 throw new Exception('random_int: RNG is broken - too many rejections');
             }
             $rval = random_bytes($bytes);
