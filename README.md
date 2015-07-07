@@ -3,6 +3,9 @@
 PHP 5.x polyfill for `random_bytes()` and `random_int()` created and maintained
 by [Paragon Initiative Enterprises](https://paragonie.com).
 
+Although this library *should* function in earlier versions of PHP, we will only
+provide support for [supported PHP versions](https://secure.php.net/supported-versions.php).
+
 ## Important
 
 **This library should be considered `EXPERIMENTAL`** until it has received sufficient
