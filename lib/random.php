@@ -9,17 +9,13 @@ if (!function_exists('random_bytes')) {
      */
     function random_bytes($bytes)
     {
-        if (!is_int($bytes) || $bytes < 1) {
+        if (!is_int($bytes)) {
+             throw new Exception('Length must be an integer');
+        }
+        if ($bytes < 1) {
              throw new Exception('Length must be greater than 0');
         }
         $buf = '';
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $secure = true;
-            $buf = openssl_random_pseudo_bytes($bytes, $secure);
-            if ($buf !== false && $secure) {
-                return $buf;
-            }
-        }
         // See PHP bug #55169 for why 5.3.7 is required
         if (
             function_exists('mcrypt_create_iv') &&
@@ -27,7 +23,19 @@ if (!function_exists('random_bytes')) {
         ) {
             $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
             if ($buf !== false) {
-                return $buf;
+                if (RandomCompat_strlen($buf) === $bytes) {
+                    return $buf;
+                }
+            }
+        }
+        
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            $secure = true;
+            $buf = openssl_random_pseudo_bytes($bytes, $secure);
+            if ($buf !== false && $secure) {
+                if (RandomCompat_strlen($buf) === $bytes) {
+                    return $buf;
+                }
             }
         }
 
@@ -54,7 +62,9 @@ if (!function_exists('random_bytes')) {
                         $buf .= $read;
                     } while ($remaining > 0);
                     if ($buf !== false) {
-                        return $buf;
+                        if (RandomCompat_strlen($buf) === $bytes) {
+                            return $buf;
+                        }
                     }
                 }
             }
