@@ -1,0 +1,27 @@
+{
+    "name":         "paragonie/random_compat",
+    "description":  "",
+    "version":      "0.9.0",
+    "keywords": [
+            "csprng",
+            "random",
+            "pseudorandom"
+        ],
+    "license":      "MIT",
+    "type":         "library",
+    "authors": [
+            {
+                "name":     "Paragon Initiative Enterprises",
+                "email":    "security@paragonie.com",
+                "homepage": "https://paragonie.com"
+            }
+        ],
+    "support": {
+        "issues":   "https://github.com/paragonie/random_compat/issues",
+        "email":    "info@paragonie.com",
+        "source":   "https://github.com/paragonie/random_compat"
+    },
+    "autoload": {
+        "files": ["lib/random.php"]
+    }
+}
