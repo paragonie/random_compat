@@ -119,9 +119,7 @@ if (!function_exists('random_bytes')) {
         function random_bytes($bytes)
         {
              try {
-                 if ($buf === false) {
-                     $buf = ''; // Make it a string, not false
-                 }
+                $buf = '';
                 $util = new COM('CAPICOM.Utilities.1');
                 $execs = 0;
                 /**
