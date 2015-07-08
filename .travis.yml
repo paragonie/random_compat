@@ -11,6 +11,6 @@ install:
 
 - composer self-update
 - composer update
-- chmod +x tests/phpunit.sh
+- chmod +x ./tests/phpunit.sh
 
-script: tests/run-tests.sh
+script: ./tests/run-tests.sh
