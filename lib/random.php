@@ -29,9 +29,9 @@ if (!function_exists('random_bytes')) {
             // If we failed, throw an exception.
             throw new Exception('PHP failed to generate random data.');
         }
-    } elseif (is_readable('/dev/arandom')) {
+    } elseif (is_readable('/dev/arandom') || is_readable('/dev/urandom')) {
         /**
-         * Use /dev/arandom for random numbers
+         * Use /dev/arandom or /dev/urandom for random numbers
          * 
          * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
          * 
@@ -42,46 +42,11 @@ if (!function_exists('random_bytes')) {
         {
             static $fp = null;
             if ($fp === null) {
-                $fp = fopen('/dev/arandom', 'rb');
-            }
-            if ($fp !== false) {
-                $streamset = stream_set_read_buffer($fp, 0);
-                if ($streamset === 0) {
-                    $remaining = $bytes;
-                    do {
-                        $read = fread($fp, $remaining); 
-                        if ($read === false) {
-                            // We cannot safely read from urandom.
-                            $buf = false;
-                            break;
-                        }
-                        // Decrease the number of bytes returned from remaining
-                        $remaining -= RandomCompat_strlen($read);
-                        $buf .= $read;
-                    } while ($remaining > 0);
-                    if ($buf !== false) {
-                        if (RandomCompat_strlen($buf) === $bytes) {
-                            return $buf;
-                        }
-                    }
+                if (is_readable('/dev/arandom')) {
+                    $fp = fopen('/dev/arandom', 'rb');
+                } else {
+                    $fp = fopen('/dev/urandom', 'rb');
                 }
-            }
-            throw new Exception('PHP failed to generate random data.');
-        }
-    } elseif (is_readable('/dev/urandom')) {
-        /**
-         * Use /dev/urandom for random numbers
-         * 
-         * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
-         * 
-         * @param int $bytes
-         * @return string
-         */
-        function random_bytes($bytes)
-        {
-            static $fp = null;
-            if ($fp === null) {
-                $fp = fopen('/dev/urandom', 'rb');
             }
             if ($fp !== false) {
                 $streamset = stream_set_read_buffer($fp, 0);
