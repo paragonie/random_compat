@@ -35,13 +35,3 @@ $int = random_int(0,255);
 var_dump($int);
 // int(47)
 ```
-
-## Incompatibility Notice
-
-The default values for `random_int()` (`$min` and `$max`) differ from the PHP 7
-version. The reason for this is that there's no safe way to calculate a range
-greater than `PHP_INT_MAX` without a loss of precision. In order to operate on
-integers, we default to `-(PHP_INT_MAX / 2)` and `(PHP_INT_MAX/2)`.
-
-Most real-world use cases will not be harmed by this discrepancy. It is, however,
-an incompatibility that we cannot safely resolve in PHP 5.
