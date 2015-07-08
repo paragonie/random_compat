@@ -29,7 +29,7 @@ if (!function_exists('random_bytes')) {
             // If we failed, throw an exception.
             throw new Exception('PHP failed to generate random data.');
         }
-    } elseif (is_readable('/dev/arandom') || is_readable('/dev/urandom')) {
+    } elseif (is_readable('/dev/arandom') || is_readable('/dev/urandom') && !ini_get('open_basedir')) {
         /**
          * Use /dev/arandom or /dev/urandom for random numbers
          * 
