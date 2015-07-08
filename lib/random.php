@@ -228,6 +228,7 @@ if (!function_exists('RandomCompat_strlen')) {
         return strlen($binary_string);
     }
 }
+
 if (!function_exists('RandomCompat_substr')) {
     /**
      * substr() implementation that isn't brittle to mbstring.func_overload
