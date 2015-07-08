@@ -4,6 +4,9 @@ if [ $1 == 'full' ]; then
     fulltest=1
 else
     fulltest=0
+    if [ $1 == 'travis' ]; then
+        php ../composer.phar update
+    fi
 fi
 
 clean=0 # Clean up?

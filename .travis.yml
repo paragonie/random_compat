@@ -14,4 +14,4 @@ install:
 - composer update
 - chmod +x ./tests/phpunit.sh
 
-script: ./tests/phpunit.sh
+script: ./tests/phpunit.sh travis
