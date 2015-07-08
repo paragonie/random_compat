@@ -47,14 +47,14 @@ if [ $? -eq 0 ]; then
     echo
     echo -e "\033[33mBegin Unit Testing\033[0m"
     # Run the testing suite
-    php phpunit.phar --bootstrap ../vendor/autoload.php unit
+    php phpunit.phar --bootstrap ../lib/random.php unit
     if [ $? -ne 0 ]; then
         # Test failure
         exit $?
     fi
     # Should we perform full statistical analyses?
     if [ $fulltest -eq 1 ]; then
-        php phpunit.phar --bootstrap ../vendor/autoload.php full
+        php phpunit.phar --bootstrap ../lib/random.php full
         if [ $? -ne 0 ]; then
             # Test failure
             exit $?
