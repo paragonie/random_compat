@@ -4,11 +4,12 @@ if [ $1 == 'full' ]; then
     fulltest=1
 else
     fulltest=0
-    if [ $1 == 'travis' ]; then
-        php ../composer.phar update
-    fi
 fi
-parentdir="$(dirname `pwd`)"
+origdir=`pwd`
+cdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cd $origdir
+parentdir="$(dirname $cdir)"
+
 clean=0 # Clean up?
 
 gpg --fingerprint D8406D0D82947747293778314AA394086372C20A
@@ -47,14 +48,14 @@ if [ $? -eq 0 ]; then
     echo
     echo -e "\033[33mBegin Unit Testing\033[0m"
     # Run the testing suite
-    php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" unit
+    php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
     if [ $? -ne 0 ]; then
         # Test failure
         exit $?
     fi
     # Should we perform full statistical analyses?
     if [ $fulltest -eq 1 ]; then
-        php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" full
+        php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/full"
         if [ $? -ne 0 ]; then
             # Test failure
             exit $?
