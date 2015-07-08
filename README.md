@@ -38,7 +38,7 @@ var_dump($int);
 
 ## Contributors
 
-This project would not be anywhere near as excellent as it is today if it weren't for the contriutions of the following individuals:
+This project would not be anywhere near as excellent as it is today if it weren't for the contributions of the following individuals:
 
 * [@CodesInChaos](https://github.com/CodesInChaos)
 * [Leigh (@lt)](https://github.com/lt)
