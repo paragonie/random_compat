@@ -9,6 +9,7 @@ php:
 
 install:
 
+- composer install
 - composer self-update
 - composer update
 - chmod +x ./tests/phpunit.sh
