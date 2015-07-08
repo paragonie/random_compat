@@ -28,16 +28,6 @@ if (!function_exists('random_bytes')) {
                 }
             }
         }
-        
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $secure = true;
-            $buf = openssl_random_pseudo_bytes($bytes, $secure);
-            if ($buf !== false && $secure) {
-                if (RandomCompat_strlen($buf) === $bytes) {
-                    return $buf;
-                }
-            }
-        }
 
         /**
          * Use /dev/urandom for random numbers
@@ -96,6 +86,24 @@ if (!function_exists('random_bytes')) {
                 unset($e); // Let's not let CAPICOM errors kill our app 
             }
         }
+        
+        /**
+         * Since openssl_random_pseudo_bytes() uses openssl's 
+         * RAND_pseudo_bytes() API, which has been marked as deprecated by the
+         * OpenSSL team, this is our last resort before failure.
+         * 
+         * @ref https://www.openssl.org/docs/crypto/RAND_bytes.html
+         */
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            $secure = true;
+            $buf = openssl_random_pseudo_bytes($bytes, $secure);
+            if ($buf !== false && $secure) {
+                if (RandomCompat_strlen($buf) === $bytes) {
+                    return $buf;
+                }
+            }
+        }
+        
         /**
          * We have reached the point of no return. Throw an exception.
          */
