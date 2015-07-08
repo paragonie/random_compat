@@ -130,6 +130,20 @@ if (!function_exists('random_bytes')) {
 }
 
 if (!function_exists('random_int')) {
+    /**
+     * Fetch a random integer between $min and $max inclusive
+     * 
+     * SLIGHT DEPARTURE FROM PHP7'S BEHAVIOR:
+     * 
+     * To prevent integer overflow errors, we default to -(PHP_INT_MAX/2)
+     * and PHP_INT_MAX/2 for $min and $max, respectively. We do not know of any
+     * way to safely support -PHP_INT_MAX..PHP_INT_MAX in userland.
+     * 
+     * @param int $min
+     * @param int $max
+     * 
+     * @return int
+     */
     function random_int($min = null, $max = null)
     {
         if ($min === null) {
