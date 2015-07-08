@@ -3,39 +3,47 @@
 if (!function_exists('random_bytes')) {
     /**
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
-     * 
-     * @param int $bytes
-     * @return string
      */
-    function random_bytes($bytes)
-    {
-        if (!is_int($bytes)) {
-             throw new Exception('Length must be an integer');
-        }
-        if ($bytes < 1) {
-             throw new Exception('Length must be greater than 0');
-        }
-        $buf = '';
-        // See PHP bug #55169 for why 5.3.7 is required
-        if (
-            function_exists('mcrypt_create_iv') &&
-            version_compare(PHP_VERSION, '5.3.7') >= 0
-        ) {
+    if (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
+        /**
+         * Powered by ext/mcrypt
+         * 
+         * @param int $bytes
+         * @return string
+         */
+        function random_bytes($bytes)
+        {
+            if (!is_int($bytes)) {
+                 throw new Exception('Length must be an integer');
+            }
+            if ($bytes < 1) {
+                 throw new Exception('Length must be greater than 0');
+            }
+            // See PHP bug #55169 for why 5.3.7 is required
             $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
             if ($buf !== false) {
                 if (RandomCompat_strlen($buf) === $bytes) {
                     return $buf;
                 }
             }
+            // If we failed, throw an exception.
+            throw new Exception('PHP failed to generate random data.');
         }
-
+    } elseif (is_readable('/dev/arandom')) {
         /**
-         * Use /dev/urandom for random numbers
+         * Use /dev/arandom for random numbers
          * 
          * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
+         * 
+         * @param int $bytes
+         * @return string
          */
-        if (is_readable('/dev/urandom')) {
-            $fp = fopen('/dev/urandom', 'rb');
+        function random_bytes($bytes)
+        {
+            static $fp = null;
+            if ($fp === null) {
+                $fp = fopen('/dev/arandom', 'rb');
+            }
             if ($fp !== false) {
                 $streamset = stream_set_read_buffer($fp, 0);
                 if ($streamset === 0) {
@@ -58,13 +66,58 @@ if (!function_exists('random_bytes')) {
                     }
                 }
             }
+            throw new Exception('PHP failed to generate random data.');
         }
+    } elseif (is_readable('/dev/urandom')) {
+        /**
+         * Use /dev/urandom for random numbers
+         * 
+         * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
+         * 
+         * @param int $bytes
+         * @return string
+         */
+        function random_bytes($bytes)
+        {
+            static $fp = null;
+            if ($fp === null) {
+                $fp = fopen('/dev/urandom', 'rb');
+            }
+            if ($fp !== false) {
+                $streamset = stream_set_read_buffer($fp, 0);
+                if ($streamset === 0) {
+                    $remaining = $bytes;
+                    do {
+                        $read = fread($fp, $remaining); 
+                        if ($read === false) {
+                            // We cannot safely read from urandom.
+                            $buf = false;
+                            break;
+                        }
+                        // Decrease the number of bytes returned from remaining
+                        $remaining -= RandomCompat_strlen($read);
+                        $buf .= $read;
+                    } while ($remaining > 0);
+                    if ($buf !== false) {
+                        if (RandomCompat_strlen($buf) === $bytes) {
+                            return $buf;
+                        }
+                    }
+                }
+            }
+            throw new Exception('PHP failed to generate random data.');
+        }
+    } elseif (extension_loaded('com_dotnet')) {
         /**
          * Windows with PHP < 5.3.0 will not have the function
          * openssl_random_pseudo_bytes() available, so let's use
          * CAPICOM to work around this deficiency.
+         * 
+         * @param int $bytes
+         * @return string
          */
-         if (class_exists('COM', false)) {
+        function random_bytes($bytes)
+        {
              try {
                  if ($buf === false) {
                      $buf = ''; // Make it a string, not false
@@ -85,16 +138,21 @@ if (!function_exists('random_bytes')) {
             } catch (Exception $e) {
                 unset($e); // Let's not let CAPICOM errors kill our app 
             }
+            throw new Exception('PHP failed to generate random data.');
         }
-        
+    } elseif (function_exists('openssl_random_pseudo_bytes')) {
         /**
          * Since openssl_random_pseudo_bytes() uses openssl's 
          * RAND_pseudo_bytes() API, which has been marked as deprecated by the
          * OpenSSL team, this is our last resort before failure.
          * 
          * @ref https://www.openssl.org/docs/crypto/RAND_bytes.html
+         * 
+         * @param int $bytes
+         * @return string
          */
-        if (function_exists('openssl_random_pseudo_bytes')) {
+        function random_bytes($bytes)
+        {
             $secure = true;
             $buf = openssl_random_pseudo_bytes($bytes, $secure);
             if ($buf !== false && $secure) {
@@ -103,17 +161,20 @@ if (!function_exists('random_bytes')) {
                 }
             }
         }
-        
-        /**
-         * We have reached the point of no return. Throw an exception.
-         */
-        throw new Exception('PHP failed to generate random data.');
+    } else {
+        throw new Exception('There is no suitable CSPRNG installed on your system');
     }
 }
-    
+
 if (!function_exists('random_int')) {
-    function random_int($min, $max)
+    function random_int($min = null, $max = null)
     {
+        if ($min === null) {
+            $min = -(PHP_INT_MAX >> 1);
+        }
+        if ($max === null) {
+            $max = PHP_INT_MAX >> 1;
+        }
         if (!is_int($min)) {
              throw new Exception('random_int(): $min must be an integer');
         }
@@ -204,7 +265,7 @@ if (!function_exists('random_int')) {
             // If $val is larger than the maximum acceptable number for
             // $min and $max, we discard and try again.
         } while ($val > $range);
-        return (int) ($min + $val) & PHP_INT_MAX;
+        return (int) ($min + $val);
     }
 }
 
