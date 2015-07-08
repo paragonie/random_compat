@@ -35,3 +35,15 @@ $int = random_int(0,255);
 var_dump($int);
 // int(47)
 ```
+
+## Contributors
+
+This project would not be anywhere near as excellent as it is today if it weren't for the contriutions of the following individuals:
+
+* [@CodesInChaos](https://github.com/CodesInChaos)
+* [Leigh (@lt)](https://github.com/lt)
+* [Mason Malone (@MasonM)](https://github.com/MasonM)
+* [Andrey Andreev (@narfbg)](https://github.com/narfbg)
+* [@oittaa](https://github.com/oittaa)
+* [Sammy Kaye Powers (@SammyK)](https://github.com/SammyK)
+* [Scott Baker (@scottchiefbaker)](https://github.com/scottchiefbaker)
