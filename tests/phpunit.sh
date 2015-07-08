@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ $1 == 'full' ]; then
+    fulltest=1
+else
+    fulltest=0
+fi
+
 clean=0 # Clean up?
 
 gpg --fingerprint D8406D0D82947747293778314AA394086372C20A
@@ -39,6 +45,18 @@ if [ $? -eq 0 ]; then
     echo -e "\033[33mBegin Unit Testing\033[0m"
     # Run the testing suite
     php phpunit.phar --bootstrap ../vendor/autoload.php unit
+    if [ $? -ne 0 ]; then
+        # Test failure
+        exit $?
+    fi
+    # Should we perform full statistical analyses?
+    if [ $fulltest -eq 1 ]; then
+        php phpunit.phar --bootstrap ../vendor/autoload.php full
+        if [ $? -ne 0 ]; then
+            # Test failure
+            exit $?
+        fi
+    fi
     # Cleanup
     if [ "$clean" -eq 1 ]; then
         echo -e "\033[32mCleaning Up!\033[0m"
