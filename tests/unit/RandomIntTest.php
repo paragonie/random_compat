@@ -8,12 +8,12 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
     
     public function testOutput()
     {
-        $integers = [
+        $integers = array(
             random_int(0, 1000),
             random_int(1001,2000),
             random_int(-100, -10),
             random_int(-1000, 1000)
-        ];
+        );
         
         $this->assertFalse($integers[0] === $integers[1]);
         $this->assertTrue($integers[0] >= 0 && $integers[0] <= 1000);

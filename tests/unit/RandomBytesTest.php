@@ -8,11 +8,11 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
     
     public function testOutput()
     {
-        $bytes = [
+        $bytes = array(
             random_bytes(12),
             random_bytes(16),
             random_bytes(16)
-        ];
+        );
         
         $this->assertTrue(
             strlen(bin2hex($bytes[0])) === 24
