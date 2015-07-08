@@ -1,6 +1,6 @@
 <?php
 
-class StatTests extends PHPUnit_Framework_TestCase
+class StatTest extends PHPUnit_Framework_TestCase
 {
     /**
      * All possible values should be > 30% but less than 170%
