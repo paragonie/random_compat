@@ -51,14 +51,14 @@ if [ $? -eq 0 ]; then
     php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
     if [ $? -ne 0 ]; then
         # Test failure
-        exit $?
+        exit 1
     fi
     # Should we perform full statistical analyses?
     if [ $fulltest -eq 1 ]; then
         php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/full"
         if [ $? -ne 0 ]; then
             # Test failure
-            exit $?
+            exit 1
         fi
     fi
     # Cleanup
