@@ -168,6 +168,9 @@ if (!function_exists('random_int')) {
              * $reject is equivalent to (PHP_INT_MAX + 1) % range, but avoids
              *      int overflows (assuming PHP_INT_MAX + 1 is a power-of-two
              *      and that integers are represented as two's complement)
+             * 
+             * The rejection probability is at most 0.5, so this corresponds
+             * to a failure probability of 2^-128 for a working RNG
              */
             for ($attempts = 0; $attempts < 128; $attempts++) {
                 // generate a random integer
@@ -186,6 +189,7 @@ if (!function_exists('random_int')) {
                     return $value;
                 }
             }
+            throw new Exception('random_int: RNG is broken - too many rejections');
         }
         /**
          * We incremented $range earlier to test for overflows
@@ -195,7 +199,7 @@ if (!function_exists('random_int')) {
         /**
          * Initialize variables to 0
          */
-        $rejections = $bits = $bytes = $mask = 0;
+        $attempts = $bits = $bytes = $mask = 0;
 
         $tmp = $range;
         /**
@@ -225,7 +229,7 @@ if (!function_exists('random_int')) {
              * The rejection probability is at most 0.5, so this corresponds
              * to a failure probability of 2^-128 for a working RNG
              */
-            if ($rejections > 128) {
+            if ($attempts > 128) {
                 throw new Exception('random_int: RNG is broken - too many rejections');
             }
             $rval = random_bytes($bytes);
@@ -251,9 +255,7 @@ if (!function_exists('random_int')) {
             // Apply mask
             $val &= $mask;
 
-            if ($val > $range) {
-                ++$rejections;
-            }
+            ++$attempts;
             // If $val is larger than the maximum acceptable number for
             // $min and $max, we discard and try again.
         } while ($val > $range);
