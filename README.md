@@ -47,3 +47,4 @@ This project would not be anywhere near as excellent as it is today if it weren'
 * [@oittaa](https://github.com/oittaa)
 * [Sammy Kaye Powers (@SammyK)](https://github.com/SammyK)
 * [Scott Baker (@scottchiefbaker)](https://github.com/scottchiefbaker)
+* [Stoyan Kyosev (@skyosev)](https://github.com/skyosev)
