@@ -150,21 +150,52 @@ if (!function_exists('random_int')) {
         if ($min > $max) {
              throw new Exception('Minimum value must be less than or equal to the maximum value');
         }
-        $range = $max - $min;
+        $range = $max - $min + 1;
 
         /**
          * Test for integer overflow:
          */
         if (!is_int($range)) {
-             throw new Exception('An integer overflow occurred on the range between $min and $max');
+            /**
+             * Still safely calculate wider ranges.
+             * Provided by @CodesInChaos
+             * 
+             * @ref https://gist.github.com/CodesInChaos/03f9ea0b58e8b2b8d435
+             * 
+             * $reject is equivalent to (PHP_INT_MAX + 1) % range, but avoids
+             *      int overflows (assuming PHP_INT_MAX + 1 is a power-of-two
+             *      and that integers are represented as two's complement)
+             */
+            $reject = (-$range & PHP_INT_MAX) % $range;
+            for ($attempts = 0; $attempts < 128; $attempts++) {
+                // generate a random integer
+                $bytes = random_bytes(PHP_INT_SIZE);
+                if ($bytes === false) {
+                    throw new Exception('Random number generator failure');
+                }
+                $value = 0;
+                for ($i = 0; $i < PHP_INT_SIZE; ++$i) {
+                    $value = ($value << 8) | ord($bytes[$i]);
+                }
+                if ($value >= $min && $value <= $max) {
+                    /**
+                     * This value is within the accepted bounds.
+                     */
+                    return $value;
+                }
+            }
         }
-
+        
         /**
          * Do we have a meaningful range? If not, return the minimum value.
          */
         if ($range < 1) {
             return $min;
         }
+        /**
+         * We incremented $range earlier to test for overflows
+         */
+        --$range;
 
         /**
          * Initialize variables to 0
