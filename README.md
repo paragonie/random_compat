@@ -41,10 +41,10 @@ var_dump($int);
 This project would not be anywhere near as excellent as it is today if it weren't for the contributions of the following individuals:
 
 * [@CodesInChaos](https://github.com/CodesInChaos)
-* [Leigh (@lt)](https://github.com/lt)
-* [Mason Malone (@MasonM)](https://github.com/MasonM)
-* [Andrey Andreev (@narfbg)](https://github.com/narfbg)
+* [@lt (Leigh)](https://github.com/lt)
+* [@MasonM (Mason Malone)](https://github.com/MasonM)
+* [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
-* [Sammy Kaye Powers (@SammyK)](https://github.com/SammyK)
-* [Scott Baker (@scottchiefbaker)](https://github.com/scottchiefbaker)
-* [Stoyan Kyosev (@skyosev)](https://github.com/skyosev)
+* [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)
+* [@scottchiefbaker (Scott Baker)](https://github.com/scottchiefbaker)
+* [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
