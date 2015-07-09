@@ -52,6 +52,7 @@ if (!function_exists('random_bytes')) {
                 $streamset = stream_set_read_buffer($fp, 0);
                 if ($streamset === 0) {
                     $remaining = $bytes;
+                    $buf = '';
                     do {
                         $read = fread($fp, $remaining); 
                         if ($read === false) {
