@@ -150,14 +150,10 @@ if (!function_exists('random_int')) {
         if ($min > $max) {
              throw new Exception('Minimum value must be less than or equal to the maximum value');
         }
-        $range = $max - $min + 1;
-        
-        /**
-         * Do we have a meaningful range? If not, return the minimum value.
-         */
-        if ($range < 1) {
+        if ($max === $min) {
             return $min;
         }
+        $range = $max - $min + 1;
 
         /**
          * Test for integer overflow:
