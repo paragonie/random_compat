@@ -151,6 +151,13 @@ if (!function_exists('random_int')) {
              throw new Exception('Minimum value must be less than or equal to the maximum value');
         }
         $range = $max - $min + 1;
+        
+        /**
+         * Do we have a meaningful range? If not, return the minimum value.
+         */
+        if ($range < 1) {
+            return $min;
+        }
 
         /**
          * Test for integer overflow:
@@ -184,13 +191,6 @@ if (!function_exists('random_int')) {
                     return $value;
                 }
             }
-        }
-        
-        /**
-         * Do we have a meaningful range? If not, return the minimum value.
-         */
-        if ($range < 1) {
-            return $min;
         }
         /**
          * We incremented $range earlier to test for overflows
