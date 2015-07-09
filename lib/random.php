@@ -169,10 +169,6 @@ if (!function_exists('random_int')) {
              *      int overflows (assuming PHP_INT_MAX + 1 is a power-of-two
              *      and that integers are represented as two's complement)
              */
-            if ($range == 0) {
-                $range = PHP_INT_MAX;
-            }
-            $reject = (-$range & PHP_INT_MAX) % $range;
             for ($attempts = 0; $attempts < 128; $attempts++) {
                 // generate a random integer
                 $bytes = random_bytes(PHP_INT_SIZE);
