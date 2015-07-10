@@ -14,10 +14,14 @@ if (!function_exists('random_bytes')) {
         function random_bytes($bytes)
         {
             if (!is_int($bytes)) {
-                 throw new Exception('Length must be an integer');
+                throw new Exception(
+                    'Length must be an integer'
+                );
             }
             if ($bytes < 1) {
-                 throw new Exception('Length must be greater than 0');
+                throw new Exception(
+                    'Length must be greater than 0'
+                );
             }
             // See PHP bug #55169 for why 5.3.7 is required
             $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
@@ -26,8 +30,12 @@ if (!function_exists('random_bytes')) {
                     return $buf;
                 }
             }
-            // If we failed, throw an exception.
-            throw new Exception('PHP failed to generate random data.');
+            /**
+             * If we reach here, PHP has failed us.
+             */
+            throw new Exception(
+                'PHP failed to generate random data.'
+            );
         }
     } elseif ((is_readable('/dev/arandom') || is_readable('/dev/urandom')) && !ini_get('open_basedir')) {
         /**
@@ -66,12 +74,20 @@ if (!function_exists('random_bytes')) {
                     } while ($remaining > 0);
                     if ($buf !== false) {
                         if (RandomCompat_strlen($buf) === $bytes) {
+                            /**
+                             * Return our random entropy buffer here:
+                             */
                             return $buf;
                         }
                     }
                 }
             }
-            throw new Exception('PHP failed to generate random data.');
+            /**
+             * If we reach here, PHP has failed us.
+             */
+            throw new Exception(
+                'PHP failed to generate random data.'
+            );
         }
     } elseif (extension_loaded('com_dotnet')) {
         /**
@@ -98,6 +114,12 @@ if (!function_exists('random_bytes')) {
                 }
                 ++$execCount; 
             } while ($execCount < $bytes);
+            /**
+             * If we reach here, PHP has failed us.
+             */
+            throw new Exception(
+                'PHP failed to generate random data.'
+            );
         }
     } elseif (function_exists('openssl_random_pseudo_bytes')) {
         /**
@@ -119,9 +141,20 @@ if (!function_exists('random_bytes')) {
                     return $buf;
                 }
             }
+            /**
+             * If we reach here, PHP has failed us.
+             */
+            throw new Exception(
+                'PHP failed to generate random data.'
+            );
         }
     } else {
-        throw new Exception('There is no suitable CSPRNG installed on your system');
+        /**
+         * We don't have any more options, so let's throw an exception right now
+         */
+        throw new Exception(
+            'There is no suitable CSPRNG installed on your system'
+        );
     }
 }
 
@@ -137,13 +170,19 @@ if (!function_exists('random_int')) {
     function random_int($min, $max)
     {
         if (!is_int($min)) {
-             throw new Exception('random_int(): $min must be an integer');
+            throw new Exception(
+                'random_int(): $min must be an integer'
+            );
         }
         if (!is_int($max)) {
-             throw new Exception('random_int(): $max must be an integer');
+            throw new Exception(
+                'random_int(): $max must be an integer'
+            );
         }
         if ($min > $max) {
-             throw new Exception('Minimum value must be less than or equal to the maximum value');
+            throw new Exception(
+                'Minimum value must be less than or equal to the maximum value'
+            );
         }
         if ($max === $min) {
             return $min;
@@ -168,10 +207,14 @@ if (!function_exists('random_int')) {
              * to a failure probability of 2^-128 for a working RNG
              */
             for ($attempts = 0; $attempts < 128; $attempts++) {
-                // generate a random integer
+                /**
+                 * Generate a random integer...
+                 */
                 $bytes = random_bytes(PHP_INT_SIZE);
                 if ($bytes === false) {
-                    throw new Exception('Random number generator failure');
+                    throw new Exception(
+                        'Random number generator failure'
+                    );
                 }
                 $value = 0;
                 for ($i = 0; $i < PHP_INT_SIZE; ++$i) {
@@ -184,7 +227,9 @@ if (!function_exists('random_int')) {
                     return $value;
                 }
             }
-            throw new Exception('random_int: RNG is broken - too many rejections');
+            throw new Exception(
+                'random_int: RNG is broken - too many rejections'
+            );
         }
         /**
          * We incremented $range earlier to test for overflows
@@ -225,11 +270,15 @@ if (!function_exists('random_int')) {
              * to a failure probability of 2^-128 for a working RNG
              */
             if ($attempts > 128) {
-                throw new Exception('random_int: RNG is broken - too many rejections');
+                throw new Exception(
+                    'random_int: RNG is broken - too many rejections'
+                );
             }
             $rval = random_bytes($bytes);
             if ($rval === false) {
-                throw new Exception('Random number generator failure');
+                throw new Exception(
+                    'Random number generator failure'
+                );
             }
 
             /**
@@ -247,58 +296,127 @@ if (!function_exists('random_int')) {
                 $val |= (ord($rval[$i]) << ($i * 8));
             }
 
-            // Apply mask
+            /**
+             * Apply mask
+             */
             $val &= $mask;
 
             ++$attempts;
-            // If $val is larger than the maximum acceptable number for
-            // $min and $max, we discard and try again.
+            /**
+             * If $val is larger than the maximum acceptable number for
+             * $min and $max, we discard and try again.
+             */
         } while ($val > $range);
         return (int) ($min + $val);
     }
 }
 
 if (!function_exists('RandomCompat_strlen')) {
-    /**
-     * strlen() implementation that isn't brittle to mbstring.func_overload
-     * 
-     * @param string $binary_string
-     * 
-     * @return int
-     */
     if (function_exists('mb_substr')) {
-        
+        /**
+         * strlen() implementation that isn't brittle to mbstring.func_overload
+         * 
+         * This version uses mb_strlen() in '8bit' mode to treat strings as raw
+         * binary rather than UTF-8, ISO-8859-1, etc
+         * 
+         * @param string $binary_string
+         * 
+         * @return int
+         */
         function RandomCompat_strlen($binary_string)
         {
+            if (!is_string($binary_string)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_strlen() expects a string'
+                );
+            }
             return mb_strlen($binary_string, '8bit');
         }
     } else {
+        /**
+         * strlen() implementation that isn't brittle to mbstring.func_overload
+         * 
+         * This version just used the default strlen()
+         * 
+         * @param string $binary_string
+         * 
+         * @return int
+         */
         function RandomCompat_strlen($binary_string)
         {
+            if (!is_string($binary_string)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_strlen() expects a string'
+                );
+            }
             return strlen($binary_string);
         }
     }
 }
 
 if (!function_exists('RandomCompat_substr')) {
-    /**
-     * substr() implementation that isn't brittle to mbstring.func_overload
-     * 
-     * @param string $binary_string
-     * @param int $start
-     * @param int $length (optional)
-     * 
-     * @return string
-     */
     if (function_exists('mb_substr')) {
+        /**
+         * substr() implementation that isn't brittle to mbstring.func_overload
+         * 
+         * This version uses mb_substr() in '8bit' mode to treat strings as raw
+         * binary rather than UTF-8, ISO-8859-1, etc
+         * 
+         * @param string $binary_string
+         * @param int $start
+         * @param int $length (optional)
+         * 
+         * @return string
+         */
         function RandomCompat_substr($binary_string, $start, $length = null)
         {
+            if (!is_string($binary_string)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_substr(): First argument should be a string'
+                );
+            }
+            if (!is_int($start)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_substr(): Second argument should be an integer'
+                );
+            }
+            if ($length !== null && !is_int($length)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_substr(): Third argument should be an integer, or omitted'
+                );
+            }
             return mb_substr($binary_string, $start, $length, '8bit');
         }
     } else {
+        /**
+         * substr() implementation that isn't brittle to mbstring.func_overload
+         * 
+         * This version just used the default substr()
+         * 
+         * @param string $binary_string
+         * @param int $start
+         * @param int $length (optional)
+         * 
+         * @return string
+         */
         function RandomCompat_substr($binary_string, $start, $length = null)
         {
+            if (!is_string($binary_string)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_substr(): First argument should be a string'
+                );
+            }
+            if (!is_int($start)) {
+                throw new InvalidArgumentException(
+                    'RandomCompat_substr(): Second argument should be an integer'
+                );
+            }
             if ($length !== null) {
+                if (!is_int($length)) {
+                    throw new InvalidArgumentException(
+                        'RandomCompat_substr(): Third argument should be an integer, or omitted'
+                    );
+                }
                 return substr($binary_string, $start, $length);
             }
             return substr($binary_string, $start);
