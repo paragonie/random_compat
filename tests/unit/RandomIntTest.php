@@ -22,6 +22,6 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[2] >= -100 && $integers[2] <= -10);
         $this->assertTrue($integers[3] >= -1000 && $integers[3] <= 1000);
         $this->assertTrue($integers[3] >= -1000 && $integers[3] <= 1000);
-        $this->assertTrue($integers[4] >= -PHP_INT_MAX + 1 && $integers[4] <= PHP_INT_MAX);
+        $this->assertTrue($integers[4] >= -PHP_INT_MAX && $integers[4] <= PHP_INT_MAX);
     }
 }
