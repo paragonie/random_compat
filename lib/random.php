@@ -266,16 +266,17 @@ if (!function_exists('RandomCompat_strlen')) {
      * 
      * @return int
      */
-    function RandomCompat_strlen($binary_string)
-    {
-        static $exists = null;
-        if ($exists === null) {
-            $exists = function_exists('mb_strlen');
-        }
-        if ($exists) {
+    if (function_exists('mb_substr')) {
+        
+        function RandomCompat_strlen($binary_string)
+        {
             return mb_strlen($binary_string, '8bit');
         }
-        return strlen($binary_string);
+    } else {
+        function RandomCompat_strlen($binary_string)
+        {
+            return strlen($binary_string);
+        }
     }
 }
 
@@ -289,15 +290,18 @@ if (!function_exists('RandomCompat_substr')) {
      * 
      * @return string
      */
-    function RandomCompat_substr($binary_string, $start, $length = null)
-    {
-        static $exists = null;
-        if ($exists === null) {
-            $exists = function_exists('mb_substr');
-        }
-        if ($exists) {
+    if (function_exists('mb_substr')) {
+        function RandomCompat_substr($binary_string, $start, $length = null)
+        {
             return mb_substr($binary_string, $start, $length, '8bit');
         }
-        return substr($binary_string, $start, $length);
+    } else {
+        function RandomCompat_substr($binary_string, $start, $length = null)
+        {
+            if ($length !== null) {
+                return substr($binary_string, $start, $length);
+            }
+            return substr($binary_string, $start);
+        }
     }
 }
