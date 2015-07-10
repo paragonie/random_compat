@@ -84,25 +84,20 @@ if (!function_exists('random_bytes')) {
          */
         function random_bytes($bytes)
         {
-             try {
-                $buf = '';
-                $util = new COM('CAPICOM.Utilities.1');
-                $execCount = 0;
-                /**
-                 * Let's not let it loop forever. If we run N times and fail to
-                 * get N bytes of random data, then CAPICOM has failed us.
-                 */
-                do {
-                    $buf .= base64_decode($util->GetRandom($bytes, 0));
-                    if (RandomCompat_strlen($buf) >= $bytes) {
-                        return RandomCompat_substr($buf, 0, $bytes);
-                    }
-                    ++$execCount; 
-                } while ($execCount < $bytes);
-            } catch (Exception $e) {
-                unset($e); // Let's not let CAPICOM errors kill our app 
-            }
-            throw new Exception('PHP failed to generate random data.');
+            $buf = '';
+            $util = new COM('CAPICOM.Utilities.1');
+            $execCount = 0;
+            /**
+             * Let's not let it loop forever. If we run N times and fail to
+             * get N bytes of random data, then CAPICOM has failed us.
+             */
+            do {
+                $buf .= base64_decode($util->GetRandom($bytes, 0));
+                if (RandomCompat_strlen($buf) >= $bytes) {
+                    return RandomCompat_substr($buf, 0, $bytes);
+                }
+                ++$execCount; 
+            } while ($execCount < $bytes);
         }
     } elseif (function_exists('openssl_random_pseudo_bytes')) {
         /**
