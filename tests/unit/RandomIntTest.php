@@ -13,7 +13,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             random_int(1001,2000),
             random_int(-100, -10),
             random_int(-1000, 1000),
-            random_int(-PHP_INT_MAX + 1, PHP_INT_MAX)
+            random_int(~PHP_INT_MAX, PHP_INT_MAX)
         );
         
         $this->assertFalse($integers[0] === $integers[1]);
