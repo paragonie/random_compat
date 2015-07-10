@@ -87,7 +87,7 @@ if (!function_exists('random_bytes')) {
              try {
                 $buf = '';
                 $util = new COM('CAPICOM.Utilities.1');
-                $execs = 0;
+                $execCount = 0;
                 /**
                  * Let's not let it loop forever. If we run N times and fail to
                  * get N bytes of random data, then CAPICOM has failed us.
@@ -97,8 +97,8 @@ if (!function_exists('random_bytes')) {
                     if (RandomCompat_strlen($buf) >= $bytes) {
                         return RandomCompat_substr($buf, 0, $bytes);
                     }
-                    ++$execs; 
-                } while ($execs < $bytes);
+                    ++$execCount; 
+                } while ($execCount < $bytes);
             } catch (Exception $e) {
                 unset($e); // Let's not let CAPICOM errors kill our app 
             }
