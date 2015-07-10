@@ -40,7 +40,7 @@ var_dump($int);
 
 This project would not be anywhere near as excellent as it is today if it weren't for the contributions of the following individuals:
 
-* [@CodesInChaos](https://github.com/CodesInChaos)
+* [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
 * [@kelunik (Niklas Keller)](https://github.com/kelunik)
 * [@lt (Leigh)](https://github.com/lt)
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
