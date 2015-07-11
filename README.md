@@ -6,7 +6,8 @@ PHP 5.x polyfill for `random_bytes()` and `random_int()` created and maintained
 by [Paragon Initiative Enterprises](https://paragonie.com).
 
 Although this library *should* function in earlier versions of PHP, we will only
-provide support for [supported PHP versions](https://secure.php.net/supported-versions.php).
+consider issues relevant to [supported PHP versions](https://secure.php.net/supported-versions.php).
+**Please upgrade as soon as possible.**
 
 ## Important
 
@@ -15,9 +16,18 @@ review from independent third party security experts. Please ask your favorite
 hackers to hammer it for implementation errors and bugs.
 
 For the background of this library, please refer to our blog post on 
-[Generating Random Integers and Strings in PHP](https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php)
+[Generating Random Integers and Strings in PHP](https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php).
+
+### Usability Notice
+
+If PHP cannot safely generate random data, this library will throw an `Exception`
+when you include it, even if it's unused. It will not fall back to insecure
+random data.
 
 ## Features
+
+This library exposes the [CSPRNG functions add in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
+for use in PHP 5 projects. Their behavior should be identical.
 
 ### Generate a string of random bytes
 
