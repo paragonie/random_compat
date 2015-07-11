@@ -380,7 +380,13 @@ if (!function_exists('RandomCompat_substr')) {
                     'RandomCompat_substr(): Second argument should be an integer'
                 );
             }
-            if ($length !== null && !is_int($length)) {
+            if ($length === null) {
+                /**
+                 * mb_substr($str, 0, NULL, '8bit') returns an empty string on
+                 * PHP 5.3, so we have to find the length ourselves.
+                 */
+                $length = RandomCompat_strlen($length) - $start;
+            } elseif (!is_int($length)) {
                 throw new InvalidArgumentException(
                     'RandomCompat_substr(): Third argument should be an integer, or omitted'
                 );
