@@ -199,10 +199,6 @@ if (!function_exists('random_int')) {
              * 
              * @ref https://gist.github.com/CodesInChaos/03f9ea0b58e8b2b8d435
              * 
-             * $reject is equivalent to (PHP_INT_MAX + 1) % range, but avoids
-             *      int overflows (assuming PHP_INT_MAX + 1 is a power-of-two
-             *      and that integers are represented as two's complement)
-             * 
              * The rejection probability is at most 0.5, so this corresponds
              * to a failure probability of 2^-128 for a working RNG
              */
@@ -210,15 +206,15 @@ if (!function_exists('random_int')) {
                 /**
                  * Generate a random integer...
                  */
-                $bytes = random_bytes(PHP_INT_SIZE);
-                if ($bytes === false) {
+                $rval = random_bytes(PHP_INT_SIZE);
+                if ($rval === false) {
                     throw new Exception(
                         'Random number generator failure'
                     );
                 }
                 $value = 0;
                 for ($i = 0; $i < PHP_INT_SIZE; ++$i) {
-                    $value = ($value << 8) | ord($bytes[$i]);
+                    $value = ($value << 8) | ord($rval[$i]);
                 }
                 if ($value >= $min && $value <= $max) {
                     /**
