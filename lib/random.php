@@ -233,7 +233,6 @@ if (!function_exists('random_int')) {
             ++$bits;
             $tmp >>= 1;
             $mask = $mask << 1 | 1;
-            $valueShift = $min;
         }
 
         /**
@@ -243,9 +242,9 @@ if (!function_exists('random_int')) {
         do {
             /**
              * The rejection probability is at most 0.5, so this corresponds
-             * to a failure probability of 2^-128 for a working RNG
+             * to a failure probability of 2^-256 for a working RNG
              */
-            if ($attempts > 128) {
+            if ($attempts > 256) {
                 throw new Exception(
                     'random_int: RNG is broken - too many rejections'
                 );
@@ -275,7 +274,7 @@ if (!function_exists('random_int')) {
             /**
              * Apply mask
              */
-            $val += $valueShift;
+            $val += $min;
 
             ++$attempts;
             /**
