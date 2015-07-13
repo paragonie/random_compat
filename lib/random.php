@@ -3,6 +3,13 @@
 if (!function_exists('random_bytes')) {
     /**
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
+     * 
+     * In order of preference:
+     *   1. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV);
+     *   2. fread() /dev/arandom if available
+     *   3. fread() /dev/urandom if available
+     *   4. COM('CAPICOM.Utilities.1')->GetRandom()
+     *   5. openssl_random_pseudo_bytes()
      */
     if (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
         /**
@@ -196,7 +203,7 @@ if (!function_exists('random_int')) {
          * $mask => an integer bitmask (for use with the &) operator
          *          so we can minimize the number of discards
          */
-        $attempts = $bits = $bytes = $mask = $valueShift= 0;
+        $attempts = $bits = $bytes = $mask = $valueShift = 0;
 
         $range = $max - $min + 1;
 
@@ -281,7 +288,7 @@ if (!function_exists('random_int')) {
              * $min and $max, we discard and try again.
              */
         } while (!is_int($val) || $val > $max || $val < $min);
-        return $val;
+        return (int) $val;
     }
 }
 
