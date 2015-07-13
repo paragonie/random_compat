@@ -3,6 +3,13 @@
 if (!function_exists('random_bytes')) {
     /**
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
+     * 
+     * In order of preference:
+     *   1. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
+     *   2. fread() /dev/arandom if available
+     *   3. fread() /dev/urandom if available
+     *   4. COM('CAPICOM.Utilities.1')->GetRandom()
+     *   5. openssl_random_pseudo_bytes()
      */
     if (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
         /**
@@ -187,6 +194,17 @@ if (!function_exists('random_int')) {
         if ($max === $min) {
             return $min;
         }
+
+        /**
+         * Initialize variables to 0
+         * 
+         * We want to store:
+         * $bytes => the number of random bytes we need
+         * $mask => an integer bitmask (for use with the &) operator
+         *          so we can minimize the number of discards
+         */
+        $attempts = $bits = $bytes = $mask = $valueShift = 0;
+
         $range = $max - $min + 1;
 
         /**
@@ -198,71 +216,33 @@ if (!function_exists('random_int')) {
              * Provided by @CodesInChaos
              * 
              * @ref https://gist.github.com/CodesInChaos/03f9ea0b58e8b2b8d435
-             * 
-             * $reject is equivalent to (PHP_INT_MAX + 1) % range, but avoids
-             *      int overflows (assuming PHP_INT_MAX + 1 is a power-of-two
-             *      and that integers are represented as two's complement)
-             * 
-             * The rejection probability is at most 0.5, so this corresponds
-             * to a failure probability of 2^-128 for a working RNG
              */
-            for ($attempts = 0; $attempts < 128; $attempts++) {
-                /**
-                 * Generate a random integer...
-                 */
-                $bytes = random_bytes(PHP_INT_SIZE);
-                if ($bytes === false) {
-                    throw new Exception(
-                        'Random number generator failure'
-                    );
-                }
-                $value = 0;
-                for ($i = 0; $i < PHP_INT_SIZE; ++$i) {
-                    $value = ($value << 8) | ord($bytes[$i]);
-                }
-                if ($value >= $min && $value <= $max) {
-                    /**
-                     * This value is within the accepted bounds.
-                     */
-                    return $value;
-                }
-            }
-            throw new Exception(
-                'random_int: RNG is broken - too many rejections'
-            );
-        }
-        /**
-         * We incremented $range earlier to test for overflows
-         */
-        --$range;
+            $bytes = PHP_INT_SIZE;
+            $mask = -1;
+        } else {
+            /**
+             * We incremented $range earlier to test for overflows
+             */
+            --$range;
 
-        /**
-         * Initialize variables to 0
-         */
-        $attempts = $bits = $bytes = $mask = 0;
-
-        $tmp = $range;
-        /**
-         * We want to store:
-         * $bytes => the number of random bytes we need
-         * $mask => an integer bitmask (for use with the &) operator
-         *          so we can minimize the number of discards
-         * 
-         * $bits is effectively ceil(log($range, 2)) without dealing with 
-         * type juggling
-         */
-        while ($tmp > 0) {
-            if ($bits % 8 === 0) {
-               ++$bytes;
+            /**
+             * $bits is effectively ceil(log($range, 2)) without dealing with 
+             * type juggling
+             */
+            while ($range > 0) {
+                if ($bits % 8 === 0) {
+                   ++$bytes;
+                }
+                ++$bits;
+                $range >>= 1;
+                $mask = $mask << 1 | 1;
             }
-            ++$bits;
-            $tmp >>= 1;
-            $mask = $mask << 1 | 1;
+            $valueShift = $min;
         }
 
         /**
          * Now that we have our parameters set up, let's begin generating
-         * random integers until one falls within $range
+         * random integers until one falls between $min and $max
          */
         do {
             /**
@@ -300,14 +280,15 @@ if (!function_exists('random_int')) {
              * Apply mask
              */
             $val &= $mask;
+            $val += $valueShift;
 
             ++$attempts;
             /**
              * If $val is larger than the maximum acceptable number for
              * $min and $max, we discard and try again.
              */
-        } while ($val > $range);
-        return (int) ($min + $val);
+        } while (!is_int($val) || $val > $max || $val < $min);
+        return (int) $val;
     }
 }
 
@@ -380,7 +361,13 @@ if (!function_exists('RandomCompat_substr')) {
                     'RandomCompat_substr(): Second argument should be an integer'
                 );
             }
-            if ($length !== null && !is_int($length)) {
+            if ($length === null) {
+                /**
+                 * mb_substr($str, 0, NULL, '8bit') returns an empty string on
+                 * PHP 5.3, so we have to find the length ourselves.
+                 */
+                $length = RandomCompat_strlen($length) - $start;
+            } elseif (!is_int($length)) {
                 throw new InvalidArgumentException(
                     'RandomCompat_substr(): Third argument should be an integer, or omitted'
                 );

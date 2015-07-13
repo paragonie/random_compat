@@ -26,7 +26,7 @@ random data.
 
 ## Features
 
-This library exposes the [CSPRNG functions add in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
+This library exposes the [CSPRNG functions added in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
 for use in PHP 5 projects. Their behavior should be identical.
 
 ### Generate a string of random bytes
@@ -56,6 +56,7 @@ This project would not be anywhere near as excellent as it is today if it weren'
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
+* [@redragonx (Stephen Chavez)](https://github.com/redragonx)
 * [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)
 * [@scottchiefbaker (Scott Baker)](https://github.com/scottchiefbaker)
 * [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
