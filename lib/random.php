@@ -5,7 +5,7 @@ if (!function_exists('random_bytes')) {
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
      * 
      * In order of preference:
-     *   1. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV);
+     *   1. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
      *   2. fread() /dev/arandom if available
      *   3. fread() /dev/urandom if available
      *   4. COM('CAPICOM.Utilities.1')->GetRandom()
