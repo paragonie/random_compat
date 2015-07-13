@@ -214,6 +214,7 @@ if (!function_exists('random_int')) {
              * We incremented $range earlier to test for overflows
              */
             --$range;
+        }
         
         $tmp = $range;
         while ($tmp > 0) {
