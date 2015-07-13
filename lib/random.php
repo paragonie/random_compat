@@ -227,15 +227,13 @@ if (!function_exists('random_int')) {
              * $bits is effectively ceil(log($range, 2)) without dealing with 
              * type juggling
              */
-            while ($range > 0) {
-                if ($bits % 8 === 0) {
-                   ++$bytes;
-                }
-                ++$bits;
-                $tmp >>= 1;
-                $mask = $mask << 1 | 1;
-                $valueShift = $min;
+            if ($bits % 8 === 0) {
+               ++$bytes;
             }
+            ++$bits;
+            $tmp >>= 1;
+            $mask = $mask << 1 | 1;
+            $valueShift = $min;
         }
 
         /**
