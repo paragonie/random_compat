@@ -187,11 +187,11 @@ if (!function_exists('random_int')) {
         if ($max === $min) {
             return $min;
         }
-        
+
         /**
          * Initialize variables to 0
          */
-        $attempts = $bits = $bytes = $mask = 0;
+        $attempts = $bits = $bytes = $mask = $valueShift= 0;
 
         $range = $max - $min + 1;
 
@@ -209,15 +209,13 @@ if (!function_exists('random_int')) {
              * to a failure probability of 2^-128 for a working RNG
              */
             $bytes = PHP_INT_SIZE;
+            $mask = -1;
         } else {
             /**
              * We incremented $range earlier to test for overflows
              */
             --$range;
-        }
-        
-        $tmp = $range;
-        while ($tmp > 0) {
+
             /**
              * We want to store:
              * $bytes => the number of random bytes we need
@@ -227,12 +225,15 @@ if (!function_exists('random_int')) {
              * $bits is effectively ceil(log($range, 2)) without dealing with 
              * type juggling
              */
-            if ($bits % 8 === 0) {
-               ++$bytes;
+            while ($range > 0) {
+                if ($bits % 8 === 0) {
+                   ++$bytes;
+                }
+                ++$bits;
+                $range >>= 1;
+                $mask = $mask << 1 | 1;
             }
-            ++$bits;
-            $tmp >>= 1;
-            $mask = $mask << 1 | 1;
+            $valueShift = $min;
         }
 
         /**
@@ -242,9 +243,9 @@ if (!function_exists('random_int')) {
         do {
             /**
              * The rejection probability is at most 0.5, so this corresponds
-             * to a failure probability of 2^-256 for a working RNG
+             * to a failure probability of 2^-128 for a working RNG
              */
-            if ($attempts > 256) {
+            if ($attempts > 128) {
                 throw new Exception(
                     'random_int: RNG is broken - too many rejections'
                 );
@@ -274,7 +275,8 @@ if (!function_exists('random_int')) {
             /**
              * Apply mask
              */
-            $val += $min;
+            $val &= $mask;
+            $val += $valueShift;
 
             ++$attempts;
             /**
@@ -282,7 +284,7 @@ if (!function_exists('random_int')) {
              * $min and $max, we discard and try again.
              */
         } while (!is_int($val) || $val > $max || $val < $min);
-        return (int) $val;
+        return $val;
     }
 }
 
