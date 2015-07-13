@@ -206,6 +206,11 @@ if (!function_exists('random_int')) {
         $attempts = $bits = $bytes = $mask = $valueShift = 0;
 
         $range = $max - $min + 1;
+        if ($range < 0) {
+            throw new Exception(
+                'Somehow, '.$max.' - '.$min.' resulted in a value less than 0.'
+            );
+        }
 
         /**
          * Test for integer overflow:
