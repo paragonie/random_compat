@@ -187,6 +187,12 @@ if (!function_exists('random_int')) {
         if ($max === $min) {
             return $min;
         }
+        
+        /**
+         * Initialize variables to 0
+         */
+        $attempts = $bits = $bytes = $mask = 0;
+
         $range = $max - $min + 1;
 
         /**
@@ -202,58 +208,33 @@ if (!function_exists('random_int')) {
              * The rejection probability is at most 0.5, so this corresponds
              * to a failure probability of 2^-128 for a working RNG
              */
-            for ($attempts = 0; $attempts < 128; $attempts++) {
-                /**
-                 * Generate a random integer...
-                 */
-                $rval = random_bytes(PHP_INT_SIZE);
-                if ($rval === false) {
-                    throw new Exception(
-                        'Random number generator failure'
-                    );
-                }
-                $value = 0;
-                for ($i = 0; $i < PHP_INT_SIZE; ++$i) {
-                    $value = ($value << 8) | ord($rval[$i]);
-                }
-                if ($value >= $min && $value <= $max) {
-                    /**
-                     * This value is within the accepted bounds.
-                     */
-                    return $value;
-                }
-            }
-            throw new Exception(
-                'random_int: RNG is broken - too many rejections'
-            );
-        }
-        /**
-         * We incremented $range earlier to test for overflows
-         */
-        --$range;
-
-        /**
-         * Initialize variables to 0
-         */
-        $attempts = $bits = $bytes = $mask = 0;
-
+            $bytes = PHP_INT_SIZE;
+        } else {
+            /**
+             * We incremented $range earlier to test for overflows
+             */
+            --$range;
+        
         $tmp = $range;
-        /**
-         * We want to store:
-         * $bytes => the number of random bytes we need
-         * $mask => an integer bitmask (for use with the &) operator
-         *          so we can minimize the number of discards
-         * 
-         * $bits is effectively ceil(log($range, 2)) without dealing with 
-         * type juggling
-         */
         while ($tmp > 0) {
-            if ($bits % 8 === 0) {
-               ++$bytes;
+            /**
+             * We want to store:
+             * $bytes => the number of random bytes we need
+             * $mask => an integer bitmask (for use with the &) operator
+             *          so we can minimize the number of discards
+             * 
+             * $bits is effectively ceil(log($range, 2)) without dealing with 
+             * type juggling
+             */
+            while ($range > 0) {
+                if ($bits % 8 === 0) {
+                   ++$bytes;
+                }
+                ++$bits;
+                $tmp >>= 1;
+                $mask = $mask << 1 | 1;
+                $valueShift = $min;
             }
-            ++$bits;
-            $tmp >>= 1;
-            $mask = $mask << 1 | 1;
         }
 
         /**
@@ -295,15 +276,15 @@ if (!function_exists('random_int')) {
             /**
              * Apply mask
              */
-            $val &= $mask;
+            $val += $valueShift;
 
             ++$attempts;
             /**
              * If $val is larger than the maximum acceptable number for
              * $min and $max, we discard and try again.
              */
-        } while ($val > $range);
-        return (int) ($min + $val);
+        } while (!is_int($val) || $val > $max || $val < $min);
+        return (int) $val;
     }
 }
 
