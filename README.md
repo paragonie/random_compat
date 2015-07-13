@@ -56,6 +56,7 @@ This project would not be anywhere near as excellent as it is today if it weren'
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
+* [@redragonx (Stephen Chavez)](https://github.com/redragonx)
 * [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)
 * [@scottchiefbaker (Scott Baker)](https://github.com/scottchiefbaker)
 * [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
