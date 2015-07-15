@@ -44,7 +44,7 @@ if (!function_exists('random_bytes')) {
                 'PHP failed to generate random data.'
             );
         }
-    } elseif ((is_readable('/dev/arandom') || is_readable('/dev/urandom')) && !ini_get('open_basedir')) {
+    } elseif (!ini_get('open_basedir') && (is_readable('/dev/arandom') || is_readable('/dev/urandom'))) {
         /**
          * Use /dev/arandom or /dev/urandom for random numbers
          * 
