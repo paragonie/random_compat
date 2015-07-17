@@ -298,7 +298,7 @@ if (!function_exists('random_int')) {
 }
 
 if (!function_exists('RandomCompat_strlen')) {
-    if (function_exists('mb_substr')) {
+    if (function_exists('mb_strlen')) {
         /**
          * strlen() implementation that isn't brittle to mbstring.func_overload
          * 
