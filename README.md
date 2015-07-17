@@ -60,3 +60,4 @@ This project would not be anywhere near as excellent as it is today if it weren'
 * [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)
 * [@scottchiefbaker (Scott Baker)](https://github.com/scottchiefbaker)
 * [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
+* [@tsyr2ko](https://github.com/tsyr2ko)
