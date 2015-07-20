@@ -259,7 +259,7 @@ if (!function_exists('random_int')) {
          * overflow, however, if $max - $min > PHP_INT_MAX. PHP will cast it to
          * a float and we will lose some precision.
          */
-        $range = $max - $min + 1;
+        $range = $max - $min;
 
         /**
          * Test for integer overflow:
@@ -279,12 +279,6 @@ if (!function_exists('random_int')) {
             $bytes = PHP_INT_SIZE;
             $mask = ~0;
         } else {
-            /**
-             * We incremented $range earlier to test for overflows
-             * (see: $range = $max - $min + 1) so let's decrease it by 1 here
-             */
-            --$range;
-
             /**
              * $bits is effectively ceil(log($range, 2)) without dealing with 
              * type juggling
