@@ -92,8 +92,7 @@ if (!function_exists('random_bytes')) {
                 'PHP failed to generate random data.'
             );
         }
-    } else
-    if (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
+    } elseif (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
         /**
          * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
          * 
