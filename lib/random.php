@@ -271,7 +271,7 @@ if (!function_exists('random_int')) {
              * 
              * @ref https://gist.github.com/CodesInChaos/03f9ea0b58e8b2b8d435
              * 
-             * We use ~0 as a mask in this case becuase it genreates all 1s
+             * We use ~0 as a mask in this case because it generates all 1s
              * 
              * @ref https://eval.in/400356 (32-bit)
              * @ref http://3v4l.org/XX9r5  (64-bit)
