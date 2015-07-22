@@ -8,54 +8,15 @@ if (!function_exists('random_bytes')) {
      * to the operating environment. It's a micro-optimization.
      * 
      * In order of preference:
-     *   1. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
-     *   2. fread() /dev/arandom if available
-     *   3. fread() /dev/urandom if available
+     *   1. fread() /dev/arandom if available
+     *   2. fread() /dev/urandom if available
+     *   3. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
      *   4. COM('CAPICOM.Utilities.1')->GetRandom()
      *   5. openssl_random_pseudo_bytes()
      * 
      * See ERRATA.md for our reasoning behind this particular order
      */
-    if (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
-        /**
-         * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
-         * 
-         * @ref https://bugs.php.net/bug.php?id=55169
-         * @ref https://github.com/php/php-src/blob/c568ffe5171d942161fc8dda066bce844bdef676/ext/mcrypt/mcrypt.c#L1321-L1386
-         * 
-         * @param int $bytes
-         * @return string
-         */
-        function random_bytes($bytes)
-        {
-            if (!is_int($bytes)) {
-                throw new Exception(
-                    'Length must be an integer'
-                );
-            }
-            if ($bytes < 1) {
-                throw new Exception(
-                    'Length must be greater than 0'
-                );
-            }
-            
-            $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
-            if ($buf !== false) {
-                if (RandomCompat_strlen($buf) === $bytes) {
-                    /**
-                     * Return our random entropy buffer here:
-                     */
-                    return $buf;
-                }
-            }
-            /**
-             * If we reach here, PHP has failed us.
-             */
-            throw new Exception(
-                'PHP failed to generate random data.'
-            );
-        }
-    } elseif (
+     if (
         !ini_get('open_basedir') && 
         (
             is_readable('/dev/arandom') || is_readable('/dev/urandom')
@@ -122,6 +83,46 @@ if (!function_exists('random_bytes')) {
                             return $buf;
                         }
                     }
+                }
+            }
+            /**
+             * If we reach here, PHP has failed us.
+             */
+            throw new Exception(
+                'PHP failed to generate random data.'
+            );
+        }
+    } else
+    if (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
+        /**
+         * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
+         * 
+         * @ref https://bugs.php.net/bug.php?id=55169
+         * @ref https://github.com/php/php-src/blob/c568ffe5171d942161fc8dda066bce844bdef676/ext/mcrypt/mcrypt.c#L1321-L1386
+         * 
+         * @param int $bytes
+         * @return string
+         */
+        function random_bytes($bytes)
+        {
+            if (!is_int($bytes)) {
+                throw new Exception(
+                    'Length must be an integer'
+                );
+            }
+            if ($bytes < 1) {
+                throw new Exception(
+                    'Length must be greater than 0'
+                );
+            }
+            
+            $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+            if ($buf !== false) {
+                if (RandomCompat_strlen($buf) === $bytes) {
+                    /**
+                     * Return our random entropy buffer here:
+                     */
+                    return $buf;
                 }
             }
             /**
