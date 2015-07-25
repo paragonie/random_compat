@@ -35,15 +35,15 @@ if (!function_exists('random_bytes')) {
         {
             static $fp = null;
             if ($fp === null) {
-                if (is_readable('/dev/arandom')) {
+                if (is_readable('/dev/arandom') && !is_link('/dev/arandom')) {
                     $stat = stat('/dev/arandom');
-                    if ($stat['rdev'] > 0) {
+                    if ($stat['rdev'] !== 0) {
                         $fp = fopen('/dev/arandom', 'rb');
                     }
                 }
                 if ($fp === null && is_readable('/dev/urandom')) {
                     $stat = stat('/dev/urandom');
-                    if ($stat['rdev'] > 0) {
+                    if ($stat['rdev'] !== 0) {
                         $fp = fopen('/dev/urandom', 'rb');
                     }
                 }
