@@ -36,12 +36,19 @@ if (!function_exists('random_bytes')) {
             static $fp = null;
             if ($fp === null) {
                 if (is_readable('/dev/arandom')) {
-                    $fp = fopen('/dev/arandom', 'rb');
-                } else {
-                    $fp = fopen('/dev/urandom', 'rb');
+                    $stat = stat('/dev/arandom');
+                    if ($stat['rdev'] > 0) {
+                        $fp = fopen('/dev/arandom', 'rb');
+                    }
+                }
+                if ($fp === null && is_readable('/dev/urandom')) {
+                    $stat = stat('/dev/urandom');
+                    if ($stat['rdev'] > 0) {
+                        $fp = fopen('/dev/urandom', 'rb');
+                    }
                 }
             }
-            if ($fp !== false) {
+            if ($fp !== false && $fp !== null) {
                 /**
                  * If we don't set the stream's read buffer to 0, PHP will
                  * internally buffer 8192 bytes, which can waste entropy
