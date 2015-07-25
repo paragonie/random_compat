@@ -35,6 +35,16 @@ if (!function_exists('random_bytes')) {
         {
             static $fp = null;
             if ($fp === null) {
+                /**
+                 * We use stat() to get the 'rdev' to get the device type, if it
+                 * is available. If rdev === 0 it's a flat file, not a device
+                 * provided by the kernel. We don't want to read from a file, we
+                 * want to read from the operating system's CSPRNG device.
+                 * 
+                 * On some OS's 'rdev' might be -1, but there's nothing we can
+                 * really to detect the legitimacy of the arandom or urandom
+                 * device do if it is.
+                 */
                 if (is_readable('/dev/arandom') && !is_link('/dev/arandom')) {
                     $stat = stat('/dev/arandom');
                     if ($stat['rdev'] !== 0) {
