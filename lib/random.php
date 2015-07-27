@@ -28,6 +28,9 @@ if (!function_exists('random_bytes')) {
          * 
          * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
          * 
+         * /dev/arandom is not a typo 
+         * @ref http://nixdoc.net/man-pages/openbsd/man4/arandom.4.html
+         * 
          * @param int $bytes
          * @return string
          */
@@ -42,7 +45,7 @@ if (!function_exists('random_bytes')) {
                  * want to read from the operating system's CSPRNG device.
                  * 
                  * On some OS's 'rdev' might be -1. In these cases, we want to
-                 * verify that the filetype() of 
+                 * verify that the filetype() of arandom/urandom is 'char'
                  */
                 if (is_readable('/dev/arandom') && !is_link('/dev/arandom')) {
                     $stat = stat('/dev/arandom');
