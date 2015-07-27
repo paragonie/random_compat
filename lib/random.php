@@ -28,60 +28,107 @@ if (!function_exists('random_bytes')) {
          * 
          * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
          * 
+         * /dev/arandom is not a typo 
+         * @ref http://nixdoc.net/man-pages/openbsd/man4/arandom.4.html
+         * 
          * @param int $bytes
          * @return string
          */
         function random_bytes($bytes)
         {
             static $fp = null;
-            if ($fp === null) {
-                if (is_readable('/dev/arandom')) {
-                    $fp = fopen('/dev/arandom', 'rb');
-                } else {
-                    $fp = fopen('/dev/urandom', 'rb');
-                }
-            }
-            if ($fp !== false) {
+            static $rdev = null;
+            /**
+             * This block should only be run once
+             */
+            if (empty($fp)) {
                 /**
+                 * We use stat() to get the 'rdev' to get the device type, if it
+                 * is available. If rdev === 0 it's a flat file, not a device
+                 * provided by the kernel. We don't want to read from a file, we
+                 * want to read from the operating system's CSPRNG device.
+                 * 
+                 * On some OS's 'rdev' might be -1. In these cases, we want to
+                 * verify that the filetype() of arandom/urandom is 'char'
+                 */
+                if (is_readable('/dev/arandom') && !is_link('/dev/arandom')) {
+                    /**
+                     * Okay, we can read data from /dev/arandom; is it a real device?
+                     */
+                    $stat = stat('/dev/arandom');
+                    $rdev = $stat['rdev'];
+                    if ($rdev !== 0 && filetype('/dev/arandom') === 'char') {
+                        $fp = fopen('/dev/arandom', 'rb');
+                    }
+                }
+                /**
+                 * If /dev/arandom doesn't exist (and/or is not a char device)
+                 * we use /dev/urandom. We never fall back to /dev/random.
+                 */
+                if ($fp === null && is_readable('/dev/urandom')) {
+                    /**
+                     * Okay, we can read data from /dev/urandom; is it a real device?
+                     */
+                    $stat = stat('/dev/urandom');
+                    $rdev = $stat['rdev'];
+                    if ($rdev !== 0 && filetype('/dev/urandom') === 'char') {
+                        $fp = fopen('/dev/urandom', 'rb');
+                    }
+                }
+                /**
+                 * stream_set_read_buffer() does not exist in HHVM
+                 * 
                  * If we don't set the stream's read buffer to 0, PHP will
                  * internally buffer 8192 bytes, which can waste entropy
                  * 
                  * stream_set_read_buffer returns 0 on success
                  */
-                $streamset = stream_set_read_buffer($fp, 0);
-                if ($streamset === 0) {
-                    $remaining = $bytes;
-                    $buf = '';
-                    /**
-                     * We use fread() in a loop to protect against partial reads
-                     */
-                    do {
-                        $read = fread($fp, $remaining); 
-                        if ($read === false) {
-                            /**
-                             * We cannot safely read from the file. Exit the
-                             * do-while loop and trigger the exception condition
-                             */
-                            $buf = false;
-                            break;
-                        }
+                if (!empty($fp) && function_exists('stream_set_read_buffer')) {
+                    stream_set_read_buffer($fp, 0);
+                }
+            }
+            /**
+             * This if() block only runs if we managed to open a file handle
+             */
+            if (!empty($fp)) {
+                /**
+                 * Detect TOCTOU race conditions and abort if one is detected
+                 */
+                $stat = fstat($fp);
+                if ($stat['rdev'] !== $rdev) {
+                    throw new Exception('TOCTOU race condition occurred');
+                }
+                $remaining = $bytes;
+                $buf = '';
+                /**
+                 * We use fread() in a loop to protect against partial reads
+                 */
+                do {
+                    $read = fread($fp, $remaining); 
+                    if ($read === false) {
                         /**
-                         * Decrease the number of bytes returned from remaining
+                         * We cannot safely read from the file. Exit the
+                         * do-while loop and trigger the exception condition
                          */
-                        $remaining -= RandomCompat_strlen($read);
-                        $buf .= $read;
-                    } while ($remaining > 0);
-                    
+                        $buf = false;
+                        break;
+                    }
                     /**
-                     * Is our result valid?
+                     * Decrease the number of bytes returned from remaining
                      */
-                    if ($buf !== false) {
-                        if (RandomCompat_strlen($buf) === $bytes) {
-                            /**
-                             * Return our random entropy buffer here:
-                             */
-                            return $buf;
-                        }
+                    $remaining -= RandomCompat_strlen($read);
+                    $buf .= $read;
+                } while ($remaining > 0);
+                
+                /**
+                 * Is our result valid?
+                 */
+                if ($buf !== false) {
+                    if (RandomCompat_strlen($buf) === $bytes) {
+                        /**
+                         * Return our random entropy buffer here:
+                         */
+                        return $buf;
                     }
                 }
             }
