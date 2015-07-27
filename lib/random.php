@@ -41,20 +41,29 @@ if (!function_exists('random_bytes')) {
                  * provided by the kernel. We don't want to read from a file, we
                  * want to read from the operating system's CSPRNG device.
                  * 
-                 * On some OS's 'rdev' might be -1, but there's nothing we can
-                 * really to detect the legitimacy of the arandom or urandom
-                 * device do if it is.
+                 * On some OS's 'rdev' might be -1. In these cases, we want to
+                 * verify that the filetype() of 
                  */
                 if (is_readable('/dev/arandom') && !is_link('/dev/arandom')) {
                     $stat = stat('/dev/arandom');
-                    if ($stat['rdev'] !== 0) {
+                    if ($stat['rdev'] !== 0 && filetype('/dev/arandom') === 'char') {
                         $fp = fopen('/dev/arandom', 'rb');
                     }
                 }
                 if ($fp === null && is_readable('/dev/urandom')) {
                     $stat = stat('/dev/urandom');
-                    if ($stat['rdev'] !== 0) {
+                    if ($stat['rdev'] !== 0 && filetype('/dev/urandom') === 'char') {
                         $fp = fopen('/dev/urandom', 'rb');
+                    }
+                }
+                /**
+                 * Detect TOCTOU race conditions and raise an exception if one
+                 * has occurred.
+                 */
+                if ($fp !== null) {
+                    $pstat = fstat($fp);
+                    if ($pstat['rdev'] !== $stat['rdev']) {
+                        throw new Exception('TOCTOU race condition occurred');
                     }
                 }
             }
