@@ -26,6 +26,10 @@
  * SOFTWARE.
  */
 
+if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
+    define('RANDOM_COMPAT_READ_BUFFER', 0);
+}
+
 if (!function_exists('random_bytes')) {
     /**
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
@@ -114,7 +118,7 @@ if (!function_exists('random_bytes')) {
                  * stream_set_read_buffer returns 0 on success
                  */
                 if (!empty($fp) && function_exists('stream_set_read_buffer')) {
-                    stream_set_read_buffer($fp, 0);
+                    stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
                 }
             }
             /**
