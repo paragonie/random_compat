@@ -1,4 +1,30 @@
 <?php
+/**
+ * Random_* Compatibility Library 
+ * for using the new PHP 7 random_* API in PHP 5 projects
+ * 
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2015 Paragon Initiative Enterprises
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 if (!function_exists('random_bytes')) {
     /**
@@ -26,12 +52,16 @@ if (!function_exists('random_bytes')) {
          * Unless open_basedir is enabled, use /dev/arandom or /dev/urandom for
          * random numbers in accordance with best practices
          * 
+         * Why we use /dev/urandom and not /dev/random
          * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
          * 
          * /dev/arandom is not a typo 
          * @ref http://nixdoc.net/man-pages/openbsd/man4/arandom.4.html
          * 
          * @param int $bytes
+         * 
+         * @throws Exception
+         * 
          * @return string
          */
         function random_bytes($bytes)
@@ -89,6 +119,10 @@ if (!function_exists('random_bytes')) {
             }
             /**
              * This if() block only runs if we managed to open a file handle
+             * 
+             * It does not belong in an else {} block, because the above 
+             * if (empty($fp)) line is logic that should only be run once per
+             * page load.
              */
             if (!empty($fp)) {
                 /**
@@ -147,6 +181,9 @@ if (!function_exists('random_bytes')) {
          * @ref https://github.com/php/php-src/blob/c568ffe5171d942161fc8dda066bce844bdef676/ext/mcrypt/mcrypt.c#L1321-L1386
          * 
          * @param int $bytes
+         * 
+         * @throws Exception
+         * 
          * @return string
          */
         function random_bytes($bytes)
@@ -185,6 +222,9 @@ if (!function_exists('random_bytes')) {
          * CAPICOM to work around this deficiency.
          * 
          * @param int $bytes
+         * 
+         * @throws Exception
+         * 
          * @return string
          */
         function random_bytes($bytes)
@@ -222,6 +262,9 @@ if (!function_exists('random_bytes')) {
          * @ref https://www.openssl.org/docs/crypto/RAND_bytes.html
          * 
          * @param int $bytes
+         * 
+         * @throws Exception
+         * 
          * @return string
          */
         function random_bytes($bytes)
@@ -264,6 +307,8 @@ if (!function_exists('random_int')) {
      * 
      * @param int $min
      * @param int $max
+     * 
+     * @throws Exception
      * 
      * @return int
      */
@@ -409,6 +454,8 @@ if (!function_exists('RandomCompat_strlen')) {
          * 
          * @param string $binary_string
          * 
+         * @throws InvalidArgumentException
+         * 
          * @return int
          */
         function RandomCompat_strlen($binary_string)
@@ -427,6 +474,8 @@ if (!function_exists('RandomCompat_strlen')) {
          * This version just used the default strlen()
          * 
          * @param string $binary_string
+         * 
+         * @throws InvalidArgumentException
          * 
          * @return int
          */
@@ -453,6 +502,8 @@ if (!function_exists('RandomCompat_substr')) {
          * @param string $binary_string
          * @param int $start
          * @param int $length (optional)
+         * 
+         * @throws InvalidArgumentException
          * 
          * @return string
          */
@@ -490,6 +541,8 @@ if (!function_exists('RandomCompat_substr')) {
          * @param string $binary_string
          * @param int $start
          * @param int $length (optional)
+         * 
+         * @throws InvalidArgumentException
          * 
          * @return string
          */
