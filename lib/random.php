@@ -38,29 +38,20 @@ if (!function_exists('random_bytes')) {
      * to the operating environment. It's a micro-optimization.
      * 
      * In order of preference:
-     *   1. fread() /dev/arandom if available
-     *   2. fread() /dev/urandom if available
-     *   3. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
-     *   4. COM('CAPICOM.Utilities.1')->GetRandom()
-     *   5. openssl_random_pseudo_bytes()
+     *   1. fread() /dev/urandom if available
+     *   2. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
+     *   3. COM('CAPICOM.Utilities.1')->GetRandom()
+     *   4. openssl_random_pseudo_bytes()
      * 
      * See ERRATA.md for our reasoning behind this particular order
      */
-     if (
-        !ini_get('open_basedir') && 
-        (
-            is_readable('/dev/arandom') || is_readable('/dev/urandom')
-        )
-    ) {
+     if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
         /**
-         * Unless open_basedir is enabled, use /dev/arandom or /dev/urandom for
+         * Unless open_basedir is enabled, use /dev/urandom for
          * random numbers in accordance with best practices
          * 
          * Why we use /dev/urandom and not /dev/random
          * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
-         * 
-         * /dev/arandom is not a typo 
-         * @ref http://nixdoc.net/man-pages/openbsd/man4/arandom.4.html
          * 
          * @param int $bytes
          * 
@@ -83,21 +74,9 @@ if (!function_exists('random_bytes')) {
                  * want to read from the operating system's CSPRNG device.
                  * 
                  * On some OS's 'rdev' might be -1. In these cases, we want to
-                 * verify that the filetype() of arandom/urandom is 'char'
-                 */
-                if (is_readable('/dev/arandom') && !is_link('/dev/arandom')) {
-                    /**
-                     * Okay, we can read data from /dev/arandom; is it a real device?
-                     */
-                    $stat = stat('/dev/arandom');
-                    $rdev = $stat['rdev'];
-                    if ($rdev !== 0 && filetype('/dev/arandom') === 'char') {
-                        $fp = fopen('/dev/arandom', 'rb');
-                    }
-                }
-                /**
-                 * If /dev/arandom doesn't exist (and/or is not a char device)
-                 * we use /dev/urandom. We never fall back to /dev/random.
+                 * verify that the filetype() of urandom is 'char'
+                 *
+                 * We use /dev/urandom. We never fall back to /dev/random.
                  */
                 if ($fp === null && is_readable('/dev/urandom')) {
                     /**
