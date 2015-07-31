@@ -62,31 +62,15 @@ if (!function_exists('random_bytes')) {
         function random_bytes($bytes)
         {
             static $fp = null;
-            static $rdev = null;
             /**
              * This block should only be run once
              */
             if (empty($fp)) {
                 /**
-                 * We use stat() to get the 'rdev' to get the device type, if it
-                 * is available. If rdev === 0 it's a flat file, not a device
-                 * provided by the kernel. We don't want to read from a file, we
-                 * want to read from the operating system's CSPRNG device.
-                 * 
-                 * On some OS's 'rdev' might be -1. In these cases, we want to
-                 * verify that the filetype() of urandom is 'char'
-                 *
                  * We use /dev/urandom. We never fall back to /dev/random.
                  */
-                if ($fp === null && is_readable('/dev/urandom')) {
-                    /**
-                     * Okay, we can read data from /dev/urandom; is it a real device?
-                     */
-                    $stat = stat('/dev/urandom');
-                    $rdev = $stat['rdev'];
-                    if ($rdev !== 0 && filetype('/dev/urandom') === 'char') {
-                        $fp = fopen('/dev/urandom', 'rb');
-                    }
+                if (filetype('/dev/urandom') === 'char') {
+                    $fp = fopen('/dev/urandom', 'rb');
                 }
                 /**
                  * stream_set_read_buffer() does not exist in HHVM
@@ -108,13 +92,6 @@ if (!function_exists('random_bytes')) {
              * page load.
              */
             if (!empty($fp)) {
-                /**
-                 * Detect TOCTOU race conditions and abort if one is detected
-                 */
-                $stat = fstat($fp);
-                if ($stat['rdev'] !== $rdev) {
-                    throw new Exception('TOCTOU race condition occurred');
-                }
                 $remaining = $bytes;
                 $buf = '';
                 /**
