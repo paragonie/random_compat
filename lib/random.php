@@ -67,10 +67,16 @@ if (!function_exists('random_bytes')) {
              */
             if (empty($fp)) {
                 /**
-                 * We use /dev/urandom. We never fall back to /dev/random.
+                 * We use /dev/urandom if it is a char device.
+                 * We never fall back to /dev/random
                  */
-                if (filetype('/dev/urandom') === 'char') {
-                    $fp = fopen('/dev/urandom', 'rb');
+                $fp = fopen('/dev/urandom', 'rb');
+                if (!empty($fp)) {
+                    $st = fstat($fp);
+                    if (($st['mode'] & 020000) === 0) {
+                        fclose($fp);
+                        $fp = false;
+                    }
                 }
                 /**
                  * stream_set_read_buffer() does not exist in HHVM
