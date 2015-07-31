@@ -48,12 +48,14 @@ var_dump($int);
 
 ## Contributors
 
-This project would not be anywhere near as excellent as it is today if it weren't for the contributions of the following individuals:
+This project would not be anywhere near as excellent as it is today if it 
+weren't for the contributions of the following individuals:
 
 * [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
 * [@kelunik (Niklas Keller)](https://github.com/kelunik)
 * [@lt (Leigh)](https://github.com/lt)
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
+* [@jedisct1 (Frank Denis)](https://github.com/jedisct1)
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
 * [@redragonx (Stephen Chavez)](https://github.com/redragonx)
