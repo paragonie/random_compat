@@ -27,7 +27,7 @@
  */
 
 if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
-    define('RANDOM_COMPAT_READ_BUFFER', 0);
+    define('RANDOM_COMPAT_READ_BUFFER', 8);
 }
 
 if (!function_exists('random_bytes')) {
