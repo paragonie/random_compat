@@ -1,7 +1,7 @@
 {
     "name":         "paragonie/random_compat",
-    "description":  "",
-    "version":      "0.9.1",
+    "description":  "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+    "version":      "0.9.5",
     "keywords": [
             "csprng",
             "random",

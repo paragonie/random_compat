@@ -4,16 +4,19 @@
 
 The order is:
 
- 1. `mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)`
- 2. `fread() /dev/arandom if available`
- 3. `fread() /dev/urandom if available`
- 4. `COM('CAPICOM.Utilities.1')->GetRandom()`
- 5. `openssl_random_pseudo_bytes()`
+ 1. `fread() /dev/urandom if available`
+ 2. `mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)`
+ 3. `COM('CAPICOM.Utilities.1')->GetRandom()`
+ 4. `openssl_random_pseudo_bytes()`
+
+We read `/dev/urandom` first (if it exists).
+This is the preferred file to read for random data for cryptographic
+purposes for BSD and Linux.
 
 Despite [strongly urging people not to use mcrypt in their projects](https://paragonie.com/blog/2015/05/if-you-re-typing-word-mcrypt-into-your-code-you-re-doing-it-wrong),
 because libmcrypt is abandonware and the API puts too much responsibility on the
 implementor, we prioritize `mcrypt_create_iv()` with `MCRYPT_DEV_URANDOM` above
-all other implementations.
+the remaining implementations.
 
 The reason is simple: `mcrypt_create_iv()` is part of PHP's `ext/mcrypt` code,
 and is not part `libmcrypt`. It actually does the right thing:
@@ -22,10 +25,6 @@ and is not part `libmcrypt`. It actually does the right thing:
    sane and correct thing to do.
  * On Windows, it reads from `CryptGenRandom`, which is an exclusively Windows
    way to get random bytes.
-
-If `mcrypt_create_iv()` is not found, we read `/dev/arandom` first (if it exists)
-and `/dev/urandom` second. These are the preferred files to read for random
-data for cryptographic purposes for BSD and Linux (respectively).
 
 If we're on Windows and don't have access to `mcrypt`, we use `CAPICOM.Utilities.1`.
 
