@@ -7,7 +7,7 @@ by [Paragon Initiative Enterprises](https://paragonie.com).
 
 Although this library *should* function in earlier versions of PHP, we will only
 consider issues relevant to [supported PHP versions](https://secure.php.net/supported-versions.php).
-**Please upgrade as soon as possible.**
+**If you are using an unsupported version of PHP, please upgrade as soon as possible.**
 
 ## Important
 
