@@ -58,7 +58,7 @@ if (!function_exists('random_bytes') && !ini_get('open_basedir') && is_readable(
             $fp = fopen('/dev/urandom', 'rb');
             if (!empty($fp)) {
                 $st = fstat($fp);
-                if (($st['mode'] & 020000) === 0) {
+                if (($st['mode'] & 0170000) !== 020000) {
                     fclose($fp);
                     $fp = false;
                 }
