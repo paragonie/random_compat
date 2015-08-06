@@ -30,7 +30,7 @@ if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
     define('RANDOM_COMPAT_READ_BUFFER', 8);
 }
 
-require_once dirname(__DIR__)."/byte_safe_strings.php";
+require_once "byte_safe_strings.php";
 
 if (!function_exists('random_bytes')) {
     /**
@@ -49,16 +49,16 @@ if (!function_exists('random_bytes')) {
      */
      if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
         // See random_bytes_dev_urandom.php
-        require_once dirname(__FILE__)."/random_bytes_dev_urandom.php";
+        require_once "random_bytes_dev_urandom.php";
     } elseif (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
         // See random_bytes_mcrypt.php
-        require_once dirname(__FILE__)."/random_bytes_mcrypt.php";
+        require_once "random_bytes_mcrypt.php";
     } elseif (extension_loaded('com_dotnet')) {
         // See random_bytes_com_dotnet.php
-        require_once dirname(__FILE__)."/random_bytes_com_dotnet.php";
+        require_once "random_bytes_com_dotnet.php";
     } elseif (function_exists('openssl_random_pseudo_bytes')) {
         // See random_bytes_openssl.php
-        require_once dirname(__FILE__)."/random_bytes_openssl.php";
+        require_once "random_bytes_openssl.php";
     } else {
         /**
          * We don't have any more options, so let's throw an exception right now
@@ -70,6 +70,6 @@ if (!function_exists('random_bytes')) {
     }
 }
 if (!function_exists('random_int')) {
-    require_once dirname(__FILE__)."/random_int.php";
+    require_once "random_int.php";
 }
 
