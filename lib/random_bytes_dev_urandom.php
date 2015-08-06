@@ -27,6 +27,10 @@
  */
 
 if (!function_exists('random_bytes') && !ini_get('open_basedir') && is_readable('/dev/urandom')) {
+    if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
+        define('RANDOM_COMPAT_READ_BUFFER', 8);
+    }
+    
     /**
      * Unless open_basedir is enabled, use /dev/urandom for
      * random numbers in accordance with best practices
