@@ -30,6 +30,8 @@ if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
     define('RANDOM_COMPAT_READ_BUFFER', 8);
 }
 
+require_once dirname(__DIR__)."/byte_safe_strings.php";
+
 if (!function_exists('random_bytes')) {
     /**
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
