@@ -53,7 +53,7 @@ if (!function_exists('random_bytes')) {
         require_once dirname(__FILE__)."/random_bytes_mcrypt.php";
     } elseif (extension_loaded('com_dotnet')) {
         // See random_bytes_com_dotnet.php
-        require_once dirname(__FILE__)."/random_bytes_com_dotnet.php"
+        require_once dirname(__FILE__)."/random_bytes_com_dotnet.php";
     } elseif (function_exists('openssl_random_pseudo_bytes')) {
         // See random_bytes_openssl.php
         require_once dirname(__FILE__)."/random_bytes_openssl.php";
