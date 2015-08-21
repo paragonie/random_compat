@@ -50,7 +50,7 @@ if (!function_exists('random_bytes')) {
      if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
         // See random_bytes_dev_urandom.php
         require_once "random_bytes_dev_urandom.php";
-    } elseif (function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.7') >= 0) {
+    } elseif (PHP_VERSION_ID >= 50307 && function_exists('mcrypt_create_iv')) {
         // See random_bytes_mcrypt.php
         require_once "random_bytes_mcrypt.php";
     } elseif (extension_loaded('com_dotnet')) {
