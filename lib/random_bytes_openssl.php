@@ -42,6 +42,16 @@ if (!function_exists('random_bytes') && function_exists('openssl_random_pseudo_b
      */
     function random_bytes($bytes)
     {
+        if (!is_int($bytes)) {
+            throw new TypeError(
+                'Length must be an integer'
+            );
+        }
+        if ($bytes < 1) {
+            throw new Error(
+                'Length must be greater than 0'
+            );
+        }
         $secure = true;
         /**
          * $secure is passed by reference. If it's set to false, fail. Note

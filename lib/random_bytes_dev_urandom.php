@@ -75,6 +75,16 @@ if (!function_exists('random_bytes') && !ini_get('open_basedir') && is_readable(
                 stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
             }
         }
+        if (!is_int($bytes)) {
+            throw new TypeError(
+                'Length must be an integer'
+            );
+        }
+        if ($bytes < 1) {
+            throw new Error(
+                'Length must be greater than 0'
+            );
+        }
         /**
          * This if() block only runs if we managed to open a file handle
          * 

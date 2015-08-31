@@ -30,6 +30,7 @@ if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
     define('RANDOM_COMPAT_READ_BUFFER', 8);
 }
 
+require_once "error_polyfill.php";
 require_once "byte_safe_strings.php";
 
 if (!function_exists('random_bytes')) {
