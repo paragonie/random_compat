@@ -20,6 +20,9 @@
         "email":    "info@paragonie.com",
         "source":   "https://github.com/paragonie/random_compat"
     },
+    "require": {
+        "php": ">=5.2.7"
+    },
     "autoload": {
         "files": ["lib/random.php"]
     }
