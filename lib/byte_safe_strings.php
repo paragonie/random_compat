@@ -27,7 +27,7 @@
  */
 
 if (!function_exists('RandomCompat_strlen')) {
-    if (ini_get('mbstring.func_overload') & 2) {
+    if (ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING) {
         /**
          * strlen() implementation that isn't brittle to mbstring.func_overload
          *
@@ -74,7 +74,7 @@ if (!function_exists('RandomCompat_strlen')) {
 }
 
 if (!function_exists('RandomCompat_substr')) {
-    if (ini_get('mbstring.func_overload') & 2) {
+    if (ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING) {
         /**
          * substr() implementation that isn't brittle to mbstring.func_overload
          *
