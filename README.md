@@ -11,9 +11,10 @@ consider issues relevant to [supported PHP versions](https://secure.php.net/supp
 
 ## Important
 
-**This library should be considered `EXPERIMENTAL`** until it has received sufficient
-review from independent third party security experts. Please ask your favorite
-hackers to hammer it for implementation errors and bugs.
+Although this library has been examined by some security experts in the PHP 
+community, there will always be a chance that we overlooked something. Please 
+ask your favorite trusted hackers to hammer it for implementation errors and
+bugs before even thinking about deploying it in production.
 
 For the background of this library, please refer to our blog post on 
 [Generating Random Integers and Strings in PHP](https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php).
@@ -21,7 +22,7 @@ For the background of this library, please refer to our blog post on
 ### Usability Notice
 
 If PHP cannot safely generate random data, this library will throw an `Exception`
-when you include it, even if it's unused. It will not fall back to insecure
+when you include it, even if it's never used. It will not fall back to insecure
 random data.
 
 ## Features
@@ -51,15 +52,23 @@ var_dump($int);
 This project would not be anywhere near as excellent as it is today if it 
 weren't for the contributions of the following individuals:
 
+* [@asgrim (James Titcumb)](https://github.com/asgrim)
 * [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
+* [@ircmaxell (Anthony Ferrara)](https://github.com/ircmaxell)
+* [@jedisct1 (Frank Denis)](https://github.com/jedisct1)
+* [@juliangut (Julián Gutiérrez)](https://github.com/juliangut)
 * [@kelunik (Niklas Keller)](https://github.com/kelunik)
 * [@lt (Leigh)](https://github.com/lt)
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
-* [@jedisct1 (Frank Denis)](https://github.com/jedisct1)
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
 * [@redragonx (Stephen Chavez)](https://github.com/redragonx)
 * [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)
 * [@scottchiefbaker (Scott Baker)](https://github.com/scottchiefbaker)
 * [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
+* [@stof (Christophe Coevoet)](https://github.com/stof)
+* [@teohhanhui (Teoh Han Hui)](https://github.com/teohhanhui)
 * [@tsyr2ko](https://github.com/tsyr2ko)
+* [@trowski (Aaron Piotrowski)](https://github.com/trowski)
+* [@twistor (Chris Lepannen)](https://github.com/twistor)
+* [@voku (Lars Moelleken)](https://github.com/voku)
