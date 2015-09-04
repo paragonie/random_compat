@@ -21,7 +21,7 @@
         "source":   "https://github.com/paragonie/random_compat"
     },
     "require": {
-        "php": ">=5.2.7"
+        "php": ">=5.2.0"
     },
     "autoload": {
         "files": ["lib/random.php"]
