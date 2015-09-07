@@ -55,6 +55,7 @@ weren't for the contributions of the following individuals:
 
 * [@asgrim (James Titcumb)](https://github.com/asgrim)
 * [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
+* [@chriscct7 (Chris Christoff)](https://github.com/chriscct7)
 * [@ircmaxell (Anthony Ferrara)](https://github.com/ircmaxell)
 * [@jedisct1 (Frank Denis)](https://github.com/jedisct1)
 * [@juliangut (Julián Gutiérrez)](https://github.com/juliangut)
