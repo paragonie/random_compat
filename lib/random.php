@@ -26,55 +26,55 @@
  * SOFTWARE.
  */
 
-if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
-    define('RANDOM_COMPAT_READ_BUFFER', 8);
-}
 if (!defined('PHP_VERSION_ID')) {
+    // This constant was introduced in PHP 5.2.7
     $version = explode('.', PHP_VERSION);
     define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
-
-require_once "error_polyfill.php";
-require_once "byte_safe_strings.php";
-
-if (!function_exists('random_bytes')) {
-    /**
-     * PHP 5.2.0 - 5.6.x way to implement random_bytes()
-     * 
-     * We use conditional statements here to define the function in accordance
-     * to the operating environment. It's a micro-optimization.
-     * 
-     * In order of preference:
-     *   1. fread() /dev/urandom if available
-     *   2. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
-     *   3. COM('CAPICOM.Utilities.1')->GetRandom()
-     *   4. openssl_random_pseudo_bytes()
-     * 
-     * See ERRATA.md for our reasoning behind this particular order
-     */
-     if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
-        // See random_bytes_dev_urandom.php
-        require_once "random_bytes_dev_urandom.php";
-    } elseif (PHP_VERSION_ID >= 50307 && function_exists('mcrypt_create_iv')) {
-        // See random_bytes_mcrypt.php
-        require_once "random_bytes_mcrypt.php";
-    } elseif (extension_loaded('com_dotnet')) {
-        // See random_bytes_com_dotnet.php
-        require_once "random_bytes_com_dotnet.php";
-    } elseif (function_exists('openssl_random_pseudo_bytes')) {
-        // See random_bytes_openssl.php
-        require_once "random_bytes_openssl.php";
-    } else {
+if (PHP_VERSION_ID < 70000) {
+    if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
+        define('RANDOM_COMPAT_READ_BUFFER', 8);
+    }
+    require_once "byte_safe_strings.php";
+    require_once "error_polyfill.php";
+    if (!function_exists('random_bytes')) {
         /**
-         * We don't have any more options, so let's throw an exception right now
-         * and hope the developer won't let it fail silently.
+         * PHP 5.2.0 - 5.6.x way to implement random_bytes()
+         * 
+         * We use conditional statements here to define the function in accordance
+         * to the operating environment. It's a micro-optimization.
+         * 
+         * In order of preference:
+         *   1. fread() /dev/urandom if available
+         *   2. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
+         *   3. COM('CAPICOM.Utilities.1')->GetRandom()
+         *   4. openssl_random_pseudo_bytes()
+         * 
+         * See ERRATA.md for our reasoning behind this particular order
          */
-        throw new Exception(
-            'There is no suitable CSPRNG installed on your system'
-        );
+         if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
+            // See random_bytes_dev_urandom.php
+            require_once "random_bytes_dev_urandom.php";
+        } elseif (PHP_VERSION_ID >= 50307 && function_exists('mcrypt_create_iv')) {
+            // See random_bytes_mcrypt.php
+            require_once "random_bytes_mcrypt.php";
+        } elseif (extension_loaded('com_dotnet')) {
+            // See random_bytes_com_dotnet.php
+            require_once "random_bytes_com_dotnet.php";
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
+            // See random_bytes_openssl.php
+            require_once "random_bytes_openssl.php";
+        } else {
+            /**
+             * We don't have any more options, so let's throw an exception right now
+             * and hope the developer won't let it fail silently.
+             */
+            throw new Exception(
+                'There is no suitable CSPRNG installed on your system'
+            );
+        }
+    }
+    if (!function_exists('random_int')) {
+        require_once "random_int.php";
     }
 }
-if (!function_exists('random_int')) {
-    require_once "random_int.php";
-}
-

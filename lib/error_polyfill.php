@@ -30,10 +30,18 @@ if (!interface_exists('Throwable', false)) {
     interface Throwable
     {
         public function getMessage();
+        public function getCode();
+        public function getFile();
+        public function getLine();
+        public function getTrace();
+        public function getTraceAsString();
+        public function getPrevious();
+        public function __toString();
     }
 }
 
 if (!class_exists('Error', false)) {
+    // We can't really avoid making this extend Exception in PHP 5.
     class Error extends Exception implements Throwable
     {
         
