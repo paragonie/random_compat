@@ -36,7 +36,6 @@ if (PHP_VERSION_ID < 70000) {
         define('RANDOM_COMPAT_READ_BUFFER', 8);
     }
     require_once "byte_safe_strings.php";
-    require_once "error_polyfill.php";
     if (!function_exists('random_bytes')) {
         /**
          * PHP 5.2.0 - 5.6.x way to implement random_bytes()

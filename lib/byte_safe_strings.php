@@ -43,7 +43,7 @@ if (!function_exists('RandomCompat_strlen')) {
         function RandomCompat_strlen($binary_string)
         {
             if (!is_string($binary_string)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_strlen() expects a string'
                 );
             }
@@ -64,7 +64,7 @@ if (!function_exists('RandomCompat_strlen')) {
         function RandomCompat_strlen($binary_string)
         {
             if (!is_string($binary_string)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_strlen() expects a string'
                 );
             }
@@ -92,12 +92,12 @@ if (!function_exists('RandomCompat_substr')) {
         function RandomCompat_substr($binary_string, $start, $length = null)
         {
             if (!is_string($binary_string)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_substr(): First argument should be a string'
                 );
             }
             if (!is_int($start)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_substr(): Second argument should be an integer'
                 );
             }
@@ -108,7 +108,7 @@ if (!function_exists('RandomCompat_substr')) {
                  */
                 $length = RandomCompat_strlen($length) - $start;
             } elseif (!is_int($length)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_substr(): Third argument should be an integer, or omitted'
                 );
             }
@@ -131,18 +131,18 @@ if (!function_exists('RandomCompat_substr')) {
         function RandomCompat_substr($binary_string, $start, $length = null)
         {
             if (!is_string($binary_string)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_substr(): First argument should be a string'
                 );
             }
             if (!is_int($start)) {
-                throw new TypeError(
+                throw new Exception(
                     'RandomCompat_substr(): Second argument should be an integer'
                 );
             }
             if ($length !== null) {
                 if (!is_int($length)) {
-                    throw new TypeError(
+                    throw new Exception(
                         'RandomCompat_substr(): Third argument should be an integer, or omitted'
                     );
                 }

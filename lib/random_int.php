@@ -43,17 +43,17 @@ if (!function_exists('random_int')) {
          * Type and input logic checks
          */
         if (!is_int($min)) {
-            throw new TypeError(
+            throw new Exception(
                 'random_int(): $min must be an integer'
             );
         }
         if (!is_int($max)) {
-            throw new TypeError(
+            throw new Exception(
                 'random_int(): $max must be an integer'
             );
         }
         if ($min > $max) {
-            throw new Error(
+            throw new Exception(
                 'Minimum value must be less than or equal to the maximum value'
             );
         }

@@ -76,12 +76,12 @@ if (!function_exists('random_bytes') && !ini_get('open_basedir') && is_readable(
             }
         }
         if (!is_int($bytes)) {
-            throw new TypeError(
+            throw new Exception(
                 'Length must be an integer'
             );
         }
         if ($bytes < 1) {
-            throw new Error(
+            throw new Exception(
                 'Length must be greater than 0'
             );
         }
