@@ -69,9 +69,12 @@ if (PHP_VERSION_ID < 70000) {
              * We don't have any more options, so let's throw an exception right now
              * and hope the developer won't let it fail silently.
              */
-            throw new Exception(
-                'There is no suitable CSPRNG installed on your system'
-            );
+            function random_bytes()
+            {
+                throw new Exception(
+                    'There is no suitable CSPRNG installed on your system'
+                );
+            }
         }
     }
     if (!function_exists('random_int')) {
