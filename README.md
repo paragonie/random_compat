@@ -22,9 +22,9 @@ For the background of this library, please refer to our blog post on
 
 ### Usability Notice
 
-If PHP cannot safely generate random data, this library will throw an `Exception`
-when you include it, even if it's never used. It will not fall back to insecure
-random data.
+If PHP cannot safely generate random data, this library will throw an `Exception`.
+It will never fall back to insecure random data. If this keeps happening, upgrade
+to a newer version of PHP immediately.
 
 ## Features
 
