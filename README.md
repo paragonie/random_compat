@@ -65,6 +65,7 @@ weren't for the contributions of the following individuals:
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
 * [@redragonx (Stephen Chavez)](https://github.com/redragonx)
+* [@rchouinard (Ryan Chouinard)](https://github.com/rchouinard)
 * [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)
 * [@scottchiefbaker (Scott Baker)](https://github.com/scottchiefbaker)
 * [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
