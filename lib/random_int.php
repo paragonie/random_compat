@@ -53,8 +53,8 @@ if (!function_exists('random_int')) {
             );
         }
 
-		$min = (int)$min;
-		$max = (int)$max;
+        $min = (int)$min;
+        $max = (int)$max;
 
         if ($min > $max) {
             throw new Error(
