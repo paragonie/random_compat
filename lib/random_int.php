@@ -37,7 +37,8 @@ if (!function_exists('random_int')) {
      * 
      * @return int
      */
-    function random_int($min, $max) {
+    function random_int($min, $max)
+    {
         /**
          * Type and input logic checks
          */

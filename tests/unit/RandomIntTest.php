@@ -17,7 +17,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             random_int("0", "1"),
             random_int(0.11111, 0.99999),
         );
-
+        
         $this->assertFalse($integers[0] === $integers[1]);
         $this->assertTrue($integers[0] >= 0 && $integers[0] <= 1000);
         $this->assertTrue($integers[1] >= 1001 && $integers[1] <= 2000);
@@ -26,6 +26,5 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[4] >= ~PHP_INT_MAX && $integers[4] <= PHP_INT_MAX);
         $this->assertTrue($integers[5] >= 0 && $integers[5] <= 1);
         $this->assertTrue($integers[6] === 0);
-        
     }
 }
