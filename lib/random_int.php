@@ -42,16 +42,20 @@ if (!function_exists('random_int')) {
         /**
          * Type and input logic checks
          */
-        if (!is_int($min)) {
+        if (!is_numeric($min)) {
             throw new TypeError(
                 'random_int(): $min must be an integer'
             );
         }
-        if (!is_int($max)) {
+        if (!is_numeric($max)) {
             throw new TypeError(
                 'random_int(): $max must be an integer'
             );
         }
+
+        $min = (int)$min;
+        $max = (int)$max;
+
         if ($min > $max) {
             throw new Error(
                 'Minimum value must be less than or equal to the maximum value'
