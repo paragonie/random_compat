@@ -25,52 +25,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-if (!function_exists('random_bytes') && extension_loaded('com_dotnet')) {
-    /**
-     * Windows with PHP < 5.3.0 will not have the function
-     * openssl_random_pseudo_bytes() available, so let's use
-     * CAPICOM to work around this deficiency.
-     * 
-     * @param int $bytes
-     * 
-     * @throws Exception
-     * 
-     * @return string
-     */
-    function random_bytes($bytes)
-    {
-        if (!is_int($bytes)) {
-            throw new TypeError(
-                'Length must be an integer'
-            );
-        }
-        if ($bytes < 1) {
-            throw new Error(
-                'Length must be greater than 0'
-            );
-        }
-        $buf = '';
-        $util = new COM('CAPICOM.Utilities.1');
-        $execCount = 0;
-        /**
-         * Let's not let it loop forever. If we run N times and fail to
-         * get N bytes of random data, then CAPICOM has failed us.
-         */
-        do {
-            $buf .= base64_decode($util->GetRandom($bytes, 0));
-            if (RandomCompat_strlen($buf) >= $bytes) {
-                /**
-                 * Return our random entropy buffer here:
-                 */
-                return RandomCompat_substr($buf, 0, $bytes);
-            }
-            ++$execCount; 
-        } while ($execCount < $bytes);
-        /**
-         * If we reach here, PHP has failed us.
-         */
-        throw new Exception(
-            'PHP failed to generate random data.'
+
+/**
+ * Windows with PHP < 5.3.0 will not have the function
+ * openssl_random_pseudo_bytes() available, so let's use
+ * CAPICOM to work around this deficiency.
+ * 
+ * @param int $bytes
+ * 
+ * @throws Exception
+ * 
+ * @return string
+ */
+function random_bytes($bytes)
+{
+    if (!is_int($bytes)) {
+        throw new TypeError(
+            'Length must be an integer'
         );
     }
+    if ($bytes < 1) {
+        throw new Error(
+            'Length must be greater than 0'
+        );
+    }
+    $buf = '';
+    $util = new COM('CAPICOM.Utilities.1');
+    $execCount = 0;
+    /**
+     * Let's not let it loop forever. If we run N times and fail to
+     * get N bytes of random data, then CAPICOM has failed us.
+     */
+    do {
+        $buf .= base64_decode($util->GetRandom($bytes, 0));
+        if (RandomCompat_strlen($buf) >= $bytes) {
+            /**
+             * Return our random entropy buffer here:
+             */
+            return RandomCompat_substr($buf, 0, $bytes);
+        }
+        ++$execCount; 
+    } while ($execCount < $bytes);
+    /**
+     * If we reach here, PHP has failed us.
+     */
+    throw new Exception(
+        'PHP failed to generate random data.'
+    );
 }
