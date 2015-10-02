@@ -41,14 +41,14 @@ if [ ! -f phpunit.phar ]; then
     if [[ $PHP_VERSION -ge 50600 ]]; then
         wget https://phar.phpunit.de/phpunit.phar
     else
-        wget https://phar.phpunit.de/phpunit-old.phar
+        wget -O phpunit.phar https://phar.phpunit.de/phpunit-old.phar
     fi
 fi
 if [ ! -f phpunit.phar.asc ]; then
     if [[ $PHP_VERSION -ge 50600 ]]; then
         wget https://phar.phpunit.de/phpunit.phar.asc
     else
-        wget https://phar.phpunit.de/phpunit-old.phar.asc
+        wget -O phpunit.phar.asc https://phar.phpunit.de/phpunit-old.phar.asc
     fi
 fi
 
