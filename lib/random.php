@@ -52,7 +52,7 @@ if (PHP_VERSION_ID < 70000) {
          * 
          * See ERRATA.md for our reasoning behind this particular order
          */
-         if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
+        if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (PHP_VERSION_ID >= 50307 && function_exists('mcrypt_create_iv')) {
