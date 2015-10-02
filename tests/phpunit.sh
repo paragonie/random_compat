@@ -34,12 +34,22 @@ if [ "$clean" -eq 1 ]; then
     fi
 fi
 
+PHP_VERSION=$(php -r "echo PHP_VERSION_ID;")
+
 # Let's grab the latest release and its signature
 if [ ! -f phpunit.phar ]; then
-    wget https://phar.phpunit.de/phpunit.phar
+    if [[ $PHP_VERSION -ge 50600 ]]; then
+        wget https://phar.phpunit.de/phpunit.phar
+    else
+        wget -O phpunit.phar https://phar.phpunit.de/phpunit-old.phar
+    fi
 fi
 if [ ! -f phpunit.phar.asc ]; then
-    wget https://phar.phpunit.de/phpunit.phar.asc
+    if [[ $PHP_VERSION -ge 50600 ]]; then
+        wget https://phar.phpunit.de/phpunit.phar.asc
+    else
+        wget -O phpunit.phar.asc https://phar.phpunit.de/phpunit-old.phar.asc
+    fi
 fi
 
 # Verify before running
