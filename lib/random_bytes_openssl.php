@@ -26,51 +26,49 @@
  * SOFTWARE.
  */
 
-if (!function_exists('random_bytes') && function_exists('openssl_random_pseudo_bytes')) {
-    /**
-     * Since openssl_random_pseudo_bytes() uses openssl's 
-     * RAND_pseudo_bytes() API, which has been marked as deprecated by the
-     * OpenSSL team, this is our last resort before failure.
-     * 
-     * @ref https://www.openssl.org/docs/crypto/RAND_bytes.html
-     * 
-     * @param int $bytes
-     * 
-     * @throws Exception
-     * 
-     * @return string
-     */
-    function random_bytes($bytes)
-    {
-        if (!is_int($bytes)) {
-            throw new TypeError(
-                'Length must be an integer'
-            );
-        }
-        if ($bytes < 1) {
-            throw new Error(
-                'Length must be greater than 0'
-            );
-        }
-        $secure = true;
-        /**
-         * $secure is passed by reference. If it's set to false, fail. Note
-         * that this will only return false if this function fails to return
-         * any data.
-         * 
-         * @ref https://github.com/paragonie/random_compat/issues/6#issuecomment-119564973
-         */
-        $buf = openssl_random_pseudo_bytes($bytes, $secure);
-        if ($buf !== false && $secure) {
-            if (RandomCompat_strlen($buf) === $bytes) {
-                return $buf;
-            }
-        }
-        /**
-         * If we reach here, PHP has failed us.
-         */
-        throw new Exception(
-            'PHP failed to generate random data.'
+/**
+ * Since openssl_random_pseudo_bytes() uses openssl's 
+ * RAND_pseudo_bytes() API, which has been marked as deprecated by the
+ * OpenSSL team, this is our last resort before failure.
+ * 
+ * @ref https://www.openssl.org/docs/crypto/RAND_bytes.html
+ * 
+ * @param int $bytes
+ * 
+ * @throws Exception
+ * 
+ * @return string
+ */
+function random_bytes($bytes)
+{
+    if (!is_int($bytes)) {
+        throw new TypeError(
+            'Length must be an integer'
         );
     }
+    if ($bytes < 1) {
+        throw new Error(
+            'Length must be greater than 0'
+        );
+    }
+    $secure = true;
+    /**
+     * $secure is passed by reference. If it's set to false, fail. Note
+     * that this will only return false if this function fails to return
+     * any data.
+     * 
+     * @ref https://github.com/paragonie/random_compat/issues/6#issuecomment-119564973
+     */
+    $buf = openssl_random_pseudo_bytes($bytes, $secure);
+    if ($buf !== false && $secure) {
+        if (RandomCompat_strlen($buf) === $bytes) {
+            return $buf;
+        }
+    }
+    /**
+     * If we reach here, PHP has failed us.
+     */
+    throw new Exception(
+        'PHP failed to generate random data.'
+    );
 }
