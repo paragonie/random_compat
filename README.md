@@ -53,6 +53,7 @@ var_dump($int);
 This project would not be anywhere near as excellent as it is today if it 
 weren't for the contributions of the following individuals:
 
+* [@AndrewCarterUK (Andrew Carter)](https://github.com/AndrewCarterUK)
 * [@asgrim (James Titcumb)](https://github.com/asgrim)
 * [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
 * [@chriscct7 (Chris Christoff)](https://github.com/chriscct7)
@@ -76,3 +77,4 @@ weren't for the contributions of the following individuals:
 * [@trowski (Aaron Piotrowski)](https://github.com/trowski)
 * [@twistor (Chris Lepannen)](https://github.com/twistor)
 * [@voku (Lars Moelleken)](https://github.com/voku)
+* [@xabbuh (Christian Flothmann)](https://github.com/xabbuh)
