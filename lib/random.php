@@ -55,13 +55,13 @@ if (PHP_VERSION_ID < 70000) {
         if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
-        } elseif (PHP_VERSION_ID >= 50307 && function_exists('mcrypt_create_iv')) {
+        } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
             // See random_bytes_mcrypt.php
             require_once "random_bytes_mcrypt.php";
         } elseif (extension_loaded('com_dotnet')) {
             // See random_bytes_com_dotnet.php
             require_once "random_bytes_com_dotnet.php";
-        } elseif (function_exists('openssl_random_pseudo_bytes')) {
+        } elseif (extension_loaded('openssl')) {
             // See random_bytes_openssl.php
             require_once "random_bytes_openssl.php";
         } else {
