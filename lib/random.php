@@ -38,41 +38,53 @@ if (PHP_VERSION_ID < 70000) {
     require_once "byte_safe_strings.php";
     require_once "error_polyfill.php";
     if (!function_exists('random_bytes')) {
-        // The method we use depends on whether or not we're on a Windows server, so get this value early.
+        // The method we use depends on whether or not we're on a Windows server,
+        // so get this value early.
         $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
         // Method 1:
-        // openssl_random_psudo_bytes() exists in PHP 5.3.0, but before 5.3.4, there is possible blocking behavior on Windows. As of PHP 5.3.4, openssl_random_pseudo_bytes() and mycrypt_create_iv() do the exact same thing on Windows.
-        if ($is_windows && extension_loaded('openssl') && PHP_VERSION_ID >= 50304) {
-            require_once "random_bytes_openssl.php";
-        }
-        // Method 2:
         // On Windows PHP < 5.3.0, mcrypt_create_iv() calls rand().
-        elseif ($is_windows && PHP_VERSION_ID > 50300 && extension_loaded('mcrypt')) {
+        if ($is_windows && PHP_VERSION_ID > 50300 && extension_loaded('mcrypt')) {
             require_once "random_bytes_mcrypt.php";
         }
+        // Method 2:
+        // openssl_random_psudo_bytes() exists in PHP 5.3.0, but before 5.3.4,
+        // there is possible blocking behavior on Windows. As of PHP 5.3.4,
+        // openssl_random_pseudo_bytes() and mycrypt_create_iv() do the exact
+        // same thing on Windows.
+        elseif ($is_windows && extension_loaded('openssl') && PHP_VERSION_ID >= 50304) {
+            require_once "random_bytes_openssl.php";
+        }
         // Method 3:
-        // If none of the other methods are available, fall back on com_dotnet.
+        // If none of the other Windows methods are available, fall back on
+        // com_dotnet.
         elseif ($is_windows && extension_loaded('com_dotnet')) {
             require_once "random_bytes_com_dotnet.php";
         }
         // Method 4:
-        // This is the fastest method available on Unix-like OSes, and uses OS randomness devices as sources of entropy.
-        elseif (extension_loaded('openssl')) {
-            require_once "random_bytes_openssl.php";
-        }
-        // Method 5:
         // Read directly from /dev/urandom if we can.
         elseif (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
             require_once "random_bytes_dev_urandom.php";
         }
-        // Method 6:
-        // mcrypt_create_iv() with the MCRYPT_DEV_URANDOM flag does the same thing as Method 2, but is slower, possibly due to mcrypt_create_iv() doing some error checking that we're not doing. Regardless, this method will only be used if /dev/urandom is inaccessible for whatever reason.
+        // Method 5:
+        // mcrypt_create_iv() with the MCRYPT_DEV_URANDOM flag does the same
+        // thing as Method 2, but is slower, possibly due to mcrypt_create_iv()
+        // doing some error checking that we're not doing. Regardless, this
+        // method will only be used if /dev/urandom is inaccessible for whatever
+        // reason.
         elseif (extension_loaded('mcrypt')) {
             require_once "random_bytes_mcrypt.php";
         }
+        // Method 6:
+        // This is the fastest method available on Unix-like OSes, but also the
+        // least reliable on non-Windows OSes. See https://bugs.php.net/bug.php?id=70014
+        // for details.
+        elseif (extension_loaded('openssl')) {
+            require_once "random_bytes_openssl.php";
+        }
         // Method 7:
-        // We don't have any more options, so let's throw an exception right now and hope the developer won't let it fail silently.
+        // We don't have any more options, so let's throw an exception right now
+        // and hope the developer won't let it fail silently.
         else {
             function random_bytes()
             {
