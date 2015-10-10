@@ -45,6 +45,7 @@ if (PHP_VERSION_ID < 70000) {
          * to the operating environment. It's a micro-optimization.
          * 
          * In order of preference:
+         *   0. Use libsodium if available.
          *   1. fread() /dev/urandom if available
          *   2. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
          *   3. COM('CAPICOM.Utilities.1')->GetRandom()
@@ -52,7 +53,10 @@ if (PHP_VERSION_ID < 70000) {
          * 
          * See ERRATA.md for our reasoning behind this particular order
          */
-        if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
+        if (extension_loaded('libsodium')) {
+            // See random_bytes_libsodium.php
+            require_once "random_bytes_libsodium.php";
+        } elseif (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
