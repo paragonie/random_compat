@@ -46,3 +46,13 @@ if (!class_exists('TypeError', false)) {
         
     }
 }
+
+if (!class_exists('RandomCompatException', false)) {
+	// Only provided so that thrown exceptions implement Throwable.
+	// Allows implementing code to catch Throwable which is compatible
+	// with PHP7.
+	class RandomCompatException extends Exception implements Throwable
+	{
+
+	}
+}
