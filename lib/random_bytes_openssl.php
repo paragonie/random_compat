@@ -68,7 +68,7 @@ function random_bytes($bytes)
     /**
      * If we reach here, PHP has failed us.
      */
-    throw new Exception(
+    throw new RandomCompatException(
         'PHP failed to generate random data.'
     );
 }

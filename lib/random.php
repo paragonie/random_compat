@@ -71,7 +71,7 @@ if (PHP_VERSION_ID < 70000) {
              */
             function random_bytes()
             {
-                throw new Exception(
+                throw new RandomCompatException(
                     'There is no suitable CSPRNG installed on your system'
                 );
             }
