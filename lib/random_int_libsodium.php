@@ -95,7 +95,7 @@ function random_int($min, $max)
         } elseif ($range > 2147483647) {
             // $range is still an int (PHP_INT_SIZE === 8),
             // but randombytes_uniform() only accepts up to 2147483647
-            $int = \Sodium\randombytes_uniform(2147483647);
+            $int = \Sodium\randombytes_uniform(($range >> 32) & 2147483647);
             $int <<= 32;
             $int |= \Sodium\randombytes_uniform($range & 2147483647);
             $int += $min;
