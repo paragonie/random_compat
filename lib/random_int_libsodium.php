@@ -83,10 +83,18 @@ function random_int($min, $max)
              */
             if (PHP_INT_SIZE === 8) {
                 // Get PHP_INT_MAX of 9223372036854775807 out of libsodium
-                // on 64-bit platforms:                
-                $int = \Sodium\randombytes_uniform(2147483647);
-                $int <<= 32;
+                // on 64-bit platforms:
+                $int = \Sodium\randombytes_uniform(1); // 1 bit
+                $int |= 2; // We default to positive
+                # [ XX______ ________ ________ ________ ________ ________ ________ ________ ]
+
+                $int <<= 2;
                 $int |= \Sodium\randombytes_uniform(2147483647);
+                $int <<= 31;
+                # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY Y_______ ________ ________ ________ ]
+
+                $int |= \Sodium\randombytes_uniform(2147483647);
+                # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY YZZZZZZZ ZZZZZZZZ ZZZZZZZZ ZZZZZZZZ ]
                 $int += $min;
             } else {
                 // 32-bit
@@ -95,9 +103,17 @@ function random_int($min, $max)
         } elseif ($range > 2147483647) {
             // $range is still an int (PHP_INT_SIZE === 8),
             // but randombytes_uniform() only accepts up to 2147483647
-            $int = \Sodium\randombytes_uniform(($range >> 32) & 2147483647);
-            $int <<= 32;
+            $int = \Sodium\randombytes_uniform(($range >> 63) & 1); // 1 bit
+            $int |= 2; // We default to positive
+            # [ XX______ ________ ________ ________ ________ ________ ________ ________ ]
+
+            $int <<= 2;
+            $int |= \Sodium\randombytes_uniform(($range >> 31) & 2147483647);
+            $int <<= 31;
+            # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY Y_______ ________ ________ ________ ]
+
             $int |= \Sodium\randombytes_uniform($range & 2147483647);
+            # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY YZZZZZZZ ZZZZZZZZ ZZZZZZZZ ZZZZZZZZ ]
             $int += $min;
         } else {
             $int = \Sodium\randombytes_uniform($range) + $min;
