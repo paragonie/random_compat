@@ -32,6 +32,13 @@ if (!defined('PHP_VERSION_ID')) {
     define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
 if (PHP_VERSION_ID < 70000) {
+    /*
+    if (!defined('RANDOM_COMPAT_FAIL_OPEN')) {
+        // If you want to use openssl_random_pseudo_bytes() on an insecure version
+        // of PHP, you should add define this constant to true elsewhere:
+        define('RANDOM_COMPAT_FAIL_OPEN', false);
+    }
+    */
     if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
         define('RANDOM_COMPAT_READ_BUFFER', 8);
     }
@@ -73,11 +80,11 @@ if (PHP_VERSION_ID < 70000) {
         } elseif (extension_loaded('com_dotnet')) {
             // See random_bytes_com_dotnet.php
             require_once "random_bytes_com_dotnet.php";
-        } elseif (extension_loaded('openssl') && (
+        } elseif (extension_loaded('openssl') /* && (
                PHP_VERSION_ID >= 50444 && PHP_VERSION_ID <= 50499
             || PHP_VERSION_ID >= 50528 && PHP_VERSION_ID <= 50599
             || PHP_VERSION_ID >= 50612 && PHP_VERSION_ID <= 50699
-        )) {
+        )*/) {
             // See random_bytes_openssl.php
             require_once "random_bytes_openssl.php";
         } else {
