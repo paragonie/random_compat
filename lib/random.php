@@ -61,9 +61,9 @@ if (PHP_VERSION_ID < 70000) {
             require_once "random_bytes_dev_urandom.php";
         } elseif (
             // Is /dev/urandom encapsualted by open_basedir?
-            $basedir = explode(':', ini_get('open_basedir')) && (
-                in_array('/dev', $basedir) || in_array('/dev/', $basedir)
-            )
+            $basedir = explode(':', ini_get('open_basedir'))
+            && (in_array('/dev', $basedir) || in_array('/dev/', $basedir))
+            && is_readable('/dev/urandom')
         ) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
