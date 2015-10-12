@@ -17,6 +17,8 @@ community, there will always be a chance that we overlooked something. Please
 ask your favorite trusted hackers to hammer it for implementation errors and
 bugs before even thinking about deploying it in production.
 
+**Do not use the master branch, use a [stable release](https://github.com/paragonie/random_compat/releases/latest).**
+
 For the background of this library, please refer to our blog post on 
 [Generating Random Integers and Strings in PHP](https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php).
 
