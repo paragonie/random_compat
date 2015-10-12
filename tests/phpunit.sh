@@ -68,6 +68,11 @@ if [ $? -eq 0 ]; then
         # Test failure
         exit 1
     fi
+    php -d open_basedir=$parentdir:/dev/ phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
+    if [ $? -ne 0 ]; then
+        # Test failure
+        exit 1
+    fi
     php -d mbstring.func_overload=7 phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
     if [ $? -ne 0 ]; then
         # Test failure

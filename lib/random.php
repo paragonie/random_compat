@@ -59,13 +59,25 @@ if (PHP_VERSION_ID < 70000) {
         } elseif (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
+        } elseif (
+            // Is /dev/urandom encapsualted by open_basedir?
+            $basedir = explode(':', ini_get('open_basedir')) && (
+                in_array('/dev', $basedir) || in_array('/dev/', $basedir)
+            )
+        ) {
+            // See random_bytes_dev_urandom.php
+            require_once "random_bytes_dev_urandom.php";
         } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
             // See random_bytes_mcrypt.php
             require_once "random_bytes_mcrypt.php";
         } elseif (extension_loaded('com_dotnet')) {
             // See random_bytes_com_dotnet.php
             require_once "random_bytes_com_dotnet.php";
-        } elseif (extension_loaded('openssl')) {
+        } elseif (extension_loaded('openssl') && (
+               PHP_VERSION_ID >= 50444 && PHP_VERSION_ID <= 50499
+            || PHP_VERSION_ID >= 50528 && PHP_VERSION_ID <= 50599
+            || PHP_VERSION_ID >= 50612 && PHP_VERSION_ID <= 50699
+        )) {
             // See random_bytes_openssl.php
             require_once "random_bytes_openssl.php";
         } else {
