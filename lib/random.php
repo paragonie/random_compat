@@ -57,14 +57,14 @@ if (PHP_VERSION_ID < 70000) {
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
             require_once "random_bytes_libsodium.php";
-        } elseif (empty($basedir) && is_readable('/dev/urandom')) {
+        } elseif (empty($basedir) && @is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (
             // Is /dev/urandom encapsualted by open_basedir?
             !empty($basedir) && (
                 (in_array('/dev', $basedir) || in_array('/dev/', $basedir))
-                && is_readable('/dev/urandom')
+                && @is_readable('/dev/urandom')
             )
         ) {
             // See random_bytes_dev_urandom.php
