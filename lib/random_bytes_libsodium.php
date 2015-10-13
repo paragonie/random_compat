@@ -41,10 +41,13 @@
  */
 function random_bytes($bytes)
 {
-    if (!is_int($bytes)) {
+    if (!is_numeric($bytes)) {
         throw new TypeError(
             'Length must be an integer'
         );
+    }
+    if (!is_int($bytes)) {
+        $bytes = (int) $bytes;
     }
     if ($bytes < 1) {
         throw new Error(

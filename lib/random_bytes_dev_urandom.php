@@ -74,10 +74,13 @@ function random_bytes($bytes)
             stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
         }
     }
-    if (!is_int($bytes)) {
+    if (!is_numeric($bytes)) {
         throw new TypeError(
             'Length must be an integer'
         );
+    }
+    if (!is_int($bytes)) {
+        $bytes = (int) $bytes;
     }
     if ($bytes < 1) {
         throw new Error(
