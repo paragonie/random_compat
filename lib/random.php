@@ -57,7 +57,7 @@ if (PHP_VERSION_ID < 70000) {
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
             require_once "random_bytes_libsodium.php";
-        } elseif (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
+        } elseif (empty($basedir) && is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (
