@@ -140,8 +140,6 @@ function random_int($min, $max)
         } while ($int > $range0);
 
         $int += $min;
-        
-        $int += $min;
     } else {
         $int = \Sodium\randombytes_uniform($range) + $min;
     }
