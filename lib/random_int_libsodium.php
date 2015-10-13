@@ -70,55 +70,80 @@ function random_int($min, $max)
      */
     $range = $max - $min + 1;
     
-    $loops = 0;
     $int = 0;
-    do {
+    /**
+     * Test for integer overflow:
+     */
+    if (!is_int($range)) {
         /**
-         * Test for integer overflow:
+         * As long as we generate a random number, it should be between
+         * $min and $max.
          */
-        if (!is_int($range)) {
-            /**
-             * As long as we generate a random number, it should be between
-             * $min and $max.
-             */
-            if (PHP_INT_SIZE === 8) {
-                // Get PHP_INT_MAX of 9223372036854775807 out of libsodium
-                // on 64-bit platforms:
-                $int = \Sodium\randombytes_uniform(1); // 1 bit
-                $int |= 2; // We default to positive
-                # [ XX______ ________ ________ ________ ________ ________ ________ ________ ]
-
-                $int <<= 2;
-                $int |= \Sodium\randombytes_uniform(2147483647);
-                $int <<= 31;
-                # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY Y_______ ________ ________ ________ ]
-
-                $int |= \Sodium\randombytes_uniform(2147483647);
-                # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY YZZZZZZZ ZZZZZZZZ ZZZZZZZZ ZZZZZZZZ ]
-                $int += $min;
-            } else {
-                // 32-bit
-                $int = \Sodium\randombytes_uniform(2147483647) + $min;
+        if (PHP_INT_SIZE === 8) {
+            $range0 = PHP_INT_MAX;
+            $bits0 = 0;
+            
+            while ($range > 0) {
+                $range >>= 1;
+                $bits0++;
             }
-        } elseif ($range > 2147483647) {
-            // $range is still an int (PHP_INT_SIZE === 8),
-            // but randombytes_uniform() only accepts up to 2147483647
-            $int = \Sodium\randombytes_uniform(($range >> 63) & 1); // 1 bit
-            $int |= 2; // We default to positive
-            # [ XX______ ________ ________ ________ ________ ________ ________ ________ ]
+            
+            $bits = $bits0;
+            $r = \Sodium\randombytes_uniform(0x40000000);
+            $bits_comp = (int) min($bits, 30);
+            $mask = 0x3fffffff >> (30 - $bits_comp);
+            $int = ($r & $mask);
+            $bits -= $bits_comp;
 
-            $int <<= 2;
-            $int |= \Sodium\randombytes_uniform(($range >> 31) & 2147483647);
-            $int <<= 31;
-            # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY Y_______ ________ ________ ________ ]
+            $r = \Sodium\randombytes_uniform(0x40000000);
+            $bits_comp = (int) min($bits, 30);
+            $mask = 0x3fffffff >> (30 - $bits_comp);
+            $int |= ($r & $mask) << 30;
+            $bits -= $bits_comp;
 
-            $int |= \Sodium\randombytes_uniform($range & 2147483647);
-            # [ XXYYYYYY YYYYYYYY YYYYYYYY YYYYYYYY YZZZZZZZ ZZZZZZZZ ZZZZZZZZ ZZZZZZZZ ]
-            $int += $min;
+            $r = \Sodium\randombytes_uniform(0x40000000);
+            $mask = 0x3fffffff >> (30 - $bits);
+            $int |= ($r & $mask) << 60;
         } else {
-            $int = \Sodium\randombytes_uniform($range) + $min;
+            // 32-bit
+            $int = \Sodium\randombytes_uniform(2147483647) + $min;
         }
-        ++$loops;
-    } while ($loops < 256 && ($int < $min || $int > $max));
+    } elseif ($range > 2147483647) {
+        // $range is still an int (PHP_INT_SIZE === 8),
+        // but randombytes_uniform() only accepts up to 2147483647
+        
+        $range0 = $range;
+        $bits0 = 0;
+        
+        while ($range > 0) {
+            $range >>= 1;
+            $bits0++;
+        }
+        
+        do {
+            $bits = $bits0;
+            $r = \Sodium\randombytes_uniform(0x40000000);
+            $bits_comp = (int) min($bits, 30);
+            $mask = 0x3fffffff >> (30 - $bits_comp);
+            $int = ($r & $mask);
+            $bits -= $bits_comp;
+
+            $r = \Sodium\randombytes_uniform(0x40000000);
+            $bits_comp = (int) min($bits, 30);
+            $mask = 0x3fffffff >> (30 - $bits_comp);
+            $int |= ($r & $mask) << 30;
+            $bits -= $bits_comp;
+
+            $r = \Sodium\randombytes_uniform(0x40000000);
+            $mask = 0x3fffffff >> (30 - $bits);
+            $int |= ($r & $mask) << 60;
+        } while ($int > $range0);
+
+        $int += $min;
+        
+        $int += $min;
+    } else {
+        $int = \Sodium\randombytes_uniform($range) + $min;
+    }
     return $int;
 }
