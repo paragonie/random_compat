@@ -32,19 +32,13 @@ if (!defined('PHP_VERSION_ID')) {
     define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
 if (PHP_VERSION_ID < 70000) {
-    /*
-    if (!defined('RANDOM_COMPAT_FAIL_OPEN')) {
-        // If you want to use openssl_random_pseudo_bytes() on an insecure version
-        // of PHP, you should add define this constant to true elsewhere:
-        define('RANDOM_COMPAT_FAIL_OPEN', false);
-    }
-    */
     if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
         define('RANDOM_COMPAT_READ_BUFFER', 8);
     }
     require_once "byte_safe_strings.php";
     require_once "error_polyfill.php";
     if (!function_exists('random_bytes')) {
+        $basedir = explode(':', ini_get('open_basedir'));
         /**
          * PHP 5.2.0 - 5.6.x way to implement random_bytes()
          * 
@@ -68,9 +62,10 @@ if (PHP_VERSION_ID < 70000) {
             require_once "random_bytes_dev_urandom.php";
         } elseif (
             // Is /dev/urandom encapsualted by open_basedir?
-            $basedir = explode(':', ini_get('open_basedir'))
-            && (in_array('/dev', $basedir) || in_array('/dev/', $basedir))
-            && is_readable('/dev/urandom')
+            !empty($basedir) && (
+                (in_array('/dev', $basedir) || in_array('/dev/', $basedir))
+                && is_readable('/dev/urandom')
+            )
         ) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
@@ -80,11 +75,7 @@ if (PHP_VERSION_ID < 70000) {
         } elseif (extension_loaded('com_dotnet')) {
             // See random_bytes_com_dotnet.php
             require_once "random_bytes_com_dotnet.php";
-        } elseif (extension_loaded('openssl') /* && (
-               PHP_VERSION_ID >= 50444 && PHP_VERSION_ID <= 50499
-            || PHP_VERSION_ID >= 50528 && PHP_VERSION_ID <= 50599
-            || PHP_VERSION_ID >= 50612 && PHP_VERSION_ID <= 50699
-        )*/) {
+        } elseif (extension_loaded('openssl')) {
             // See random_bytes_openssl.php
             require_once "random_bytes_openssl.php";
         } else {
