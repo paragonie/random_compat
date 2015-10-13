@@ -38,7 +38,6 @@ if (PHP_VERSION_ID < 70000) {
     require_once "byte_safe_strings.php";
     require_once "error_polyfill.php";
     if (!function_exists('random_bytes')) {
-        $basedir = explode(':', ini_get('open_basedir'));
         /**
          * PHP 5.2.0 - 5.6.x way to implement random_bytes()
          * 
@@ -57,16 +56,7 @@ if (PHP_VERSION_ID < 70000) {
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
             require_once "random_bytes_libsodium.php";
-        } elseif (empty($basedir) && @is_readable('/dev/urandom')) {
-            // See random_bytes_dev_urandom.php
-            require_once "random_bytes_dev_urandom.php";
-        } elseif (
-            // Is /dev/urandom encapsualted by open_basedir?
-            !empty($basedir) && (
-                (in_array('/dev', $basedir) || in_array('/dev/', $basedir))
-                && @is_readable('/dev/urandom')
-            )
-        ) {
+        } elseif (@is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
