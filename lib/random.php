@@ -45,18 +45,27 @@ if (PHP_VERSION_ID < 70000) {
          * to the operating environment. It's a micro-optimization.
          * 
          * In order of preference:
-         *   0. Use libsodium if available.
-         *   1. fread() /dev/urandom if available
-         *   2. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
-         *   3. COM('CAPICOM.Utilities.1')->GetRandom()
-         *   4. openssl_random_pseudo_bytes()
+         *   1. Use libsodium if available.
+         *   2. fread() /dev/urandom if available (never on Windows)
+         *   3. mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)
+         *   4. COM('CAPICOM.Utilities.1')->GetRandom()
+         *   5. openssl_random_pseudo_bytes() (absolute last resort)
          * 
          * See ERRATA.md for our reasoning behind this particular order
          */
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
             require_once "random_bytes_libsodium.php";
-        } elseif (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && @is_readable('/dev/urandom')) {
+        } elseif (DIRECTORY_SEPARATOR === '/' && @is_readable('/dev/urandom')) {
+            // DIRECTORY_SEPARATOR === '/' on Unix-like OSes -- this is a fast
+            // way to exclude Windows.
+            // 
+            // Error suppression on is_readable() in case of an open_basedir or 
+            // safe_mode failure. All we care about is whether or not we can 
+            // read it at this point. If the PHP environment is going to panic 
+            // over trying to see if the file can be read in the first place,
+            // that is not helpful to us here.
+            
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
@@ -65,7 +74,7 @@ if (PHP_VERSION_ID < 70000) {
         } elseif (extension_loaded('com_dotnet')) {
             // See random_bytes_com_dotnet.php
             require_once "random_bytes_com_dotnet.php";
-        } elseif (extension_loaded('openssl')) {
+        } elseif (extension_loaded('openssl') && PHP_VERSION_ID >= 50300) {
             // See random_bytes_openssl.php
             require_once "random_bytes_openssl.php";
         } else {
