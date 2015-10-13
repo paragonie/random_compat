@@ -56,7 +56,7 @@ if (PHP_VERSION_ID < 70000) {
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
             require_once "random_bytes_libsodium.php";
-        } elseif (@is_readable('/dev/urandom')) {
+        } elseif (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && @is_readable('/dev/urandom')) {
             // See random_bytes_dev_urandom.php
             require_once "random_bytes_dev_urandom.php";
         } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
