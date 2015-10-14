@@ -91,11 +91,6 @@ if (PHP_VERSION_ID < 70000) {
         }
     }
     if (!function_exists('random_int')) {
-        if (extension_loaded('libsodium')) {
-            // See random_bytes_libsodium.php
-            require_once "random_int_libsodium.php";
-        } else {
-            require_once "random_int.php";
-        }
+        require_once "random_int.php";
     }
 }
