@@ -120,7 +120,7 @@ function random_int($min, $max)
          * to a failure probability of 2^-128 for a working RNG
          */
         if ($attempts > 128) {
-            throw new Exception(
+            throw new RandomCompatException(
                 'random_int: RNG is broken - too many rejections'
             );
         }
@@ -130,7 +130,7 @@ function random_int($min, $max)
          */
         $randomByteString = random_bytes($bytes);
         if ($randomByteString === false) {
-            throw new Exception(
+            throw new RanndomCompatException(
                 'Random number generator failure'
             );
         }
