@@ -63,8 +63,7 @@ if (PHP_VERSION_ID < 70000) {
      * doubt then the safe choice is to not use it.
      */
     class RandomCompatOpenSslWarning extends \Exception {
-        protected $message = 'random_bytes()/random_int() failed to access a reliable source of '
-        . 'randomness and is not allowed to use OpenSSL. See RandomCompatOpenSslWarning documentation.';
+        protected $message = 'random_bytes()/random_int() failed to access a reliable source of randomness and is not allowed to use OpenSSL. See RandomCompatOpenSslWarning documentation.';
     }
     require_once "byte_safe_strings.php";
     require_once "error_polyfill.php";
