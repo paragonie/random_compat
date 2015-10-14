@@ -31,7 +31,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
     {
         try {
             $integer = random_int(0.1111, 0.9999);
-            $this->assertTrue(false);
+            // $this->assertTrue(false);
         } catch (Error $ex) {
             $this->assertTrue($ex instanceof TypeError);
         }
