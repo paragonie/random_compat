@@ -41,12 +41,18 @@ function random_int($min, $max)
     /**
      * Type and input logic checks
      */
-    if (!is_numeric($min)) {
+    if (is_float($min) || (is_string($min) && preg_match('#^\-?[0-9]+$#', $min))) {
+        $min = (int) $min;
+    }
+    if (!is_int($min)) {
         throw new TypeError(
             'random_int(): $min must be an integer'
         );
     }
-    if (!is_numeric($max)) {
+    if (is_float($max) || (is_string($max) && preg_match('#^\-?[0-9]+$#', $max))) {
+        $max = (int) $max;
+    }
+    if (!is_int($max)) {
         throw new TypeError(
             'random_int(): $max must be an integer'
         );
