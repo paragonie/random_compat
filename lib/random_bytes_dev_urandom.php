@@ -74,12 +74,6 @@ function random_bytes($bytes)
             stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
         }
     }
-    if (
-        (is_float($bytes) && $bytes >= ~PHP_INT_MAX && $bytes <= PHP_INT_MAX) ||
-        (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes))
-    ) {
-        $bytes = (int) $bytes;
-    }
     if (!is_int($bytes)) {
         throw new TypeError(
             'Length must be an integer'
