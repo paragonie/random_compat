@@ -15,10 +15,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             random_int(-100, -10),
             random_int(-1000, 1000),
             random_int(~PHP_INT_MAX, PHP_INT_MAX),
-            random_int("0", "1"),
-            random_int(0.11111, 0.99999),
-            random_int($half_neg_max, PHP_INT_MAX),
-            random_int(0.0, 255.0)
+            random_int($half_neg_max, PHP_INT_MAX)
         );
         
         $this->assertFalse($integers[0] === $integers[1]);
@@ -28,31 +25,16 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[3] >= -1000 && $integers[3] <= 1000);
         $this->assertTrue($integers[4] >= ~PHP_INT_MAX && $integers[4] <= PHP_INT_MAX);
         $this->assertTrue($integers[5] >= 0 && $integers[5] <= 1);
-        $this->assertTrue($integers[6] === 0);
-        $this->assertTrue($integers[7] >= $half_neg_max && $integers[7] <= PHP_INT_MAX);
-        $this->assertTrue($integers[8] >= 0 && $integers[8] <= 255);
+        $this->assertTrue($integers[6] >= $half_neg_max && $integers[6] <= PHP_INT_MAX);
     }
     
     public function testFailureCases()
     {
-        // Machine epsilons make this insignificant with +1 or - 1:
-        $x = PHP_INT_MAX;
-        $x += 2048;
-        $y = ~PHP_INT_MAX;
-        $y -= 2048;
-        
         try {
-            $integer = random_int(0, $x);
+            $integer = random_int(0.1111, 0.9999);
             $this->assertTrue(false);
         } catch (Error $ex) {
-            $this->assertTrue($ex instanceof Exception);
-        }
-        
-        try {
-            $integer = random_int($y, $x);
-            $this->assertTrue(false);
-        } catch (Error $ex) {
-            $this->assertTrue($ex instanceof Exception);
+            $this->assertTrue($ex instanceof TypeError);
         }
     }
 }
