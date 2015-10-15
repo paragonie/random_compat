@@ -41,20 +41,37 @@ function random_int($min, $max)
     /**
      * Type and input logic checks
      */
-    if (!is_numeric($min)) {
+    
+    // Weak typing
+    if (is_float($min) && $min >= ~PHP_INT_MAX && $min <= PHP_INT_MAX) {
+        // If it's a float outside of the range, let it fail without casting
+        $min = (int) floor($min);
+    } elseif (is_string($min) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $min)) {
+        $min = (int) floor($min);
+    } elseif (is_string($min) && preg_match('#^\-?[0-9]+$#', $min)) {
+        $min = (int) $min;
+    }
+    if (is_float($max) && $max >= ~PHP_INT_MAX && $max <= PHP_INT_MAX) {
+        // If it's a float outside of the range, let it fail without casting
+        $max = (int) floor($max);
+    } elseif (is_string($max) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $max)) {
+        $max = (int) floor($max);
+    } elseif (is_string($max) && preg_match('#^\-?[0-9]+$#', $max)) {
+        $max = (int) $max;
+    }
+    
+    // Is this a valid integer?
+    if (!is_int($min)) {
         throw new TypeError(
             'random_int(): $min must be an integer'
         );
     }
-    if (!is_numeric($max)) {
+    if (!is_int($max)) {
         throw new TypeError(
             'random_int(): $max must be an integer'
         );
     }
-
-    $min = (int) $min;
-    $max = (int) $max;
-
+    
     if ($min > $max) {
         throw new Error(
             'Minimum value must be less than or equal to the maximum value'
@@ -164,7 +181,7 @@ function random_int($min, $max)
         /**
          * If $val overflows to a floating point number,
          * ... or is larger than $max,
-         * ... or smaller than $int,
+         * ... or smaller than $min,
          * then try again.
          */
     } while (!is_int($val) || $val > $max || $val < $min);

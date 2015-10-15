@@ -27,14 +27,16 @@
  */
 
 /**
- * Windows with PHP < 5.3.0 will not have the function
- * openssl_random_pseudo_bytes() available, so let's use
- * CAPICOM to work around this deficiency.
- * 
+ * If the libsodium PHP extension is loaded, we'll use it above any other
+ * solution.
+ *
+ * libsodium-php project:
+ * @ref https://github.com/jedisct1/libsodium-php
+ *
  * @param int $bytes
- * 
+ *
  * @throws Exception
- * 
+ *
  * @return string
  */
 function random_bytes($bytes)
@@ -47,7 +49,7 @@ function random_bytes($bytes)
     } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes)) {
         $bytes = (int) $bytes;
     }
-    if (!is_int($bytes)) {
+    if (!is_int($bytes) || $bytes > PHP_INT_MAX) {
         throw new TypeError(
             'random_int(): $bytes must be an integer'
         );
@@ -57,23 +59,15 @@ function random_bytes($bytes)
             'Length must be greater than 0'
         );
     }
-    $buf = '';
-    $util = new COM('CAPICOM.Utilities.1');
-    $execCount = 0;
-    /**
-     * Let's not let it loop forever. If we run N times and fail to
-     * get N bytes of random data, then CAPICOM has failed us.
-     */
-    do {
-        $buf .= base64_decode($util->GetRandom($bytes, 0));
-        if (RandomCompat_strlen($buf) >= $bytes) {
-            /**
-             * Return our random entropy buffer here:
-             */
-            return RandomCompat_substr($buf, 0, $bytes);
+
+    $buf = \Sodium\randombytes_buf($bytes);
+
+    if ($buf !== false) {
+        if (RandomCompat_strlen($buf) === $bytes) {
+            return $buf;
         }
-        ++$execCount; 
-    } while ($execCount < $bytes);
+    }
+
     /**
      * If we reach here, PHP has failed us.
      */

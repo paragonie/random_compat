@@ -17,6 +17,8 @@ community, there will always be a chance that we overlooked something. Please
 ask your favorite trusted hackers to hammer it for implementation errors and
 bugs before even thinking about deploying it in production.
 
+**Do not use the master branch, use a [stable release](https://github.com/paragonie/random_compat/releases/latest).**
+
 For the background of this library, please refer to our blog post on 
 [Generating Random Integers and Strings in PHP](https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php).
 
@@ -57,7 +59,9 @@ weren't for the contributions of the following individuals:
 * [@asgrim (James Titcumb)](https://github.com/asgrim)
 * [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
 * [@chriscct7 (Chris Christoff)](https://github.com/chriscct7)
+* [@cweagans (Cameron Eagans)](https://github.com/cweagans)
 * [@dd32 (Dion Hulse)](https://github.com/dd32)
+* [@geggleto (Glenn Eggleton)](https://github.com/geggleto)
 * [@ircmaxell (Anthony Ferrara)](https://github.com/ircmaxell)
 * [@jedisct1 (Frank Denis)](https://github.com/jedisct1)
 * [@juliangut (Julián Gutiérrez)](https://github.com/juliangut)
@@ -74,6 +78,7 @@ weren't for the contributions of the following individuals:
 * [@skyosev (Stoyan Kyosev)](https://github.com/skyosev)
 * [@stof (Christophe Coevoet)](https://github.com/stof)
 * [@teohhanhui (Teoh Han Hui)](https://github.com/teohhanhui)
+* [@tom-- (Tom Worster)](https://github.com/tom--)
 * [@tsyr2ko](https://github.com/tsyr2ko)
 * [@trowski (Aaron Piotrowski)](https://github.com/trowski)
 * [@twistor (Chris Lepannen)](https://github.com/twistor)

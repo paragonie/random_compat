@@ -4,12 +4,17 @@
 
 The order is:
 
- 1. `fread() /dev/urandom if available`
- 2. `mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)`
- 3. `COM('CAPICOM.Utilities.1')->GetRandom()`
- 4. `openssl_random_pseudo_bytes()`
+ 1. `libsodium if available`
+ 2. `fread() /dev/urandom if available`
+ 3. `mcrypt_create_iv($bytes, MCRYPT_CREATE_IV)`
+ 4. `COM('CAPICOM.Utilities.1')->GetRandom()`
+ 5. `openssl_random_pseudo_bytes()`
 
-We read `/dev/urandom` first (if it exists). This is the preferred file to read
+If libsodium is available, we get random data from it. This is the preferred
+method on all OSes, but libsodium is not very widely installed, so other
+fallbacks are available.
+
+Next, we read `/dev/urandom` (if it exists). This is the preferred file to read
 for random data for cryptographic purposes for BSD and Linux.
 
 Despite [strongly urging people not to use mcrypt in their projects](https://paragonie.com/blog/2015/05/if-you-re-typing-word-mcrypt-into-your-code-you-re-doing-it-wrong),

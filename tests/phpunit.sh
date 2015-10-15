@@ -58,16 +58,25 @@ if [ $? -eq 0 ]; then
     echo
     echo -e "\033[33mBegin Unit Testing\033[0m"
     # Run the testing suite
+    echo "Basic test suite:"
     php phpunit.phar --bootstrap "$parentdir/lib/random.php" "$parentdir/tests/unit"
     if [ $? -ne 0 ]; then
         # Test failure
         exit 1
     fi
+    echo "With open_basedir enabled:"
     php -d open_basedir=$parentdir phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
     if [ $? -ne 0 ]; then
         # Test failure
         exit 1
     fi
+    echo "With open_basedir enabled, allowing /dev:"
+    php -d open_basedir=$parentdir:/dev phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
+    if [ $? -ne 0 ]; then
+        # Test failure
+        exit 1
+    fi
+    echo "With mbstring.func_overload enabled:"
     php -d mbstring.func_overload=7 phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/unit"
     if [ $? -ne 0 ]; then
         # Test failure
