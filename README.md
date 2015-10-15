@@ -92,7 +92,7 @@ weren't for the contributions of the following individuals:
 * [@kelunik (Niklas Keller)](https://github.com/kelunik)
 * [@lt (Leigh)](https://github.com/lt)
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
-* [@mmeyer2k (Michael M)](https://mmeyer2k)
+* [@mmeyer2k (Michael M)](https://github.com/mmeyer2k)
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@oittaa](https://github.com/oittaa)
 * [@redragonx (Stephen Chavez)](https://github.com/redragonx)
