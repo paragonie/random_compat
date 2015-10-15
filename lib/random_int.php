@@ -176,7 +176,7 @@ function random_int($min, $max)
         /**
          * If $val overflows to a floating point number,
          * ... or is larger than $max,
-         * ... or smaller than $int,
+         * ... or smaller than $min,
          * then try again.
          */
     } while (!is_int($val) || $val > $max || $val < $min);
