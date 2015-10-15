@@ -60,12 +60,15 @@ function random_bytes($bytes)
         );
     }
     if ($bytes > 2147483647) {
-        throw new Error(
-            'Length must be greater than 0'
-        );
+        for ($i = 0; $i < $bytes; $i += 1073741824) {
+            $n = ($bytes - $i) > 1073741824
+                ? 1073741824
+                : $bytes - $i;
+            $buf .= \Sodium\randombytes_buf($n);
+        }
+    } else {
+        $buf = \Sodium\randombytes_buf($bytes);
     }
-
-    $buf = \Sodium\randombytes_buf($bytes);
 
     if ($buf !== false) {
         if (RandomCompat_strlen($buf) === $bytes) {
