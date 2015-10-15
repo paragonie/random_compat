@@ -18,7 +18,8 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             random_int("0", "1"),
             random_int(0.11111, 0.99999),
             random_int($half_neg_max, PHP_INT_MAX),
-            random_int(0.0, 255.0)
+            random_int(0.0, 255.0),
+            random_int(-4.5, -4.5)
         );
         
         $this->assertFalse($integers[0] === $integers[1]);
@@ -31,6 +32,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[6] === 0);
         $this->assertTrue($integers[7] >= $half_neg_max && $integers[7] <= PHP_INT_MAX);
         $this->assertTrue($integers[8] >= 0 && $integers[8] <= 255);
+        $this->assertTrue($integers[9] === -4);
         
         try {
             $i = random_int("9223372036854775808","9223372036854775807");

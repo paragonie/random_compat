@@ -11,12 +11,17 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         $bytes = array(
             random_bytes(12),
             random_bytes(64),
-            random_bytes(64)
+            random_bytes(64),
+            random_bytes(1.5)
         );
         
         $this->assertTrue(
             strlen(bin2hex($bytes[0])) === 24
         );
+        $this->assertTrue(
+            strlen(bin2hex($bytes[3])) === 2
+        );
+        
         
         // This should never generate identical byte strings
         $this->assertFalse(
