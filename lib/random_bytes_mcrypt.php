@@ -41,11 +41,18 @@
  */
 function random_bytes($bytes)
 {
-    if (
-        (is_float($bytes) && $bytes >= ~PHP_INT_MAX && $bytes <= PHP_INT_MAX) ||
-        (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes))
-    ) {
+    // Weak typing
+    if (is_float($bytes) && $bytes <= PHP_INT_MAX) {
+        $bytes = (int) floor($bytes);
+    } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $bytes)) {
+        $bytes = (int) floor($bytes);
+    } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes)) {
         $bytes = (int) $bytes;
+    }
+    if (!is_int($bytes) || $bytes > PHP_INT_MAX) {
+        throw new TypeError(
+            'random_int(): $bytes must be an integer'
+        );
     }
     if (!is_int($bytes)) {
         throw new TypeError(

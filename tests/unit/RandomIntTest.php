@@ -32,27 +32,4 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[7] >= $half_neg_max && $integers[7] <= PHP_INT_MAX);
         $this->assertTrue($integers[8] >= 0 && $integers[8] <= 255);
     }
-    
-    public function testFailureCases()
-    {
-        // Machine epsilons make this insignificant with +1 or - 1:
-        $x = PHP_INT_MAX;
-        $x += 2048;
-        $y = ~PHP_INT_MAX;
-        $y -= 2048;
-        
-        try {
-            $integer = random_int(0, $x);
-            $this->assertTrue(false);
-        } catch (Error $ex) {
-            $this->assertTrue($ex instanceof Exception);
-        }
-        
-        try {
-            $integer = random_int($y, $x);
-            $this->assertTrue(false);
-        } catch (Error $ex) {
-            $this->assertTrue($ex instanceof Exception);
-        }
-    }
 }
