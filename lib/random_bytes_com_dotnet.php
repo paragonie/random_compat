@@ -41,9 +41,9 @@ function random_bytes($bytes)
 {
     // Weak typing
     if (is_float($bytes) && $bytes <= PHP_INT_MAX) {
-        $bytes = (int) floor($bytes);
+        $bytes = (int) round($bytes);
     } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $bytes)) {
-        $bytes = (int) floor($bytes);
+        $bytes = (int) round($bytes);
     } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes)) {
         $bytes = (int) $bytes;
     }
