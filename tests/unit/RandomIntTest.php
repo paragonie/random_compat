@@ -26,14 +26,51 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[4] >= ~PHP_INT_MAX && $integers[4] <= PHP_INT_MAX);
         $this->assertTrue($integers[5] >= $half_neg_max && $integers[5] <= PHP_INT_MAX);
     }
-    
-    public function testFailureCases()
+
+    /**
+     * @return array[]
+     */
+    public function typeErrorProvider()
     {
-        try {
-            $integer = random_int(0.1111, 0.9999);
-            // $this->assertTrue(false);
-        } catch (Error $ex) {
-            $this->assertTrue($ex instanceof TypeError);
-        }
+        return array(
+            array(1, 2.0),
+            array(1, 1.0),
+            array(-1, "2"),
+            array(-1, "3.1"),
+            array(-2.0, 5),
+            array(1.0, 5),
+            array("-2", 5),
+            array("3.1", 5),
+        );
     }
+    
+    /**
+     * @dataProvider typeErrorProvider
+     * @expectedException TypeError
+     */
+    public function testTypeErrors($min, $max)
+    {
+        random_int($min, $max);
+    }
+    
+    /**
+     * @return array[]
+     */
+    public function rangeErrorProvider()
+    {
+        return array(
+            array(1, 0),
+            array(-999, -1000),
+        );
+    }
+    
+    /**
+     * @dataProvider rangeErrorProvider
+     * @expectedException Error
+     */
+    public function testRangeErrors($min, $max)
+    {
+        random_int($min, $max);
+    }
+    
 }
