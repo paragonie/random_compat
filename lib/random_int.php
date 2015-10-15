@@ -43,20 +43,20 @@ function random_int($min, $max)
      */
     
     // Weak typing
-    if (is_float($min) && $min >= ~PHP_INT_MAX && $min <= PHP_INT_MAX) {
+    if (is_float($min) && $min > ~PHP_INT_MAX && $min < PHP_INT_MAX) {
         // If it's a float outside of the range, let it fail without casting
         $min = (int) floor($min);
-    } elseif (is_string($min) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $min)) {
+    } elseif (is_string($min) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $min) && $min > ~PHP_INT_MAX && $min < PHP_INT_MAX) {
         $min = (int) floor($min);
-    } elseif (is_string($min) && preg_match('#^\-?[0-9]+$#', $min)) {
+    } elseif (is_string($min) && preg_match('#^\-?[0-9]+$#', $min) && $min > ~PHP_INT_MAX && $min < PHP_INT_MAX) {
         $min = (int) $min;
     }
     if (is_float($max) && $max >= ~PHP_INT_MAX && $max <= PHP_INT_MAX) {
         // If it's a float outside of the range, let it fail without casting
         $max = (int) floor($max);
-    } elseif (is_string($max) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $max)) {
+    } elseif (is_string($max) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $max) && $max > ~PHP_INT_MAX && $max < PHP_INT_MAX) {
         $max = (int) floor($max);
-    } elseif (is_string($max) && preg_match('#^\-?[0-9]+$#', $max)) {
+    } elseif (is_string($max) && preg_match('#^\-?[0-9]+$#', $max) && $max > ~PHP_INT_MAX && $max < PHP_INT_MAX) {
         $max = (int) $max;
     }
     
