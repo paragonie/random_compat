@@ -28,7 +28,7 @@ If PHP cannot safely generate random data, this library will throw an `Exception
 It will never fall back to insecure random data. If this keeps happening, upgrade
 to a newer version of PHP immediately.
 
-## Features
+## Usage
 
 This library exposes the [CSPRNG functions added in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
 for use in PHP 5 projects. Their behavior should be identical.
@@ -48,6 +48,44 @@ var_dump(bin2hex($string));
 $int = random_int(0,255);
 var_dump($int);
 // int(47)
+```
+
+### Exception handling
+
+When handling exceptions and errors you must account for differences between
+PHP 5 and PHP7.
+
+The differences:
+
+* Catching `Error` works, so long as it is caught before `Exception`.
+* Catching `Exception` has different behavior, without previously catching `Error`.
+* Catching `Throwable` does *not* work the same between PHP5 and PHP7.
+* There is *no* portable way to catch all errors/exceptions.
+
+#### Our recommendation
+
+**Always** catch `Error` before `Exception`, **do not** catch `Throwable`.
+
+#### Example
+
+```php
+try {
+    return random_int(1, $userInput);
+} catch (TypeError $e) {
+    // This is okay, so long as `Error` is caught before `Exception`.
+    throw new Exception('Please enter a number!');
+} catch (Error $e) {
+    // This is required, if you do not need to do anything just rethrow.
+    throw $e;
+} catch (Exception $e) {
+    // This is optional and maybe omitted if you do not want to handle errors
+    // during generation.
+    throw new InternalServerErrorException(
+        'Oops, our server is bust and cannot generate any random data.',
+        500,
+        $e
+    );
+}
 ```
 
 ## Contributors
