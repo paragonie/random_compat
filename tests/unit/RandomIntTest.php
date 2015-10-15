@@ -31,5 +31,14 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($integers[6] === 0);
         $this->assertTrue($integers[7] >= $half_neg_max && $integers[7] <= PHP_INT_MAX);
         $this->assertTrue($integers[8] >= 0 && $integers[8] <= 255);
+        
+        try {
+            $i = random_int("9223372036854775808","9223372036854775807");
+            $this->assertFalse(is_int($i));
+        } catch (Error $ex) {
+            $this->assertTrue($ex instanceof Error);
+        } catch (Exception $ex) {
+            $this->assertTrue($ex instanceof Exception);
+        }
     }
 }
