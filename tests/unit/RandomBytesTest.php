@@ -37,5 +37,16 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         } catch (Exception $ex) {
             $this->assertTrue(true);
         }
+        
+        try {
+            $x = random_bytes(PHP_INT_MAX + 1000000000);
+            $this->assertTrue(false);
+        } catch (TypeError $ex) {
+            $this->assertTrue(true);
+        } catch (Error $ex) {
+            $this->assertTrue(true);
+        } catch (Exception $ex) {
+            $this->assertTrue(true);
+        }
     }
 }
