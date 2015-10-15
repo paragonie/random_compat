@@ -42,7 +42,7 @@
 function random_bytes($bytes)
 {
     // Weak typing
-    if (is_float($bytes) && $bytes <= PHP_INT_MAX) {
+    if (is_float($bytes) && $bytes > ~PHP_INT_MAX && $bytes < PHP_INT_MAX) {
         $bytes = (int) ($bytes < 0 ? ceil($bytes) : floor($bytes));
     } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $bytes)) {
         $bytes = (int) ($bytes < 0 ? ceil($bytes) : floor($bytes));
@@ -55,6 +55,11 @@ function random_bytes($bytes)
         );
     }
     if ($bytes < 1) {
+        throw new Error(
+            'Length must be greater than 0'
+        );
+    }
+    if ($bytes > 2147483647) {
         throw new Error(
             'Length must be greater than 0'
         );

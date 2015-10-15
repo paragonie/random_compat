@@ -22,10 +22,20 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
             strlen(bin2hex($bytes[3])) === 2
         );
         
-        
         // This should never generate identical byte strings
         $this->assertFalse(
             $bytes[1] === $bytes[2]
         );
+        
+        try {
+            $x = random_bytes(~PHP_INT_MAX - 1000000000);
+            $this->assertTrue(false);
+        } catch (TypeError $ex) {
+            $this->assertTrue(true);
+        } catch (Error $ex) {
+            $this->assertTrue(true);
+        } catch (Exception $ex) {
+            $this->assertTrue(true);
+        }
     }
 }
