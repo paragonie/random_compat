@@ -35,11 +35,11 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
         return array(
             array(1, 2.0),
             array(1, 1.0),
-            array(1, "2"),
-            array(1, "3.1"),
-            array(2.0, 5),
+            array(-1, "2"),
+            array(-1, "3.1"),
+            array(-2.0, 5),
             array(1.0, 5),
-            array("2", 5),
+            array("-2", 5),
             array("3.1", 5),
         );
     }
@@ -58,12 +58,9 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
      */
     public function rangeErrorProvider()
     {
-        $tooBig = PHP_INT_SIZE === 8 ? 9223372036854775808 : 2147483648;
         return array(
             array(1, 0),
             array(-999, -1000),
-            array(1, $tooBig),
-            array(-$tooBig, -1),
         );
     }
     
