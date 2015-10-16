@@ -37,6 +37,9 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(
             is_int(RandomCompat_intval("1337e3", true))
         );
+        $this->assertTrue(
+            is_int(RandomCompat_intval("1.", true))
+        );
         
         // False
         $this->assertFalse(
