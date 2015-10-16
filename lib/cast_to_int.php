@@ -44,20 +44,10 @@ if (!function_exists('RandomCompat_intval')) {
      */
     function RandomCompat_intval($number, $fail_open = false)
     {
-        if (is_string($number)) {
-            if (PHP_INT_SIZE === 8) {
-                if ($number === "9223372036854775807") {
-                    return PHP_INT_MAX;
-                } elseif ($number === "-2147483648") {
-                    return ~PHP_INT_MAX;
-                }
-            } else {
-                if ($number === "-9223372036854775808") {
-                    return PHP_INT_MAX;
-                } elseif ($number === "-2147483648") {
-                    return ~PHP_INT_MAX;
-                }
-            }
+        if (
+            is_string($number) &&
+            preg_match('#^\-?[0-9]+\.?[0-9]*$#', $number)
+        ) {
             $number += 0;
         }
         if (
@@ -65,27 +55,11 @@ if (!function_exists('RandomCompat_intval')) {
             $number > ~PHP_INT_MAX &&
             $number < PHP_INT_MAX
         ) {
-            $number = $number < 0
-                    ? (int) ceil($number)
-                    : (int) floor($number);
-        } elseif (
-            is_string($number) &&
-            preg_match('#^\-?[0-9]+\.[0-9]+$#', $number) &&
-            $number > ~PHP_INT_MAX &&
-            $number < PHP_INT_MAX
-        ) {
-            $number = $number < 0
-                ? (int) ceil($number)
-                : (int) floor($number);
-        } elseif (
-            is_string($number) &&
-            preg_match('#^\-?[0-9]+$#', $number) &&
-            $number > ~PHP_INT_MAX &&
-            $number < PHP_INT_MAX
-        ) {
-            $number = $number < 0
-                ? (int) ceil($number)
-                : (int) floor($number);
+            $number = (int) (
+                $number < 0
+                    ? ceil($number)
+                    : floor($number)
+            );
         }
         if (is_int($number) || $fail_open) {
             return $number;
