@@ -39,17 +39,11 @@
  */
 function random_bytes($bytes)
 {
-    // Weak typing
-    if (is_float($bytes) && $bytes > ~PHP_INT_MAX && $bytes < PHP_INT_MAX) {
-        $bytes = (int) ($bytes < 0 ? ceil($bytes) : floor($bytes));
-    } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $bytes)) {
-        $bytes = (int) ($bytes < 0 ? ceil($bytes) : floor($bytes));
-    } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes)) {
-        $bytes = (int) $bytes;
-    }
-    if (!is_int($bytes)) {
+    try {
+        $bytes = RandomCompat_intval($bytes);
+    } catch (TypeError $ex) {
         throw new TypeError(
-            'random_int(): $bytes must be an integer'
+            'random_bytes(): $bytes must be an integer'
         );
     }
     if ($bytes < 1) {

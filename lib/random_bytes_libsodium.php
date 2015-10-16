@@ -41,17 +41,11 @@
  */
 function random_bytes($bytes)
 {
-    // Weak typing
-    if (is_float($bytes) && $bytes > ~PHP_INT_MAX && $bytes < PHP_INT_MAX) {
-        $bytes = (int) ($bytes < 0 ? ceil($bytes) : floor($bytes));
-    } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $bytes)) {
-        $bytes = (int) ($bytes < 0 ? ceil($bytes) : floor($bytes));
-    } elseif (is_string($bytes) && preg_match('#^\-?[0-9]+$#', $bytes)) {
-        $bytes = (int) $bytes;
-    }
-    if (!is_int($bytes) || $bytes > PHP_INT_MAX) {
+    try {
+        $bytes = RandomCompat_intval($bytes);
+    } catch (TypeError $ex) {
         throw new TypeError(
-            'random_int(): $bytes must be an integer'
+            'random_bytes(): $bytes must be an integer'
         );
     }
     if ($bytes < 1) {
@@ -59,6 +53,10 @@ function random_bytes($bytes)
             'Length must be greater than 0'
         );
     }
+    /**
+     * \Sodium\randombytes_buf() doesn't allow more than 2147483647 bytes to be
+     * generated in one invocation.
+     */
     if ($bytes > 2147483647) {
         for ($i = 0; $i < $bytes; $i += 1073741824) {
             $n = ($bytes - $i) > 1073741824

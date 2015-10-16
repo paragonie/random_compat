@@ -40,38 +40,34 @@ function random_int($min, $max)
 {
     /**
      * Type and input logic checks
+     * 
+     * If you pass it a float in the range (~PHP_INT_MAX, PHP_INT_MAX)
+     * (non-inclusive), it will sanely cast it to an int. If you it's equal to
+     * ~PHP_INT_MAX or PHP_INT_MAX, we let it fail as not an integer. Floats 
+     * lose precision, so the <= and => operators might accidentally let a float
+     * through.
      */
     
-    // Weak typing
-    if (is_float($min) && $min > ~PHP_INT_MAX && $min < PHP_INT_MAX) {
-        // If it's a float outside of the range, let it fail without casting
-        $min = (int) ($min < 0 ? ceil($min) : floor($min));
-    } elseif (is_string($min) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $min) && $min > ~PHP_INT_MAX && $min < PHP_INT_MAX) {
-        $min = (int) ($min < 0 ? ceil($min) : floor($min));
-    } elseif (is_string($min) && preg_match('#^\-?[0-9]+$#', $min) && $min > ~PHP_INT_MAX && $min < PHP_INT_MAX) {
-        $min = (int) $min;
-    }
-    if (is_float($max) && $max >= ~PHP_INT_MAX && $max <= PHP_INT_MAX) {
-        // If it's a float outside of the range, let it fail without casting
-        $max = (int) ($max < 0 ? ceil($max) : floor($max));
-    } elseif (is_string($max) && preg_match('#^\-?[0-9]+\.[0-9]+$#', $max) && $max > ~PHP_INT_MAX && $max < PHP_INT_MAX) {
-        $max = (int) ($max < 0 ? ceil($max) : floor($max));
-    } elseif (is_string($max) && preg_match('#^\-?[0-9]+$#', $max) && $max > ~PHP_INT_MAX && $max < PHP_INT_MAX) {
-        $max = (int) $max;
-    }
-    
-    // Is this a valid integer?
-    if (!is_int($min)) {
+    try {
+        $min = RandomCompat_intval($min);
+    } catch (TypeError $ex) {
         throw new TypeError(
             'random_int(): $min must be an integer'
         );
     }
-    if (!is_int($max)) {
+    try {
+        $max = RandomCompat_intval($max);
+    } catch (TypeError $ex) {
         throw new TypeError(
             'random_int(): $max must be an integer'
         );
     }
     
+    /**
+     * Now that we've verified our weak typing system has given us an integer,
+     * let's validate the logic then we can move forward with generating random
+     * integers along a given range.
+     */
     if ($min > $max) {
         throw new Error(
             'Minimum value must be less than or equal to the maximum value'
