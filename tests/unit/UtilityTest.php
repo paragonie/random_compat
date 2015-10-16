@@ -34,6 +34,9 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(
             is_int(RandomCompat_intval(~PHP_INT_MAX + 1, true))
         );
+        $this->assertTrue(
+            is_int(RandomCompat_intval("1337e3", true))
+        );
         
         // False
         $this->assertFalse(
@@ -53,6 +56,9 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         );
         $this->assertFalse(
             is_int(RandomCompat_intval(PHP_INT_MAX + 0.1, true))
+        );
+        $this->assertFalse(
+            is_int(RandomCompat_intval("hello", true))
         );
         
         if (PHP_INT_SIZE === 8) {
