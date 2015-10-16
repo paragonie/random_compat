@@ -56,11 +56,17 @@ class UtilityTest extends PHPUnit_Framework_TestCase
         );
         
         if (PHP_INT_SIZE === 8) {
-            $this->assertTrue(
-                is_int(RandomCompat_intval("-9223372036854775807", true))
+            $this->assertFalse(
+                is_int(RandomCompat_intval("-9223372036854775809", true))
             );
             $this->assertTrue(
-                is_int(RandomCompat_intval("9223372036854775806", true))
+                is_int(RandomCompat_intval("-9223372036854775808", true))
+            );
+            $this->assertFalse(
+                is_int(RandomCompat_intval("9223372036854775808", true))
+            );
+            $this->assertTrue(
+                is_int(RandomCompat_intval("9223372036854775807", true))
             );
         } else {
             $this->assertFalse(
