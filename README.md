@@ -121,6 +121,7 @@ weren't for the contributions of the following individuals:
 * [@asgrim (James Titcumb)](https://github.com/asgrim)
 * [@CodesInChaos (Christian Winnerlein)](https://github.com/CodesInChaos)
 * [@chriscct7 (Chris Christoff)](https://github.com/chriscct7)
+* [@cs278 (Chris Smith)](https://github.com/cs278)
 * [@cweagans (Cameron Eagans)](https://github.com/cweagans)
 * [@dd32 (Dion Hulse)](https://github.com/dd32)
 * [@geggleto (Glenn Eggleton)](https://github.com/geggleto)

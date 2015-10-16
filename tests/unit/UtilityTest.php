@@ -3,25 +3,21 @@ class UtilityTest extends PHPUnit_Framework_TestCase
 {
     public function testStrlen()
     {
-        $this->assertEquals(RandomCompat_strlen("\xF0\x9D\x92\xB3"), 4);
-        
-        // To help illustrate the difference
-        if (
-            defined('MB_OVERLOAD_STRING') &&
-            ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING
-        ) {
-            $this->assertTrue(
-                strlen("\xF0\x9D\x92\xB3") === 1
-            );
-        } else {
-            $this->assertTrue(
-                strlen("\xF0\x9D\x92\xB3") === 4
+        if (!function_exists('RandomCompat_strlen')) {
+            return $this->markTestSkipped(
+                'We don\' need to test this in PHP 7.'
             );
         }
+        $this->assertEquals(RandomCompat_strlen("\xF0\x9D\x92\xB3"), 4);
     }
     
     public function testIntval()
     {
+        if (!function_exists('RandomCompat_intval')) {
+            return $this->markTestSkipped(
+                'We don\' need to test this in PHP 7.'
+            );
+        }
         // Equals
         $this->assertEquals(
             abs(RandomCompat_intval(-4.5)),
