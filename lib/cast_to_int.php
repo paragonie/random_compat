@@ -44,10 +44,7 @@ if (!function_exists('RandomCompat_intval')) {
      */
     function RandomCompat_intval($number, $fail_open = false)
     {
-        if (
-            is_string($number) &&
-            preg_match('#^\-?[0-9]+\.?[0-9]*$#', $number)
-        ) {
+        if (is_numeric($number)) {
             $number += 0;
         }
         if (
@@ -55,11 +52,7 @@ if (!function_exists('RandomCompat_intval')) {
             $number > ~PHP_INT_MAX &&
             $number < PHP_INT_MAX
         ) {
-            $number = (int) (
-                $number < 0
-                    ? ceil($number)
-                    : floor($number)
-            );
+            $number = (int) $number;
         }
         if (is_int($number) || $fail_open) {
             return $number;
