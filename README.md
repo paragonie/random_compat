@@ -112,6 +112,19 @@ try {
 }
 ```
 
+## Fallback function
+
+> NOTE: Using a fallback function to utilize a PRNG written in PHP is strongly
+  discouraged. Applications using `random_bytes()` assume that the result
+  is going to be cryptographically strong, and a pure PHP PRNG is not that.
+
+If no other sources of randomness can be found, this library will attempt to
+call the function `random_bytes_fallback()` if the function is defined.
+
+If you want to use random.org (as an example) for a source of random numbers,
+this would be a good way to acheive that. Ditto for using a hardware random
+number generator.
+
 ## Contributors
 
 This project would not be anywhere near as excellent as it is today if it 

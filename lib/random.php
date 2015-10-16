@@ -81,12 +81,19 @@ if (PHP_VERSION_ID < 70000) {
             // See random_bytes_openssl.php
             require_once "$__DIR__/random_bytes_openssl.php";
         } else {
-            /**
-             * We don't have any more options, so let's throw an exception right now
-             * and hope the developer won't let it fail silently.
-             */
-            function random_bytes()
+            function random_bytes($bytes)
             {
+                // Pass through to a user-defined fallback function if it's defined.
+                // Not recommended, but potentially useful for unforeseen
+                // applications of this library. For instance, the fallback function
+                // could pull random data from random.org or a hardware randomn
+                // number generator.
+                if (function_exists('random_bytes_fallback')) {
+                    return random_bytes_fallback($bytes);
+                }
+
+                // We don't have any more options, so let's throw an exception
+                // and hope the developer won't let it fail silently.
                 throw new Exception(
                     'There is no suitable CSPRNG installed on your system'
                 );
