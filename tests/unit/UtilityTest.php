@@ -49,10 +49,32 @@ class UtilityTest extends PHPUnit_Framework_TestCase
             is_int(RandomCompat_intval(~PHP_INT_MAX - 1, true))
         );
         $this->assertFalse(
-            is_int(RandomCompat_intval(PHP_INT_MAX - 0.01, true))
+            is_int(RandomCompat_intval(~PHP_INT_MAX - 0.1, true))
         );
         $this->assertFalse(
-            is_int(RandomCompat_intval(~PHP_INT_MAX + 0.01, true))
+            is_int(RandomCompat_intval(PHP_INT_MAX + 0.1, true))
         );
+        
+        if (PHP_INT_SIZE === 8) {
+            $this->assertTrue(
+                is_int(RandomCompat_intval("-9223372036854775807", true))
+            );
+            $this->assertTrue(
+                is_int(RandomCompat_intval("9223372036854775806", true))
+            );
+        } else {
+            $this->assertFalse(
+                is_int(RandomCompat_intval("2147483648", true))
+            );
+            $this->assertTrue(
+                is_int(RandomCompat_intval("2147483647", true))
+            );
+            $this->assertFalse(
+                is_int(RandomCompat_intval("-2147483649", true))
+            );
+            $this->assertTrue(
+                is_int(RandomCompat_intval("-2147483648", true))
+            );
+        }
     }
 }
