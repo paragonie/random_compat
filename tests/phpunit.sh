@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-if [ $1 ]; then
-    if [ $1 == 'full' ]; then
-        fulltest=1
-    else
-        fulltest=0
-    fi
+if [ "$1" == 'full' ]; then
+    fulltest=1
+else
+    fulltest=0
 fi
 origdir=`pwd`
 cdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
