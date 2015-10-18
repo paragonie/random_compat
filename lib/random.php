@@ -77,7 +77,11 @@ if (PHP_VERSION_ID < 70000) {
             // See random_bytes_dev_urandom.php
             require_once "$__DIR__/random_bytes_dev_urandom.php";
         }
-        if (!function_exists('random_bytes') && PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
+        if (
+            !function_exists('random_bytes') &&
+            PHP_VERSION_ID >= 50307 &&
+            extension_loaded('mcrypt')
+        ) {
             // See random_bytes_mcrypt.php
             require_once "$__DIR__/random_bytes_mcrypt.php";
         }
