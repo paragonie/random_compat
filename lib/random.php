@@ -59,7 +59,12 @@ if (PHP_VERSION_ID < 70000) {
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
             require_once "$__DIR__/random_bytes_libsodium.php";
-        } elseif (DIRECTORY_SEPARATOR === '/' && @is_readable('/dev/urandom')) {
+        }
+        if (
+            !function_exists('random_bytes') && 
+            DIRECTORY_SEPARATOR === '/' &&
+            @is_readable('/dev/urandom')
+        ) {
             // DIRECTORY_SEPARATOR === '/' on Unix-like OSes -- this is a fast
             // way to exclude Windows.
             // 
@@ -71,16 +76,39 @@ if (PHP_VERSION_ID < 70000) {
             
             // See random_bytes_dev_urandom.php
             require_once "$__DIR__/random_bytes_dev_urandom.php";
-        } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
+        }
+        if (
+            !function_exists('random_bytes') &&
+            PHP_VERSION_ID >= 50307 &&
+            extension_loaded('mcrypt')
+        ) {
             // See random_bytes_mcrypt.php
             require_once "$__DIR__/random_bytes_mcrypt.php";
-        } elseif (extension_loaded('com_dotnet')) {
-            // See random_bytes_com_dotnet.php
-            require_once "$__DIR__/random_bytes_com_dotnet.php";
-        } elseif (extension_loaded('openssl') && PHP_VERSION_ID >= 50300) {
+        }
+        if (
+            !function_exists('random_bytes') && 
+            extension_loaded('com_dotnet') &&
+            class_exists('COM')
+        ) {
+            try {
+                $RandomCompatCOMtest = new COM('CAPICOM.Utilities.1');
+                if (method_exists($RandomCompatCOMtest, 'GetRandom')) {
+                    // See random_bytes_com_dotnet.php
+                    require_once "$__DIR__/random_bytes_com_dotnet.php";
+                }
+            } catch (com_exception $e) {
+                // Don't try to use it.
+            }
+        }
+        if (
+            !function_exists('random_bytes') && 
+            extension_loaded('openssl') &&
+            PHP_VERSION_ID >= 50300
+        ) {
             // See random_bytes_openssl.php
             require_once "$__DIR__/random_bytes_openssl.php";
-        } else {
+        }
+        if (!function_exists('random_bytes')) {
             /**
              * We don't have any more options, so let's throw an exception right now
              * and hope the developer won't let it fail silently.

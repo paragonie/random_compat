@@ -83,7 +83,7 @@ if [ $? -eq 0 ]; then
         exit 1
     fi
     # Should we perform full statistical analyses?
-    if [ $fulltest -eq 1 ]; then
+    if [[ "$fulltest" == "1" ]]; then
         php phpunit.phar --bootstrap "$parentdir/vendor/autoload.php" "$parentdir/tests/full"
         if [ $? -ne 0 ]; then
             # Test failure
@@ -91,7 +91,7 @@ if [ $? -eq 0 ]; then
         fi
     fi
     # Cleanup
-    if [ "$clean" -eq 1 ]; then
+    if [[ "$clean" == "1" ]]; then
         echo -e "\033[32mCleaning Up!\033[0m"
         rm -f phpunit.phar
         rm -f phpunit.phar.asc
