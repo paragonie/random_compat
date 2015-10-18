@@ -133,6 +133,7 @@ weren't for the contributions of the following individuals:
 * [@MasonM (Mason Malone)](https://github.com/MasonM)
 * [@mmeyer2k (Michael M)](https://github.com/mmeyer2k)
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
+* [@nicolas-grekas (Nicolas Grekas)](https://github.com/nicolas-grekas)
 * [@oittaa](https://github.com/oittaa)
 * [@redragonx (Stephen Chavez)](https://github.com/redragonx)
 * [@rchouinard (Ryan Chouinard)](https://github.com/rchouinard)
