@@ -74,7 +74,15 @@ if (PHP_VERSION_ID < 70000) {
         } elseif (PHP_VERSION_ID >= 50307 && extension_loaded('mcrypt')) {
             // See random_bytes_mcrypt.php
             require_once "$__DIR__/random_bytes_mcrypt.php";
-        } elseif (extension_loaded('com_dotnet')) {
+        } elseif (
+            extension_loaded('com_dotnet') &&
+            class_exists('COM') &&
+            (
+                $RandomCompatCOMtest = new COM('CAPICOM.Utilities.1') &&
+                method_exists($RandomCompatCOMtest, 'GetRandom')
+            )
+        ) {
+            unset($RandomCompatCOMtest);
             // See random_bytes_com_dotnet.php
             require_once "$__DIR__/random_bytes_com_dotnet.php";
         } elseif (extension_loaded('openssl') && PHP_VERSION_ID >= 50300) {
