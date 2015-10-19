@@ -83,12 +83,11 @@ The differences:
 
 * Catching `Error` works, so long as it is caught before `Exception`.
 * Catching `Exception` has different behavior, without previously catching `Error`.
-* Catching `Throwable` does *not* work the same between PHP5 and PHP7.
 * There is *no* portable way to catch all errors/exceptions.
 
 #### Our recommendation
 
-**Always** catch `Error` before `Exception`, **do not** catch `Throwable`.
+**Always** catch `Error` before `Exception`.
 
 #### Example
 
