@@ -82,8 +82,19 @@ if (PHP_VERSION_ID < 70000) {
             PHP_VERSION_ID >= 50307 &&
             extension_loaded('mcrypt')
         ) {
-            // See random_bytes_mcrypt.php
-            require_once "$__DIR__/random_bytes_mcrypt.php";
+            try {
+                $RandomCompatMcrypttest = @mcrypt_create_iv(RANDOM_COMPAT_READ_BUFFER, MCRYPT_DEV_URANDOM);
+                if (
+                    $RandomCompatMcrypttest !== false &&
+                    RandomCompat_strlen($RandomCompatMcrypttest) === RANDOM_COMPAT_READ_BUFFER
+                ) {
+                    // See random_bytes_mcrypt.php
+                    require_once "$__DIR__/random_bytes_mcrypt.php";
+                }
+            } catch (Exception $e) {
+                // Don't try to use it.
+            }
+            unset($RandomCompatMcrypttest);
         }
         if (
             !function_exists('random_bytes') && 
@@ -99,6 +110,7 @@ if (PHP_VERSION_ID < 70000) {
             } catch (com_exception $e) {
                 // Don't try to use it.
             }
+            unset($RandomCompatCOMtest);
         }
         if (
             !function_exists('random_bytes') && 
