@@ -26,15 +26,9 @@
  * SOFTWARE.
  */
 
-if (!interface_exists('Throwable', false)) {
-    interface Throwable
-    {
-    }
-}
-
 if (!class_exists('Error', false)) {
     // We can't really avoid making this extend Exception in PHP 5.
-    class Error extends Exception implements Throwable
+    class Error extends Exception
     {
         
     }
