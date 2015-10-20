@@ -54,7 +54,7 @@ function random_bytes($bytes)
         );
     }
 
-    $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+    $buf = @mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
     if ($buf !== false) {
         if (RandomCompat_strlen($buf) === $bytes) {
             /**
