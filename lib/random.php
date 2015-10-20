@@ -28,9 +28,9 @@
 
 if (!defined('PHP_VERSION_ID')) {
     // This constant was introduced in PHP 5.2.7
-    $version = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
-    unset($version);
+    $RandomCompatversion = explode('.', PHP_VERSION);
+    define('PHP_VERSION_ID', ($RandomCompatversion[0] * 10000 + $RandomCompatversion[1] * 100 + $RandomCompatversion[2]));
+    unset($RandomCompatversion);
 }
 if (PHP_VERSION_ID < 70000) {
     if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
