@@ -58,7 +58,7 @@ if (PHP_VERSION_ID < 70000) {
          */
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
-            require_once "$__DIR__/random_bytes_libsodium.php";
+            require_once $__DIR__.'/random_bytes_libsodium.php';
         }
         if (
             !function_exists('random_bytes') && 
@@ -75,7 +75,7 @@ if (PHP_VERSION_ID < 70000) {
             // that is not helpful to us here.
             
             // See random_bytes_dev_urandom.php
-            require_once "$__DIR__/random_bytes_dev_urandom.php";
+            require_once $__DIR__.'/random_bytes_dev_urandom.php';
         }
         if (
             !function_exists('random_bytes') &&
@@ -83,7 +83,7 @@ if (PHP_VERSION_ID < 70000) {
             extension_loaded('mcrypt')
         ) {
             // See random_bytes_mcrypt.php
-            require_once "$__DIR__/random_bytes_mcrypt.php";
+            require_once $__DIR__.'/random_bytes_mcrypt.php';
         }
         if (
             !function_exists('random_bytes') && 
@@ -94,7 +94,7 @@ if (PHP_VERSION_ID < 70000) {
                 $RandomCompatCOMtest = new COM('CAPICOM.Utilities.1');
                 if (method_exists($RandomCompatCOMtest, 'GetRandom')) {
                     // See random_bytes_com_dotnet.php
-                    require_once "$__DIR__/random_bytes_com_dotnet.php";
+                    require_once $__DIR__.'/random_bytes_com_dotnet.php';
                 }
             } catch (com_exception $e) {
                 // Don't try to use it.
@@ -106,7 +106,7 @@ if (PHP_VERSION_ID < 70000) {
             PHP_VERSION_ID >= 50300
         ) {
             // See random_bytes_openssl.php
-            require_once "$__DIR__/random_bytes_openssl.php";
+            require_once $__DIR__.'/random_bytes_openssl.php';
         }
         if (!function_exists('random_bytes')) {
             /**
@@ -122,7 +122,7 @@ if (PHP_VERSION_ID < 70000) {
         }
     }
     if (!function_exists('random_int')) {
-        require_once "$__DIR__/random_int.php";
+        require_once $__DIR__.'/random_int.php';
     }
     unset($__DIR__);
 }
