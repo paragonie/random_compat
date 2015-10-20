@@ -99,6 +99,7 @@ if (PHP_VERSION_ID < 70000) {
             } catch (com_exception $e) {
                 // Don't try to use it.
             }
+            unset($RandomCompatCOMtest);
         }
         if (
             !function_exists('random_bytes') && 
