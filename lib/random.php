@@ -104,7 +104,15 @@ if (PHP_VERSION_ID < 70000) {
         if (
             !function_exists('random_bytes') && 
             extension_loaded('openssl') &&
-            PHP_VERSION_ID >= 50300
+            (
+                // Unix-like with PHP >= 5.3.0 or
+                (
+                    DIRECTORY_SEPARATOR === '/' &&
+                    PHP_VERSION_ID >= 50300
+                ) ||
+                // Windows with PHP >= 5.3.4
+                PHP_VERSION_ID >= 50304
+            )
         ) {
             // See random_bytes_openssl.php
             require_once $RandomCompatDIR.'/random_bytes_openssl.php';
