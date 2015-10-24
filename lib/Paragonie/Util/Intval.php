@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
  * 
@@ -26,52 +26,39 @@
  * SOFTWARE.
  */
 
-/**
- * Windows with PHP < 5.3.0 will not have the function
- * openssl_random_pseudo_bytes() available, so let's use
- * CAPICOM to work around this deficiency.
- * 
- * @param int $bytes
- * 
- * @throws Exception
- * 
- * @return string
- */
-function random_bytes($bytes)
+class Paragonie_Util_Intval
 {
-    try {
-        $bytes = RandomCompat_intval($bytes);
-    } catch (TypeError $ex) {
-        throw new TypeError(
-            'random_bytes(): $bytes must be an integer'
-        );
-    }
-    if ($bytes < 1) {
-        throw new Error(
-            'Length must be greater than 0'
-        );
-    }
-    $buf = '';
-    $util = new COM('CAPICOM.Utilities.1');
-    $execCount = 0;
     /**
-     * Let's not let it loop forever. If we run N times and fail to
-     * get N bytes of random data, then CAPICOM has failed us.
+     * Cast to an integer if we can, safely.
+     * 
+     * If you pass it a float in the range (~PHP_INT_MAX, PHP_INT_MAX)
+     * (non-inclusive), it will sanely cast it to an int. If you it's equal to
+     * ~PHP_INT_MAX or PHP_INT_MAX, we let it fail as not an integer. Floats 
+     * lose precision, so the <= and => operators might accidentally let a float
+     * through.
+     * 
+     * @param numeric $number The number we want to convert to an int
+     * @param boolean $fail_open Set to true to not throw an exception
+     * 
+     * @return int (or float if $fail_open)
      */
-    do {
-        $buf .= base64_decode($util->GetRandom($bytes, 0));
-        if (RandomCompat_strlen($buf) >= $bytes) {
-            /**
-             * Return our random entropy buffer here:
-             */
-            return RandomCompat_substr($buf, 0, $bytes);
+    public static function intval($number, $caller_name, $arg_position)
+    {
+        if (is_numeric($number)) {
+            $number += 0;
         }
-        ++$execCount; 
-    } while ($execCount < $bytes);
-    /**
-     * If we reach here, PHP has failed us.
-     */
-    throw new Exception(
-        'Could not gather sufficient random data'
-    );
+        if (
+            is_float($number) &&
+            $number > ~PHP_INT_MAX &&
+            $number < PHP_INT_MAX
+        ) {
+            $number = (int) $number;
+        }
+        if (is_int($number)) {
+            return $number;
+        }
+        throw new TypeError(
+            sprintf('%s() expects parameter %d to be integer, %s given', $caller_name, $arg_position, gettype($number))
+        );
+    }
 }

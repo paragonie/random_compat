@@ -26,25 +26,19 @@
  * SOFTWARE.
  */
 
-if (!defined('PHP_VERSION_ID')) {
-    // This constant was introduced in PHP 5.2.7
-    $RandomCompatversion = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($RandomCompatversion[0] * 10000 + $RandomCompatversion[1] * 100 + $RandomCompatversion[2]));
-    unset($RandomCompatversion);
+// This file uses PHP autoloading to load implementations on-demand.
+// Include random.php instead if you don't want to use autoloading.
+
+if (!function_exists('random_bytes')) {
+    function random_bytes($bytes)
+    {
+        return Paragonie_RandomBytes::random_bytes($bytes);
+    }
 }
-if (PHP_VERSION_ID < 70000) {
-    $RandomCompatDIR = dirname(__FILE__);
-    if (!class_exists('Error', false)) {
-        require_once $RandomCompatDIR.'/stubs/Error.php';
+
+if (!function_exists('random_int')) {
+    function random_int($min, $max)
+    {
+        return Paragonie_RandomInt::random_int($min, $max);
     }
-    if (!class_exists('TypeError', false)) {
-        require_once $RandomCompatDIR.'/stubs/TypeError.php';
-    }
-    require_once $RandomCompatDIR.'/Paragonie/Util/Binary.php';
-    require_once $RandomCompatDIR.'/Paragonie/Util/Intval.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomAdapter.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomInt.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomBytes.php';
-    require_once $RandomCompatDIR.'/autoload.php';
-    unset($RandomCompatDIR);
 }

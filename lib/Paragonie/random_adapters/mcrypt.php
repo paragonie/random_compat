@@ -26,25 +26,22 @@
  * SOFTWARE.
  */
 
-if (!defined('PHP_VERSION_ID')) {
-    // This constant was introduced in PHP 5.2.7
-    $RandomCompatversion = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($RandomCompatversion[0] * 10000 + $RandomCompatversion[1] * 100 + $RandomCompatversion[2]));
-    unset($RandomCompatversion);
-}
-if (PHP_VERSION_ID < 70000) {
-    $RandomCompatDIR = dirname(__FILE__);
-    if (!class_exists('Error', false)) {
-        require_once $RandomCompatDIR.'/stubs/Error.php';
+class Paragonie_RandomAdapter
+{
+    /**
+     * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
+     * 
+     * @ref https://bugs.php.net/bug.php?id=55169
+     * @ref https://github.com/php/php-src/blob/c568ffe5171d942161fc8dda066bce844bdef676/ext/mcrypt/mcrypt.c#L1321-L1386
+     * 
+     * @param int $bytes
+     * 
+     * @throws Exception
+     * 
+     * @return string
+     */
+    protected static function do_random_bytes($bytes)
+    {
+        return @mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
     }
-    if (!class_exists('TypeError', false)) {
-        require_once $RandomCompatDIR.'/stubs/TypeError.php';
-    }
-    require_once $RandomCompatDIR.'/Paragonie/Util/Binary.php';
-    require_once $RandomCompatDIR.'/Paragonie/Util/Intval.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomAdapter.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomInt.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomBytes.php';
-    require_once $RandomCompatDIR.'/autoload.php';
-    unset($RandomCompatDIR);
 }

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
  * 
@@ -26,17 +26,7 @@
  * SOFTWARE.
  */
 
-if (!class_exists('Error', false)) {
-    // We can't really avoid making this extend Exception in PHP 5.
-    class Error extends Exception
-    {
-        
-    }
-}
-
-if (!class_exists('TypeError', false)) {
-    class TypeError extends Error
-    {
-        
-    }
+class TypeError extends Error
+{
+    
 }

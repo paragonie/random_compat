@@ -1,22 +1,22 @@
 <?php
-/**
- * Random_* Compatibility Library
+/*
+ * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
- *
+ * 
  * The MIT License (MIT)
- *
+ * 
  * Copyright (c) 2015 Paragon Initiative Enterprises
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,11 +26,12 @@
  * SOFTWARE.
  */
 
-if (!function_exists('RandomCompat_strlen')) {
-    if (
-        defined('MB_OVERLOAD_STRING') &&
-        ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING
-    ) {
+if (
+    defined('MB_OVERLOAD_STRING') &&
+    ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING
+) {
+    class Paragonie_Util_Binary
+    {
         /**
          * strlen() implementation that isn't brittle to mbstring.func_overload
          *
@@ -43,44 +44,16 @@ if (!function_exists('RandomCompat_strlen')) {
          *
          * @return int
          */
-        function RandomCompat_strlen($binary_string)
+        public static function strlen($binary_string)
         {
             if (!is_string($binary_string)) {
                 throw new TypeError(
-                    'RandomCompat_strlen() expects a string'
+                    __METHOD__.'() expects a string'
                 );
             }
             return mb_strlen($binary_string, '8bit');
         }
-    } else {
-        /**
-         * strlen() implementation that isn't brittle to mbstring.func_overload
-         *
-         * This version just used the default strlen()
-         *
-         * @param string $binary_string
-         *
-         * @throws TypeError
-         *
-         * @return int
-         */
-        function RandomCompat_strlen($binary_string)
-        {
-            if (!is_string($binary_string)) {
-                throw new TypeError(
-                    'RandomCompat_strlen() expects a string'
-                );
-            }
-            return strlen($binary_string);
-        }
-    }
-}
 
-if (!function_exists('RandomCompat_substr')) {
-    if (
-        defined('MB_OVERLOAD_STRING') &&
-        ini_get('mbstring.func_overload') & MB_OVERLOAD_STRING
-    ) {
         /**
          * substr() implementation that isn't brittle to mbstring.func_overload
          *
@@ -95,16 +68,16 @@ if (!function_exists('RandomCompat_substr')) {
          *
          * @return string
          */
-        function RandomCompat_substr($binary_string, $start, $length = null)
+        public static function substr($binary_string, $start, $length = null)
         {
             if (!is_string($binary_string)) {
                 throw new TypeError(
-                    'RandomCompat_substr(): First argument should be a string'
+                    __METHOD__.'(): First argument should be a string'
                 );
             }
             if (!is_int($start)) {
                 throw new TypeError(
-                    'RandomCompat_substr(): Second argument should be an integer'
+                    __METHOD__.'(): Second argument should be an integer'
                 );
             }
             if ($length === null) {
@@ -112,15 +85,39 @@ if (!function_exists('RandomCompat_substr')) {
                  * mb_substr($str, 0, NULL, '8bit') returns an empty string on
                  * PHP 5.3, so we have to find the length ourselves.
                  */
-                $length = RandomCompat_strlen($length) - $start;
+                $length = mb_strlen($binary_string, '8bit') - $start;
             } elseif (!is_int($length)) {
                 throw new TypeError(
-                    'RandomCompat_substr(): Third argument should be an integer, or omitted'
+                    __METHOD__.'(): Third argument should be an integer, or omitted'
                 );
             }
             return mb_substr($binary_string, $start, $length, '8bit');
         }
-    } else {
+    }
+} else {
+    class Paragonie_Util_Binary
+    {
+        /**
+         * strlen() implementation that isn't brittle to mbstring.func_overload
+         *
+         * This version just used the default strlen()
+         *
+         * @param string $binary_string
+         *
+         * @throws TypeError
+         *
+         * @return int
+         */
+        public static function strlen($binary_string)
+        {
+            if (!is_string($binary_string)) {
+                throw new TypeError(
+                    __METHOD__.'() expects a string'
+                );
+            }
+            return strlen($binary_string);
+        }
+
         /**
          * substr() implementation that isn't brittle to mbstring.func_overload
          *
@@ -134,22 +131,22 @@ if (!function_exists('RandomCompat_substr')) {
          *
          * @return string
          */
-        function RandomCompat_substr($binary_string, $start, $length = null)
+        public static function substr($binary_string, $start, $length = null)
         {
             if (!is_string($binary_string)) {
                 throw new TypeError(
-                    'RandomCompat_substr(): First argument should be a string'
+                    __METHOD__.'(): First argument should be a string'
                 );
             }
             if (!is_int($start)) {
                 throw new TypeError(
-                    'RandomCompat_substr(): Second argument should be an integer'
+                    __METHOD__.'(): Second argument should be an integer'
                 );
             }
             if ($length !== null) {
                 if (!is_int($length)) {
                     throw new TypeError(
-                        'RandomCompat_substr(): Third argument should be an integer, or omitted'
+                        __METHOD__.'(): Third argument should be an integer, or omitted'
                     );
                 }
                 return substr($binary_string, $start, $length);

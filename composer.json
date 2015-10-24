@@ -30,6 +30,12 @@
         "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
     },
     "autoload": {
-        "files": ["lib/random.php"]
+        "psr-0": {
+            "Paragonie_Util": "lib/",
+            "Paragonie_Random": "lib/"
+        },
+        "classmap": [ "lib/stubs/" ],
+        "files": ["lib/autoload.php"],
+        "exclude-from-classmap": [ "lib/Paragonie/random_adapters/" ]
     }
 }

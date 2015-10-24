@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
  * 
@@ -26,47 +26,38 @@
  * SOFTWARE.
  */
 
-
-/**
- * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
- * 
- * @ref https://bugs.php.net/bug.php?id=55169
- * @ref https://github.com/php/php-src/blob/c568ffe5171d942161fc8dda066bce844bdef676/ext/mcrypt/mcrypt.c#L1321-L1386
- * 
- * @param int $bytes
- * 
- * @throws Exception
- * 
- * @return string
- */
-function random_bytes($bytes)
+class Paragonie_RandomAdapter
 {
-    try {
-        $bytes = RandomCompat_intval($bytes);
-    } catch (TypeError $ex) {
-        throw new TypeError(
-            'random_bytes(): $bytes must be an integer'
-        );
-    }
-    if ($bytes < 1) {
-        throw new Error(
-            'Length must be greater than 0'
-        );
-    }
-
-    $buf = @mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
-    if ($buf !== false) {
-        if (RandomCompat_strlen($buf) === $bytes) {
-            /**
-             * Return our random entropy buffer here:
-             */
-            return $buf;
-        }
-    }
     /**
-     * If we reach here, PHP has failed us.
+     * If the libsodium PHP extension is loaded, we'll use it above any other
+     * solution.
+     *
+     * libsodium-php project:
+     * @ref https://github.com/jedisct1/libsodium-php
+     *
+     * @param int $bytes
+     *
+     * @throws Exception
+     *
+     * @return string
      */
-    throw new Exception(
-        'Could not gather sufficient random data'
-    );
+    protected static function do_random_bytes($bytes)
+    {
+        /**
+         * \Sodium\randombytes_buf() doesn't allow more than 2147483647 bytes to be
+         * generated in one invocation.
+         */
+        if ($bytes > 2147483647) {
+            $buf = '';
+            for ($i = 0; $i < $bytes; $i += 1073741824) {
+                $n = ($bytes - $i) > 1073741824
+                    ? 1073741824
+                    : $bytes - $i;
+                $buf .= \Sodium\randombytes_buf($n);
+            }
+        } else {
+            $buf = \Sodium\randombytes_buf($bytes);
+        }
+        return $buf;
+    }
 }

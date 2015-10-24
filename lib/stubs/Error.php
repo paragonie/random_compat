@@ -26,25 +26,8 @@
  * SOFTWARE.
  */
 
-if (!defined('PHP_VERSION_ID')) {
-    // This constant was introduced in PHP 5.2.7
-    $RandomCompatversion = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($RandomCompatversion[0] * 10000 + $RandomCompatversion[1] * 100 + $RandomCompatversion[2]));
-    unset($RandomCompatversion);
-}
-if (PHP_VERSION_ID < 70000) {
-    $RandomCompatDIR = dirname(__FILE__);
-    if (!class_exists('Error', false)) {
-        require_once $RandomCompatDIR.'/stubs/Error.php';
-    }
-    if (!class_exists('TypeError', false)) {
-        require_once $RandomCompatDIR.'/stubs/TypeError.php';
-    }
-    require_once $RandomCompatDIR.'/Paragonie/Util/Binary.php';
-    require_once $RandomCompatDIR.'/Paragonie/Util/Intval.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomAdapter.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomInt.php';
-    require_once $RandomCompatDIR.'/Paragonie/RandomBytes.php';
-    require_once $RandomCompatDIR.'/autoload.php';
-    unset($RandomCompatDIR);
+// We can't really avoid making this extend Exception in PHP 5.
+class Error extends Exception
+{
+    
 }
