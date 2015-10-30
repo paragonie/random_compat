@@ -21,6 +21,6 @@ install:
 - composer install
 - composer self-update
 - composer update
-- chmod +x ./tests/phpunit.sh
+- chmod +x ./phpunit.sh
 
 script: ./phpunit.sh travis
