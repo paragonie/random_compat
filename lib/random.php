@@ -92,10 +92,10 @@ if (PHP_VERSION_ID < 70000) {
         ) {
             $RandomCompat_disabled_classes = explode(
                 ',',
-                ini_get('disabled_classes')
+                strtolower(ini_get('disabled_classes'))
             );
             
-            if (!in_array('COM', $RandomCompat_disabled_classes)) {
+            if (!in_array('com', $RandomCompat_disabled_classes)) {
                 try {
                     $RandomCompatCOMtest = new COM('CAPICOM.Utilities.1');
                     if (method_exists($RandomCompatCOMtest, 'GetRandom')) {
