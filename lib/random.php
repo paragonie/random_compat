@@ -90,9 +90,9 @@ if (PHP_VERSION_ID < 70000) {
             extension_loaded('com_dotnet') &&
             class_exists('COM')
         ) {
-            $RandomCompat_disabled_classes = explode(
-                ',',
-                strtolower(ini_get('disabled_classes'))
+            $RandomCompat_disabled_classes = preg_split(
+                '#\s*,\s*#', 
+                strtolower(ini_get('disable_classes'))
             );
             
             if (!in_array('com', $RandomCompat_disabled_classes)) {
