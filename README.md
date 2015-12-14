@@ -28,6 +28,14 @@ If PHP cannot safely generate random data, this library will throw an `Exception
 It will never fall back to insecure random data. If this keeps happening, upgrade
 to a newer version of PHP immediately.
 
+## Initial Setup
+
+Simply copy all the files in /lib/ into one folder and include or require the `random.php`.
+If the files are in a folder `include/php/random` you need to call
+```php
+require_once("include/php/random/random.php");
+```
+
 ## Usage
 
 This library exposes the [CSPRNG functions added in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
