@@ -28,6 +28,14 @@ If PHP cannot safely generate random data, this library will throw an `Exception
 It will never fall back to insecure random data. If this keeps happening, upgrade
 to a newer version of PHP immediately.
 
+## Install
+
+Via [Composer](https://getcomposer.org/)
+
+``` bash
+$ composer require paragonie/random_compat
+```
+
 ## Usage
 
 This library exposes the [CSPRNG functions added in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
