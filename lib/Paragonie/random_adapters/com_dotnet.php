@@ -1,22 +1,22 @@
 <?php
-/**
- * Random_* Compatibility Library
+/*
+ * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
- *
+ * 
  * The MIT License (MIT)
- *
+ * 
  * Copyright (c) 2015 Paragon Initiative Enterprises
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,39 +26,37 @@
  * SOFTWARE.
  */
 
-if (!function_exists('RandomCompat_intval')) {
-    
+class Paragonie_RandomAdapter
+{
     /**
-     * Cast to an integer if we can, safely.
+     * Windows with PHP < 5.3.0 will not have the function
+     * openssl_random_pseudo_bytes() available, so let's use
+     * CAPICOM to work around this deficiency.
      * 
-     * If you pass it a float in the range (~PHP_INT_MAX, PHP_INT_MAX)
-     * (non-inclusive), it will sanely cast it to an int. If you it's equal to
-     * ~PHP_INT_MAX or PHP_INT_MAX, we let it fail as not an integer. Floats 
-     * lose precision, so the <= and => operators might accidentally let a float
-     * through.
+     * @param int $bytes
      * 
-     * @param numeric $number The number we want to convert to an int
-     * @param boolean $fail_open Set to true to not throw an exception
+     * @throws Exception
      * 
-     * @return int (or float if $fail_open)
+     * @return string
      */
-    function RandomCompat_intval($number, $fail_open = false)
+    protected static function do_random_bytes($bytes)
     {
-        if (is_numeric($number)) {
-            $number += 0;
-        }
-        if (
-            is_float($number) &&
-            $number > ~PHP_INT_MAX &&
-            $number < PHP_INT_MAX
-        ) {
-            $number = (int) $number;
-        }
-        if (is_int($number) || $fail_open) {
-            return $number;
-        }
-        throw new TypeError(
-            'Expected an integer.'
-        );
+        $buf = '';
+        $util = new COM('CAPICOM.Utilities.1');
+        $execCount = 0;
+        /**
+         * Let's not let it loop forever. If we run N times and fail to
+         * get N bytes of random data, then CAPICOM has failed us.
+         */
+        do {
+            $buf .= base64_decode($util->GetRandom($bytes, 0));
+            if (isset($buf[$bytes - 1])) {
+                /**
+                 * Return our random entropy buffer here:
+                 */
+                return $buf;
+            }
+            ++$execCount; 
+        } while ($execCount < $bytes);
     }
 }

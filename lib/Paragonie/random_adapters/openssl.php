@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
  * 
@@ -26,59 +26,34 @@
  * SOFTWARE.
  */
 
-/**
- * If the libsodium PHP extension is loaded, we'll use it above any other
- * solution.
- *
- * libsodium-php project:
- * @ref https://github.com/jedisct1/libsodium-php
- *
- * @param int $bytes
- *
- * @throws Exception
- *
- * @return string
- */
-function random_bytes($bytes)
+class Paragonie_RandomAdapter
 {
-    try {
-        $bytes = RandomCompat_intval($bytes);
-    } catch (TypeError $ex) {
-        throw new TypeError(
-            'random_bytes(): $bytes must be an integer'
-        );
-    }
-    if ($bytes < 1) {
-        throw new Error(
-            'Length must be greater than 0'
-        );
-    }
     /**
-     * \Sodium\randombytes_buf() doesn't allow more than 2147483647 bytes to be
-     * generated in one invocation.
+     * Since openssl_random_pseudo_bytes() uses openssl's 
+     * RAND_pseudo_bytes() API, which has been marked as deprecated by the
+     * OpenSSL team, this is our last resort before failure.
+     * 
+     * @ref https://www.openssl.org/docs/crypto/RAND_bytes.html
+     * 
+     * @param int $bytes
+     * 
+     * @throws Exception
+     * 
+     * @return string
      */
-    if ($bytes > 2147483647) {
-        $buf = '';
-        for ($i = 0; $i < $bytes; $i += 1073741824) {
-            $n = ($bytes - $i) > 1073741824
-                ? 1073741824
-                : $bytes - $i;
-            $buf .= \Sodium\randombytes_buf($n);
-        }
-    } else {
-        $buf = \Sodium\randombytes_buf($bytes);
-    }
-
-    if ($buf !== false) {
-        if (RandomCompat_strlen($buf) === $bytes) {
+    protected static function do_random_bytes($bytes)
+    {
+        $secure = true;
+        /**
+         * $secure is passed by reference. If it's set to false, fail. Note
+         * that this will only return false if this function fails to return
+         * any data.
+         * 
+         * @ref https://github.com/paragonie/random_compat/issues/6#issuecomment-119564973
+         */
+        $buf = openssl_random_pseudo_bytes($bytes, $secure);
+        if ($secure) {
             return $buf;
         }
     }
-
-    /**
-     * If we reach here, PHP has failed us.
-     */
-    throw new Exception(
-        'Could not gather sufficient random data'
-    );
 }
