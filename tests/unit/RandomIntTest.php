@@ -49,4 +49,15 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             $this->assertTrue($ex instanceof Exception);
         }
     }
+
+    public function testRandomRange()
+    {
+        $try = 64;
+        $maxLen = strlen(~PHP_INT_MAX);
+        do {
+            $rand = random_int(~PHP_INT_MAX, PHP_INT_MAX);
+        } while (strlen($rand) !== $maxLen && $try--);
+
+        $this->assertGreaterThan(0, $try);
+    }
 }
