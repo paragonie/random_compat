@@ -134,7 +134,7 @@ if (PHP_VERSION_ID < 70000) {
              * We don't have any more options, so let's throw an exception right now
              * and hope the developer won't let it fail silently.
              */
-            function random_bytes()
+            function random_bytes($length)
             {
                 throw new Exception(
                     'There is no suitable CSPRNG installed on your system'
