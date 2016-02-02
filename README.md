@@ -38,7 +38,7 @@ to a newer version of PHP immediately.
 
 1. Download [a stable release](https://github.com/paragonie/random_compat/releases/latest).
 2. Extract the files into your project.
-3. `require_once "/path/to/random_compat/lib/random.php";
+3. `require_once "/path/to/random_compat/lib/random.php";`
 
 ## Usage
 
