@@ -1,7 +1,12 @@
-### Unreleased
+### Version 1.2.0 - 2015-02-05
 
 * Whitespace and other cosmetic changes
 * Added a changelog.
+* We now ship with a command line utility to build a PHP Archive from the 
+  command line.
+  
+  Every time we publish a new release, we will also upload a .phar
+  to Github. Our public key is signed by our GPG key.
 
 ### Version 1.1.6 - 2015-01-29
 
