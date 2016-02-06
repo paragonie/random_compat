@@ -147,6 +147,7 @@ weren't for the contributions of the following individuals:
 * [@narfbg (Andrey Andreev)](https://github.com/narfbg)
 * [@nicolas-grekas (Nicolas Grekas)](https://github.com/nicolas-grekas)
 * [@oittaa](https://github.com/oittaa)
+* [@oucil (Kevin Farley)](https://github.com/oucil)
 * [@redragonx (Stephen Chavez)](https://github.com/redragonx)
 * [@rchouinard (Ryan Chouinard)](https://github.com/rchouinard)
 * [@SammyK (Sammy Kaye Powers)](https://github.com/SammyK)

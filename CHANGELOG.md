@@ -6,7 +6,7 @@
 ### Version 1.1.6 - 2015-01-29
 
 * Eliminate `open_basedir` warnings by detecting this configuration setting. 
-  (Thanks @oucil for reporting this.)
+  (Thanks [@oucil](https://github.com/oucil) for reporting this.)
 * Added install instructions to the README.
 * Documentation cleanup (there is, in fact, no `MCRYPT_CREATE_IV` constant, I 
   meant to write `MCRYPT_DEV_URANDOM`)
@@ -17,7 +17,7 @@ Prevent fatal errors on platforms with older versions of libsodium.
 
 ### Version 1.1.4 - 2015-12-10
 
-Thanks @narfbg for [critiquing the previous patch](https://github.com/paragonie/random_compat/issues/79#issuecomment-163590589)
+Thanks [@narfbg](https://github.com/narfbg) for [critiquing the previous patch](https://github.com/paragonie/random_compat/issues/79#issuecomment-163590589)
 and suggesting a fix.
 
 ### Version 1.1.3 - 2015-12-09
@@ -48,7 +48,7 @@ support for PHP < 5.4.1 without mcrypt on Windows 7+ in the process. Since this
 ### Version 1.0.9 - 2015-10-20
 
 There is an outstanding issue `mcrypt_create_iv()` and PHP 7's `random_bytes()`
-on Windows reported by @nicolas-grekas caused by `proc_open()` and environment
+on Windows reported by [@nicolas-grekas](https://github.com/nicolas-grekas) caused by `proc_open()` and environment
 variable handling (discovered by Appveyor when developing Symfony).
 
 Since the break is consistent, it's not our responsibility to fix it, but we 
@@ -64,7 +64,7 @@ an error and then throw an `Exception`).
 
 ### Version 1.0.7 - 2015-10-16
 
-Several large integer handling bugfixes were contributed by @oittaa.
+Several large integer handling bugfixes were contributed by [@oittaa](https://github.com/oittaa).
 
 ### Version 1.0.6 - 2015-10-15
 
@@ -120,7 +120,7 @@ still strongly encouraged.
 Less strict input validation on `random_int()` parameters. PHP 7's `random_int()`
 accepts strings and floats that look like numbers, so we should too.
 
-Thanks @dd32 for correcting this oversight.
+Thanks [@dd32](https://github.com/@dd32) for correcting this oversight.
 
 ### Version 1.0.1 - 2015-09-10
 
@@ -149,15 +149,15 @@ This should be identical to 1.0.0 sans any last-minute changes or performance en
 
 * Split the implementations into their own file (for ease of auditing)
 * Corrected the file type check after `/dev/urandom` has been opened (thanks
-  @narfbg and @jedisct1)
+  [@narfbg](https://github.com/narfbg) and [@jedisct1](https://github.com/jedisct1))
 
 ### Version 0.9.5 (pre-release) - 2015-07-31
 
 * Validate that `/dev/urandom` is a character device 
   * Reported by [@lokdnet](https://twitter.com/lokdnet)
-  * Investigated by @narfbg and [frymaster](http://stackoverflow.com/users/1226810/frymaster) on [StackOverflow](http://stackoverflow.com/q/31631066/2224584)
-* Remove support for `/dev/arandom` which is an old OpenBSD feature, thanks @jedisct1
-* Prevent race conditions on the `filetype()` check, thanks @jedisct1
+  * Investigated by [@narfbg](https://github.com/narfbg) and [frymaster](http://stackoverflow.com/users/1226810/frymaster) on [StackOverflow](http://stackoverflow.com/q/31631066/2224584)
+* Remove support for `/dev/arandom` which is an old OpenBSD feature, thanks [@jedisct1](https://github.com/jedisct1)
+* Prevent race conditions on the `filetype()` check, thanks [@jedisct1](https://github.com/jedisct1)
 * Buffer file reads to 8 bytes (performance optimization; PHP defaults to 8192 bytes)
 
 ### Version 0.9.4 (pre-release) - 2015-07-27
@@ -174,28 +174,28 @@ behavior.
 Changes since 0.9.2:
 
 * Prioritize `/dev/arandom` and `/dev/urandom` over mcrypt.
-* @oittaa removed the -1 and +1 juggling on `$range` calculations for `random_int()`
+[@oittaa](https://github.com/oittaa) removed the -1 and +1 juggling on `$range` calculations for `random_int()`
 * Whitespace and comment clean-up, plus better variable names
 * Actually put a description in the composer.json file...
 
 ### Version 0.9.2 (pre-release) - 2015-07-16
 
 * Consolidated `$range > PHP_INT_MAX` logic with `$range <= PHP_INT_MAX` (thanks
-  @oittaa and @CodesInChaos)
+  [@oittaa](https://github.com/oittaa) and [@CodesInChaos](https://github.com/CodesInChaos))
 * `tests/phpunit.sh` now also runs the tests with `mbstring.func_overload` and 
   `open_basedir`
 * Style consistency, whitespace cleanup, more meaningful variable names
 
 ### Version 0.9.1 (pre-release) - 2015-07-09
 
-* Return random values on integer ranges > `PHP_INT_MAX` (thanks @CodesInChaos)
+* Return random values on integer ranges > `PHP_INT_MAX` (thanks [@CodesInChaos](https://github.com/CodesInChaos))
 * Determined CSPRNG preference:
     1. `mcrypt_create_iv()` with `MCRYPT_DEV_URANDOM`
     2. `/dev/arandom`
     3. `/dev/urandom`
     4. `openssl_random_pseudo_bytes()`
-* Optimized backend selection (thanks @lt)
-* Fix #3 (thanks @scottchiefbaker)
+* Optimized backend selection (thanks [@lt](https://github.com/lt))
+* Fix #3 (thanks [@scottchiefbaker](https://github.com/scottchiefbaker))
 
 ### Version 0.9.0 (pre-release) - 2015-07-07
 
