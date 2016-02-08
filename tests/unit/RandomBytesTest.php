@@ -6,6 +6,34 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(function_exists('random_bytes'));
     }
     
+    public function testInvalidParams()
+    {
+        try {
+            $bytes = random_bytes('good morning');
+            $this->fail("random_bytes() should accept only an integer");
+        } catch (TypeError $ex) {
+            $this->assertTrue(true);
+        } catch (Error $ex) {
+            $this->assertTrue(true);
+        } catch (Exception $ex) {
+            $this->assertTrue(true);
+        }
+        
+        try {
+            $bytes = random_bytes([12]);
+            $this->fail("random_bytes() should accept only an integer");
+        } catch (TypeError $ex) {
+            $this->assertTrue(true);
+        } catch (Error $ex) {
+            $this->assertTrue(true);
+        } catch (Exception $ex) {
+            $this->assertTrue(true);
+        }
+        
+        // This should succeed:
+        $bytes = random_bytes('123456');
+    }
+    
     public function testOutput()
     {
         $bytes = array(
@@ -29,7 +57,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         
         try {
             $x = random_bytes(~PHP_INT_MAX - 1000000000);
-            $this->assertTrue(false);
+            $this->fail("Integer overflow (~PHP_INT_MAX - 1000000000).");
         } catch (TypeError $ex) {
             $this->assertTrue(true);
         } catch (Error $ex) {
@@ -40,7 +68,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         
         try {
             $x = random_bytes(PHP_INT_MAX + 1000000000);
-            $this->assertTrue(false);
+            $this->fail("Requesting too many bytes should fail.");
         } catch (TypeError $ex) {
             $this->assertTrue(true);
         } catch (Error $ex) {

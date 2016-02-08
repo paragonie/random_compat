@@ -42,7 +42,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             $this->assertFalse(is_int($i));
             $h = random_int("-2147483648", "2147483647");
             $i = random_int("-9223372036854775808", "9223372036854775807");
-            $this->assertFalse(true);
+            $this->fail("One of these options should have thrown an exception.");
         } catch (Error $ex) {
             $this->assertTrue($ex instanceof Error);
         } catch (Exception $ex) {
