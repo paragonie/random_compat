@@ -20,7 +20,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         }
         
         try {
-            $bytes = random_bytes([12]);
+            $bytes = random_bytes(array(12));
             $this->fail("random_bytes() should accept only an integer");
         } catch (TypeError $ex) {
             $this->assertTrue(true);
