@@ -163,6 +163,8 @@ if (PHP_VERSION_ID < 70000) {
                     // Don't try to use it.
                 }
             }
+            $RandomCompat_disabled_classes = null;
+            $RandomCompatCOMtest = null;
         }
 
         /**
