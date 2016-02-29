@@ -123,6 +123,12 @@ if (PHP_VERSION_ID < 70000) {
             !function_exists('random_bytes')
             &&
             PHP_VERSION_ID >= 50307
+            && 
+            // Prevent this code from hanging indefinitely;
+            // see https://bugs.php.net/bug.php?id=69833
+            (
+                PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613
+            )
             &&
             extension_loaded('mcrypt')
             &&
