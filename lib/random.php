@@ -114,6 +114,7 @@ if (PHP_VERSION_ID < 70000) {
             }
             // Unset variables after use
             $RandomCompat_basedir = null;
+            $RandomCompatUrandom = null;
         }
 
         /**
@@ -123,27 +124,18 @@ if (PHP_VERSION_ID < 70000) {
             !function_exists('random_bytes')
             &&
             PHP_VERSION_ID >= 50307
-            && 
-            // Prevent this code from hanging indefinitely;
-            // see https://bugs.php.net/bug.php?id=69833
-            (
-                PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613
-            )
             &&
             extension_loaded('mcrypt')
-            &&
-            // Windows, or open_basedir allows us to read /dev/urandom:
-            (
-                DIRECTORY_SEPARATOR !== '/' || $RandomCompatUrandom
-            )
         ) {
-            // See random_bytes_mcrypt.php
-            require_once $RandomCompatDIR.'/random_bytes_mcrypt.php';
-        }
-        
-        // Unset variables after use
-        if (DIRECTORY_SEPARATOR === '/') {
-            $RandomCompatUrandom = null;
+            // Prevent this code from hanging indefinitely on non-Windows;
+            // see https://bugs.php.net/bug.php?id=69833
+            if (
+                DIRECTORY_SEPARATOR !== '/' || 
+                (PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613)
+            ) {
+                // See random_bytes_mcrypt.php
+                require_once $RandomCompatDIR.'/random_bytes_mcrypt.php';
+            }
         }
 
         if (
