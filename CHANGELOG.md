@@ -1,4 +1,11 @@
-### Version 1.2.0 - 2015-02-05
+### Version 1.2.1 - 2016-02-29
+
+* PHP 5.6.10 - 5.6.12 will hang when mcrypt is used on Unix-based operating 
+  systems ([PHP bug 69833](https://bugs.php.net/bug.php?id=69833)). If you are
+  running one of these versions, please upgrade (or make sure `/dev/urandom` is
+  readable) otherwise you're relying on OpenSSL.
+
+### Version 1.2.0 - 2016-02-05
 
 * Whitespace and other cosmetic changes
 * Added a changelog.
@@ -8,7 +15,7 @@
   Every time we publish a new release, we will also upload a .phar
   to Github. Our public key is signed by our GPG key.
 
-### Version 1.1.6 - 2015-01-29
+### Version 1.1.6 - 2016-01-29
 
 * Eliminate `open_basedir` warnings by detecting this configuration setting. 
   (Thanks [@oucil](https://github.com/oucil) for reporting this.)
