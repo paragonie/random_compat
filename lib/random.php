@@ -4,7 +4,7 @@
  * for using the new PHP 7 random_* API in PHP 5 projects
  * 
  * @version 1.2.1
- * @released 2016-12-29
+ * @released 2016-02-29
  *
  * The MIT License (MIT)
  *
