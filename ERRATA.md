@@ -25,8 +25,8 @@ the remaining implementations.
 The reason is simple: `mcrypt_create_iv()` is part of PHP's `ext/mcrypt` code,
 and is not part `libmcrypt`. It actually does the right thing:
 
- * On Unix-based operating systems, it reads from `/dev/urandom`, which is the
-   sane and correct thing to do.
+ * On Unix-based operating systems, it reads from `/dev/urandom`, which unlike `/dev/random`
+   is the sane and correct thing to do.
  * On Windows, it reads from `CryptGenRandom`, which is an exclusively Windows
    way to get random bytes.
 
