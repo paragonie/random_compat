@@ -171,6 +171,7 @@ if (PHP_VERSION_ID < 70000) {
         /**
          * openssl_random_pseudo_bytes()
          */
+        /*
         if (
             (
                 // Unix-like with PHP >= 5.3.0 or
@@ -191,6 +192,7 @@ if (PHP_VERSION_ID < 70000) {
             // See random_bytes_openssl.php
             require_once $RandomCompatDIR.'/random_bytes_openssl.php';
         }
+        */
 
         /**
          * throw new Exception
