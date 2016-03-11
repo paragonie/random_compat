@@ -1,3 +1,9 @@
+### Version 1.2.2 - 2016-03-11
+
+* To prevent applications from hanging, if `/dev/urandom` is not
+  accessible to PHP, skip mcrypt (which just fails before giving OpenSSL
+  a chance and was morally equivalent to not offering OpenSSL at all).
+
 ### Version 1.2.1 - 2016-02-29
 
 * PHP 5.6.10 - 5.6.12 will hang when mcrypt is used on Unix-based operating 
