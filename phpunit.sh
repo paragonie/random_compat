@@ -20,13 +20,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "With open_basedir enabled:"
-php -d open_basedir=`pwd` vendor/bin/phpunit tests/unit
+php -d open_basedir=`pwd` vendor/bin/phpunit tests/unit_with_basedir
 if [ $? -ne 0 ]; then
     # Test failure
     exit 1
 fi
 echo "With open_basedir enabled, allowing /dev:"
-php -d open_basedir=`pwd`:/dev vendor/bin/phpunit tests/unit
+php -d open_basedir=`pwd`:/dev vendor/bin/phpunit tests/unit_with_basedir
 if [ $? -ne 0 ]; then
     # Test failure
     exit 1
