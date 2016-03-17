@@ -173,30 +173,6 @@ if (PHP_VERSION_ID < 70000) {
         }
 
         /**
-         * openssl_random_pseudo_bytes()
-         */
-        if (
-            (
-                // Unix-like with PHP >= 5.3.0 or
-                (
-                    DIRECTORY_SEPARATOR === '/'
-                    &&
-                    PHP_VERSION_ID >= 50300
-                )
-                ||
-                // Windows with PHP >= 5.4.1
-                PHP_VERSION_ID >= 50401
-            )
-            &&
-            !function_exists('random_bytes')
-            &&
-            extension_loaded('openssl')
-        ) {
-            // See random_bytes_openssl.php
-            require_once $RandomCompatDIR.'/random_bytes_openssl.php';
-        }
-
-        /**
          * throw new Exception
          */
         if (!function_exists('random_bytes')) {
