@@ -1,3 +1,22 @@
+### Version 1.3.0 - 2016-03-18
+
+* Removed `openssl_random_pseudo_bytes()` entirely. If you are using
+  random_compat in PHP on a Unix-like OS but cannot access
+  `/dev/urandom`, version 1.3+ will throw an `Exception`. If you want to
+  trust OpenSSL, feel free to write your own fallback code. e.g.
+  
+  ```php
+  try {
+      $bytes = random_bytes(32);
+  } catch (Exception $ex) {
+      $strong = false;
+      $bytes = openssl_random_pseudo_bytes(32, $strong);
+      if (!$strong) {
+          throw $ex;
+      }
+  }
+  ```
+
 ### Version 1.2.2 - 2016-03-11
 
 * To prevent applications from hanging, if `/dev/urandom` is not

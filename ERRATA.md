@@ -8,7 +8,6 @@ The order is:
  2. `fread() /dev/urandom if available`
  3. `mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM)`
  4. `COM('CAPICOM.Utilities.1')->GetRandom()`
- 5. `openssl_random_pseudo_bytes()`
 
 If libsodium is available, we get random data from it. This is the preferred
 method on all OSes, but libsodium is not very widely installed, so other
@@ -32,9 +31,4 @@ and is not part `libmcrypt`. It actually does the right thing:
 
 If we're on Windows and don't have access to `mcrypt`, we use `CAPICOM.Utilities.1`.
 
-Finally, we use `openssl_random_pseudo_bytes()` **as a last resort**, due to
-[PHP bug #70014](https://bugs.php.net/bug.php?id=70014). Internally, this 
-function calls `RAND_pseudo_bytes()`, which has been [deprecated](https://github.com/paragonie/random_compat/issues/5)
-by the OpenSSL team. Furthermore, [it might silently return weak random data](https://github.com/paragonie/random_compat/issues/6#issuecomment-119564973)
-if it is called before OpenSSL's **userspace** CSPRNG is seeded. Also, 
-[you want the OS CSPRNG, not a userspace CSPRNG](http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers/).
+As of random_compat 1.3, we no longer fall through to OpenSSL. 
