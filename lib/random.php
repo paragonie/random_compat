@@ -92,10 +92,7 @@ if (PHP_VERSION_ID < 70000) {
                     PATH_SEPARATOR,
                     strtolower($RandomCompat_basedir)
                 );
-                $RandomCompatUrandom = in_array(
-                    '/dev',
-                    $RandomCompat_open_basedir
-                );
+                
                 $RandomCompat_open_basedir = null;
             }
 
