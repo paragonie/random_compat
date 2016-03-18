@@ -1,4 +1,8 @@
-### Version 1.3.0 - 2016-03-18
+### Version 1.3.1 - 2016-03-18
+
+* Add more possible values to `open_baseir` check.
+
+### Version 1.3.0 - 2016-03-17
 
 * Removed `openssl_random_pseudo_bytes()` entirely. If you are using
   random_compat in PHP on a Unix-like OS but cannot access
