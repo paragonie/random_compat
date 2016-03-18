@@ -1,3 +1,7 @@
+### Version 1.2.3 - 2016-03-18
+
+* Add more possible values to `open_baseir` check.
+
 ### Version 1.2.2 - 2016-03-11
 
 * To prevent applications from hanging, if `/dev/urandom` is not
