@@ -1,3 +1,7 @@
+### Version 1.4.1 - 2016-03-18
+
+Update comment in random.php
+
 ### Version 1.4.0 - 2016-03-18
 
 Restored OpenSSL in the version 1 branch in preparation to remove
