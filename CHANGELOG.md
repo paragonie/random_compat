@@ -1,3 +1,7 @@
+### Version 2.0.1 - 2016-03-18
+
+Update comment in random.php
+
 ### Version 2.0.0 - 2016-03-18
 
 Due to downstream errors, the OpenSSL removal now belongs in version 
