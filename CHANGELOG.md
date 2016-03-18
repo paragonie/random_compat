@@ -1,3 +1,8 @@
+### Version 2.0.0 - 2016-03-18
+
+Due to downstream errors, the OpenSSL removal now belongs in version 
+2.0.0.
+
 ### Version 1.3.1 - 2016-03-18
 
 * Add more possible values to `open_baseir` check.
