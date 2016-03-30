@@ -82,8 +82,7 @@ var_dump(bin2hex($string));
 
 ```php
 try {
-    $int = random_int(0,255);
-
+    $int = random_int(0, 255);
 } catch (TypeError $e) {
     // Well, it's an integer, so this IS unexpected.
     die("An unexpected error has occurred"); 
@@ -92,7 +91,7 @@ try {
     die("An unexpected error has occurred");
 } catch (Exception $e) {
     // If you get this message, the CSPRNG failed hard.
-    die("Could not generate a random string. Is our OS secure?");
+    die("Could not generate a random int. Is our OS secure?");
 }
 
 var_dump($int);
