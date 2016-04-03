@@ -125,6 +125,14 @@ if (!function_exists('RandomCompat_substr')) {
                 );
             }
 
+            // Consistency with PHP's behavior
+            if ($start === RandomCompat_strlen($binary_string) && $length === 0) {
+                return '';
+            }
+            if ($start > RandomCompat_strlen($binary_string)) {
+                return false;
+            }
+
             return mb_substr($binary_string, $start, $length, '8bit');
         }
 
