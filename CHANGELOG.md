@@ -1,3 +1,9 @@
+### Version 2.0.2 - 2016-04-03
+
+Added a consistency check (discovered by Taylor Hornby in his 
+[PHP encryption library](https://github.com/defuse/php-encryption)). It
+wasn't likely causing any trouble for us.
+
 ### Version 2.0.1 - 2016-03-18
 
 Update comment in random.php
