@@ -35,8 +35,15 @@ if (!class_exists('Error', false)) {
 }
 
 if (!class_exists('TypeError', false)) {
-    class TypeError extends Error
-    {
-        
+    if (is_subclass_of('Error', 'Exception')) {
+        class TypeError extends Error
+        {
+            
+        }
+    } else {
+        class TypeError extends Exception
+        {
+            
+        }
     }
 }
