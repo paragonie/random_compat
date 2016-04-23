@@ -16,8 +16,7 @@ matrix:
 sudo: false
 
 install:
-  - composer self-update
-  - composer update
+  - composer install
 
 script:
   - ./phpunit.sh
