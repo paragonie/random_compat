@@ -127,7 +127,7 @@ if (PHP_VERSION_ID < 70000) {
         if (
             !function_exists('random_bytes')
             &&
-            PHP_VERSION_ID >= 50307
+            PHP_VERSION_ID >= 50303
             &&
             extension_loaded('mcrypt')
             &&
