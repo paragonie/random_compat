@@ -135,6 +135,20 @@ try {
 }
 ```
 
+### Troubleshooting
+
+**Exception: "Could not gather sufficient random data"**
+
+If an Exception is thrown, then your operating system is not secure.
+
+1. If you're on Windows, make sure you enable mcrypt.
+2. If you're on any other OS, make sure `/dev/urandom` is readable.
+   * FreeBSD jails need to expose `/dev/urandom` from the host OS
+   * If you use `open_basedir`, make sure `/dev/urandom` is allowed
+
+This library does not (and will not accept any patches to) fall back to
+an insecure random number generator.
+
 ## Contributors
 
 This project would not be anywhere near as excellent as it is today if it 
