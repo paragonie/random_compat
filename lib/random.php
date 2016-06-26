@@ -31,12 +31,12 @@
 
 if (!defined('PHP_VERSION_ID')) {
     // This constant was introduced in PHP 5.2.7
-    $RandomCompatversion = explode('.', PHP_VERSION);
+    $RandomCompatversion = array_map('intval', explode('.', PHP_VERSION));
     define(
         'PHP_VERSION_ID',
-        (int) $RandomCompatversion[0] * 10000
-        + (int) $RandomCompatversion[1] * 100
-        + (int) $RandomCompatversion[2]
+        $RandomCompatversion[0] * 10000
+        + $RandomCompatversion[1] * 100
+        + $RandomCompatversion[2]
     );
     $RandomCompatversion = null;
 }
