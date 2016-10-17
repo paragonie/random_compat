@@ -72,10 +72,10 @@ function random_bytes($bytes)
              * 
              * stream_set_read_buffer returns 0 on success
              */
-            if (function_exists('stream_set_read_buffer')) {
+            if (is_callable('stream_set_read_buffer')) {
                 stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
             }
-            if (function_exists('stream_set_chunk_size')) {
+            if (is_callable('stream_set_chunk_size')) {
                 stream_set_chunk_size($fp, RANDOM_COMPAT_READ_BUFFER);
             }
         }

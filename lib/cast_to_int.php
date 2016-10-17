@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-if (!function_exists('RandomCompat_intval')) {
+if (!is_callable('RandomCompat_intval')) {
     
     /**
      * Cast to an integer if we can, safely.
