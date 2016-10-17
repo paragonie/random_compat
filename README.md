@@ -149,6 +149,32 @@ If an Exception is thrown, then your operating system is not secure.
 This library does not (and will not accept any patches to) fall back to
 an insecure random number generator.
 
+**Version Conflict with [Other PHP Project]**
+
+If you're using a project that has a line like this in its composer.json
+
+    "require" {
+        ...
+        "paragonie/random_compat": "~1.1",
+        ...
+    }
+
+...and then you try to add random_compat 2 (or another library that explicitly
+requires random_compat 2, such as [this secure PHP encryption library](https://github.com/defuse/php-encryption)),
+you will get a version conflict.
+
+The solution is to get the project to update its requirement string to allow
+version 2 and above to be used instead of hard-locking users to version 1.
+
+```diff
+"require" {
+    ...
+-    "paragonie/random_compat": "~1.1",
++    "paragonie/random_compat": "^1|^2",
+    ...
+}
+```
+
 ## Contributors
 
 This project would not be anywhere near as excellent as it is today if it 
