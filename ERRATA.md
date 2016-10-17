@@ -31,4 +31,4 @@ and is not part `libmcrypt`. It actually does the right thing:
 
 If we're on Windows and don't have access to `mcrypt`, we use `CAPICOM.Utilities.1`.
 
-As of random_compat 1.3, we no longer fall through to OpenSSL. 
+As of random_compat 2.0, we no longer fall through to OpenSSL. 
