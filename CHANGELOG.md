@@ -1,3 +1,9 @@
+### Version 2.0.3 - 2016-10-17
+
+* Updated `lib/error_polyfill.php` [to resolve corner cases](https://github.com/paragonie/random_compat/issues/104).
+* The README was updated to help users troubleshoot and fix insecure environments.
+* Tags will now be signed by [the GnuPG key used by the security team at Paragon Initiative Enterprises, LLC](https://paragonie.com/static/gpg-public-key.txt).
+
 ### Version 2.0.2 - 2016-04-03
 
 Added a consistency check (discovered by Taylor Hornby in his 
