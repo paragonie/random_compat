@@ -6,7 +6,7 @@
 /.scrutinizer.yml export-ignore
 /.travis.yml export-ignore
 /CHANGELOG.md export-ignore
-/ERRATA.md export-ignore
+/RATIONALE.md export-ignore
 /README.md export-ignore
 /SECURITY.md export-ignore
 /phpunit.sh export-ignore
