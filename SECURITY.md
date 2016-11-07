@@ -12,10 +12,10 @@ elaboration. If you have any questions about our policies, please email them to
 * `security@paragonie.com` will get your reports to the right person. Our GPG 
   fingerprint, should you decide to encrypt your report, is 
   `7F52 D5C6 1D12 55C7 3136  2E82 6B97 A1C2 8264 04DA`.
-
 * **YES**, we will reward security researchers who disclose vulnerabilities in
   our software.
 * In most cases, **No Proof-of-Concept Required.**
+* We have a [bug bounty program on HackerOne](https://hackerone.com/paragonie).
 
 ## How to Report a Security Bug to Paragon Initiative Enterprises
 

@@ -53,6 +53,8 @@ release on Github.
 2. Extract the files into your project.
 3. `require_once "/path/to/random_compat/lib/random.php";`
 
+The entrypoint should be **`lib/random.php`** directly, not any of the other files in `/lib`.
+
 ## Usage
 
 This library exposes the [CSPRNG functions added in PHP 7](https://secure.php.net/manual/en/ref.csprng.php)
