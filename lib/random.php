@@ -69,7 +69,7 @@ if (PHP_VERSION_ID < 70000) {
          *   4. COM('CAPICOM.Utilities.1')->GetRandom()
          *   5. openssl_random_pseudo_bytes() (absolute last resort)
          *
-         * See ERRATA.md for our reasoning behind this particular order
+         * See RATIONALE.md for our reasoning behind this particular order
          */
         if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
