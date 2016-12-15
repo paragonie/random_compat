@@ -67,7 +67,6 @@ if (PHP_VERSION_ID < 70000) {
          *   2. fread() /dev/urandom if available (never on Windows)
          *   3. mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM)
          *   4. COM('CAPICOM.Utilities.1')->GetRandom()
-         *   5. openssl_random_pseudo_bytes() (absolute last resort)
          *
          * See RATIONALE.md for our reasoning behind this particular order
          */
