@@ -151,11 +151,6 @@ function random_int($min, $max)
          * Let's grab the necessary number of random bytes
          */
         $randomByteString = random_bytes($bytes);
-        if ($randomByteString === false) {
-            throw new Exception(
-                'Random number generator failure'
-            );
-        }
 
         /**
          * Let's turn $randomByteString into an integer

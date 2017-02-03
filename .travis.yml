@@ -1,22 +1,32 @@
 language: php
-
-php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
+sudo: false
 
 matrix:
   fast_finish: true
+  include:
+    - php: "5.3"
+      env: USE_PSALM=0
+    - php: "5.4"
+      env: USE_PSALM=0
+    - php: "5.5"
+      env: USE_PSALM=0
+    - php: "5.6"
+      env: USE_PSALM=1
+    - php: "7.0"
+      env: USE_PSALM=1
+    - php: "7.1"
+      env: USE_PSALM=1
+    - php: "hhvm"
+      env: USE_PSALM=1
   allow_failures:
-    - php: hhvm
-        
-sudo: false
+    - php: "hhvm"
 
 install:
-  - composer install
+    - composer self-update
+    - composer install
+    - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:dev-master"; fi
 
 script:
-  - ./phpunit.sh
+    - vendor/bin/phpunit
+    - php -dmbstring.func_overload=7 vendor/bin/phpunit
+    - if [[ $USE_PSALM -eq 1 ]]; then vendor/bin/psalm; fi

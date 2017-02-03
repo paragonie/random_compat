@@ -40,7 +40,7 @@ if (!is_callable('RandomCompat_intval')) {
      * @param int|float $number    The number we want to convert to an int
      * @param boolean   $fail_open Set to true to not throw an exception
      * 
-     * @return int (or float if $fail_open)
+     * @return int|float
      *
      * @throws TypeError
      */
@@ -60,8 +60,10 @@ if (!is_callable('RandomCompat_intval')) {
             $number = (int) $number;
         }
 
-        if (is_int($number) || $fail_open) {
-            return $number;
+        if (is_int($number)) {
+            return (int) $number;
+        } elseif ($fail_open) {
+            return (float) $number;
         }
 
         throw new TypeError(

@@ -1,3 +1,8 @@
+### Version 2.0.5 - 2017-??-??
+
+* Run random_compat through the static analysis tool, [psalm](https://github.com/vimeo/psalm),
+  as part of our continuous integration process.
+
 ### Version 2.0.4 - 2016-11-07
 
 * Don't unnecessarily prevent `mcrypt_create_iv()` from being used.

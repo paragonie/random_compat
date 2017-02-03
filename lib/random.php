@@ -199,6 +199,10 @@ if (!is_callable('random_bytes')) {
         /**
          * We don't have any more options, so let's throw an exception right now
          * and hope the developer won't let it fail silently.
+         *
+         * @param mixed $length
+         * @return void
+         * @throws Exception
          */
         function random_bytes($length)
         {
