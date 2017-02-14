@@ -15,12 +15,6 @@ class COM
      */
     public function GetRandom($bytes, $dummy)
     {
-        static $fp = null;
-        if (!$fp) {
-            $fp = fopen('/dev/urandom', 'rb');
-        }
-        return fread($fp, $bytes);
+        return '';
     }
 }
-
-throw new Exception('Attempting to include IDE stub files in a project.');

@@ -9,7 +9,6 @@
     </projectFiles>
     <issueHandlers>
         <DuplicateClass errorLevel="info" />
-        <UndefinedClass errorLevel="info" />
         <FailedTypeResolution errorLevel="info" />
         <InvalidArgument errorLevel="info" />
         <InvalidOperand errorLevel="info" />
