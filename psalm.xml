@@ -10,6 +10,7 @@
     <issueHandlers>
         <DuplicateClass errorLevel="info" />
         <FailedTypeResolution errorLevel="info" />
+        <UndefinedConstant errorLevel="info" />
         <InvalidArgument errorLevel="info" />
         <InvalidOperand errorLevel="info" />
         <InvalidPropertyAssignment errorLevel="info" />
