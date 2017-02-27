@@ -1,3 +1,7 @@
+### Version 2.0.6 - 2017-02-27
+
+* Just an update to psalm.xml to silence false positives.
+
 ### Version 2.0.5 - 2017-02-27
 
 * Run random_compat through the static analysis tool, [psalm](https://github.com/vimeo/psalm),
