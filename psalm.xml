@@ -14,5 +14,7 @@
         <InvalidOperand errorLevel="info" />
         <InvalidPropertyAssignment errorLevel="info" />
         <TypeCoercion errorLevel="info" />
+        <TypeDoesNotContainType errorLevel="info" />
+        <PossiblyUndefinedVariable errorLevel="info" />
     </issueHandlers>
 </psalm>
