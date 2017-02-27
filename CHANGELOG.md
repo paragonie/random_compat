@@ -1,7 +1,9 @@
-### Version 2.0.5 - 2017-??-??
+### Version 2.0.5 - 2017-02-27
 
 * Run random_compat through the static analysis tool, [psalm](https://github.com/vimeo/psalm),
   as part of our continuous integration process.
+* Minor readability enhancements ([#122](https://github.com/paragonie/random_compat/issues/122)
+  and several docblock changes).
 
 ### Version 2.0.4 - 2016-11-07
 
