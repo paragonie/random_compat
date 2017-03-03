@@ -1,6 +1,6 @@
-### Version 2.0.6 - 2017-02-27
+### Version 2.0.6, 2.0.7 - 2017-02-27
 
-* Just an update to psalm.xml to silence false positives.
+* Just updates to psalm.xml to silence false positives.
 
 ### Version 2.0.5 - 2017-02-27
 
