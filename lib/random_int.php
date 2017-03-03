@@ -134,6 +134,7 @@ if (!is_callable('random_int')) {
             $valueShift = $min;
         }
 
+        $val = 0;
         /**
          * Now that we have our parameters set up, let's begin generating
          * random integers until one falls between $min and $max
@@ -164,7 +165,7 @@ if (!is_callable('random_int')) {
              *   159 + 27904 + 3276800 + 201326592 =>
              *   204631455
              */
-            $val = 0;
+            $val &= 0;
             for ($i = 0; $i < $bytes; ++$i) {
                 $val |= ord($randomByteString[$i]) << ($i * 8);
             }

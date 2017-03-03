@@ -1,3 +1,7 @@
+### Version 2.0.9 - 2017-03-03
+
+* More Psalm integration fixes.
+
 ### Version 2.0.8 - 2017-03-03
 
 * Prevent function already declared error for `random_int()` caused by misusing
