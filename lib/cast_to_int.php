@@ -49,7 +49,7 @@ if (!is_callable('RandomCompat_intval')) {
         if (is_int($number) || is_float($number)) {
             $number += 0;
         } elseif (is_numeric($number)) {
-            $number = (int) $number;
+            $number += 0;
         }
 
         if (
