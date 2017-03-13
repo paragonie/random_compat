@@ -1,3 +1,8 @@
+### Version 2.0.10 - 2017-03-13
+
+* Mcrypt can now be used on PHP < 5.3.7 if you're not on Windows.
+* Minor boyscouting changes.
+
 ### Version 2.0.9 - 2017-03-03
 
 * More Psalm integration fixes.
