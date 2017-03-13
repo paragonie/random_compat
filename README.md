@@ -1,7 +1,7 @@
 # random_compat
 
-[![Build Status](https://travis-ci.org/paragonie/random_compat.svg?branch=master)](https://travis-ci.org/paragonie/random_compat)
-[![Scrutinizer](https://scrutinizer-ci.com/g/paragonie/random_compat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/paragonie/random_compat)
+[![Build Status](https://travis-ci.org/paragonie/random_compat.svg?branch=v1.x)](https://travis-ci.org/paragonie/random_compat)
+[![Scrutinizer](https://scrutinizer-ci.com/g/paragonie/random_compat/badges/quality-score.png?b=v1.x)](https://scrutinizer-ci.com/g/paragonie/random_compat)
 
 PHP 5.x polyfill for `random_bytes()` and `random_int()` created and maintained
 by [Paragon Initiative Enterprises](https://paragonie.com).
