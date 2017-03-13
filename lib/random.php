@@ -208,7 +208,7 @@ if (!is_callable('random_bytes')) {
          */
         function random_bytes($length)
         {
-            unset($length);
+            unset($length); // Suppress "variable not used" warnings.
             throw new Exception(
                 'There is no suitable CSPRNG installed on your system'
             );
