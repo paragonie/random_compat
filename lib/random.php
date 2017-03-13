@@ -54,9 +54,9 @@ if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
 
 $RandomCompatDIR = dirname(__FILE__);
 
-require_once $RandomCompatDIR.'/byte_safe_strings.php';
-require_once $RandomCompatDIR.'/cast_to_int.php';
-require_once $RandomCompatDIR.'/error_polyfill.php';
+require_once $RandomCompatDIR . '/byte_safe_strings.php';
+require_once $RandomCompatDIR . '/cast_to_int.php';
+require_once $RandomCompatDIR . '/error_polyfill.php';
 
 if (!is_callable('random_bytes')) {
     /**
@@ -76,9 +76,9 @@ if (!is_callable('random_bytes')) {
     if (extension_loaded('libsodium')) {
         // See random_bytes_libsodium.php
         if (PHP_VERSION_ID >= 50300 && is_callable('\\Sodium\\randombytes_buf')) {
-            require_once $RandomCompatDIR.'/random_bytes_libsodium.php';
+            require_once $RandomCompatDIR . '/random_bytes_libsodium.php';
         } elseif (method_exists('Sodium', 'randombytes_buf')) {
-            require_once $RandomCompatDIR.'/random_bytes_libsodium_legacy.php';
+            require_once $RandomCompatDIR . '/random_bytes_libsodium_legacy.php';
         }
     }
 
@@ -117,7 +117,7 @@ if (!is_callable('random_bytes')) {
             // place, that is not helpful to us here.
 
             // See random_bytes_dev_urandom.php
-            require_once $RandomCompatDIR.'/random_bytes_dev_urandom.php';
+            require_once $RandomCompatDIR . '/random_bytes_dev_urandom.php';
         }
         // Unset variables after use
         $RandomCompat_basedir = null;
@@ -131,7 +131,6 @@ if (!is_callable('random_bytes')) {
      * We only want to use mcypt_create_iv() if:
      *
      * - random_bytes() hasn't already been defined
-     * - PHP >= 5.3.7
      * - the mcrypt extensions is loaded
      * - One of these two conditions is true:
      *   - We're on Windows (DIRECTORY_SEPARATOR !== '/')
@@ -141,23 +140,26 @@ if (!is_callable('random_bytes')) {
      *   - If we're not on Windows, but the PHP version is between
      *     5.6.10 and 5.6.12, we don't want to use mcrypt. It will
      *     hang indefinitely. This is bad.
+     *   - If we're on Windows, we want to use PHP >= 5.3.7 or else
+     *     we get insufficient entropy errors.
      */
     if (
         !is_callable('random_bytes')
         &&
-        PHP_VERSION_ID >= 50307
+        // Windows on PHP < 5.3.7 is broken, but non-Windows is not known to be.
+        (DIRECTORY_SEPARATOR === '/' || PHP_VERSION_ID >= 50307)
+        &&
+        // Prevent this code from hanging indefinitely on non-Windows;
+        // see https://bugs.php.net/bug.php?id=69833
+        (
+            DIRECTORY_SEPARATOR !== '/' ||
+            (PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613)
+        )
         &&
         extension_loaded('mcrypt')
     ) {
-        // Prevent this code from hanging indefinitely on non-Windows;
-        // see https://bugs.php.net/bug.php?id=69833
-        if (
-            DIRECTORY_SEPARATOR !== '/' || 
-            (PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613)
-        ) {
-            // See random_bytes_mcrypt.php
-            require_once $RandomCompatDIR.'/random_bytes_mcrypt.php';
-        }
+        // See random_bytes_mcrypt.php
+        require_once $RandomCompatDIR . '/random_bytes_mcrypt.php';
     }
     $RandomCompatUrandom = null;
 
@@ -182,7 +184,7 @@ if (!is_callable('random_bytes')) {
                 $RandomCompatCOMtest = new COM('CAPICOM.Utilities.1');
                 if (method_exists($RandomCompatCOMtest, 'GetRandom')) {
                     // See random_bytes_com_dotnet.php
-                    require_once $RandomCompatDIR.'/random_bytes_com_dotnet.php';
+                    require_once $RandomCompatDIR . '/random_bytes_com_dotnet.php';
                 }
             } catch (com_exception $e) {
                 // Don't try to use it.
@@ -206,6 +208,7 @@ if (!is_callable('random_bytes')) {
          */
         function random_bytes($length)
         {
+            unset($length);
             throw new Exception(
                 'There is no suitable CSPRNG installed on your system'
             );
@@ -214,7 +217,7 @@ if (!is_callable('random_bytes')) {
 }
 
 if (!is_callable('random_int')) {
-    require_once $RandomCompatDIR.'/random_int.php';
+    require_once $RandomCompatDIR . '/random_int.php';
 }
 
 $RandomCompatDIR = null;
