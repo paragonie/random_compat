@@ -1,3 +1,31 @@
+### Version 1.4.2 - 2017-03-13
+
+* Backport changes from version 2:
+  * Version 2.0.9 - 2017-03-03
+    * More Psalm integration fixes.
+  * Version 2.0.8 - 2017-03-03
+    * Prevent function already declared error for `random_int()` caused by misusing
+      the library (really you should only ever include `lib/random.php` and never any 
+      of the other files). See [#125](https://github.com/paragonie/random_compat/issues/125).
+  * Version 2.0.6, 2.0.7 - 2017-02-27
+    * Just updates to psalm.xml to silence false positives.
+  * Version 2.0.5 - 2017-02-27
+    * Run random_compat through the static analysis tool, [psalm](https://github.com/vimeo/psalm),
+      as part of our continuous integration process.
+    * Minor readability enhancements ([#122](https://github.com/paragonie/random_compat/issues/122)
+      and several docblock changes).
+  * Version 2.0.4 - 2016-11-07
+     * Don't unnecessarily prevent `mcrypt_create_iv()` from being used.
+       See [#111](https://github.com/paragonie/random_compat/issues/111).
+  * Version 2.0.3 - 2016-10-17
+    * Updated `lib/error_polyfill.php` [to resolve corner cases](https://github.com/paragonie/random_compat/issues/104).
+    * The README was updated to help users troubleshoot and fix insecure environments.
+    * Tags will now be signed by [the GnuPG key used by the security team at Paragon Initiative Enterprises, LLC](https://paragonie.com/static/gpg-public-key.txt).
+  * Version 2.0.2 - 2016-04-03
+    * Added a consistency check (discovered by Taylor Hornby in his 
+      [PHP encryption library](https://github.com/defuse/php-encryption)). It
+      wasn't likely causing any trouble for us.
+
 ### Version 1.4.1 - 2016-03-18
 
 Update comment in random.php

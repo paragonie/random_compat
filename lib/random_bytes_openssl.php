@@ -63,9 +63,12 @@ function random_bytes($bytes)
      * @ref https://github.com/paragonie/random_compat/issues/6#issuecomment-119564973
      */
     $secure = true;
+    /**
+     * @var string
+     */
     $buf = openssl_random_pseudo_bytes($bytes, $secure);
     if (
-        $buf !== false
+        is_string($buf)
         &&
         $secure
         &&
