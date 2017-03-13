@@ -131,7 +131,6 @@ if (!is_callable('random_bytes')) {
      * We only want to use mcypt_create_iv() if:
      *
      * - random_bytes() hasn't already been defined
-     * - PHP >= 5.3.7
      * - the mcrypt extensions is loaded
      * - One of these two conditions is true:
      *   - We're on Windows (DIRECTORY_SEPARATOR !== '/')
@@ -141,11 +140,14 @@ if (!is_callable('random_bytes')) {
      *   - If we're not on Windows, but the PHP version is between
      *     5.6.10 and 5.6.12, we don't want to use mcrypt. It will
      *     hang indefinitely. This is bad.
+     *   - If we're on Windows, we want to use PHP >= 5.3.7 or else
+     *     we get insufficient entropy errors.
      */
     if (
         !is_callable('random_bytes')
         &&
-        PHP_VERSION_ID >= 50307
+        // Windows on PHP < 5.3.7 is broken, but non-Windows is not known to be.
+        (DIRECTORY_SEPARATOR === '/' || PHP_VERSION_ID >= 50307)
         &&
         extension_loaded('mcrypt')
     ) {
@@ -206,6 +208,7 @@ if (!is_callable('random_bytes')) {
          */
         function random_bytes($length)
         {
+            unset($length);
             throw new Exception(
                 'There is no suitable CSPRNG installed on your system'
             );
