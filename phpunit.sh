@@ -47,8 +47,6 @@ if [[ "$testeach" == "1" ]]; then
     php vendor/bin/phpunit --bootstrap tests/specific/libsodium.php tests/unit
     echo "    mcrypt:"
     php vendor/bin/phpunit --bootstrap tests/specific/mcrypt.php tests/unit
-    echo "    openssl:"
-    php vendor/bin/phpunit --bootstrap tests/specific/openssl.php tests/unit
 fi
 
 # Should we perform full statistical analyses?
