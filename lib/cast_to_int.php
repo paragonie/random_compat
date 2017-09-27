@@ -69,6 +69,11 @@ if (!is_callable('RandomCompat_intval')) {
                 'Expected an integer.'
             );
         }
-        return $number;
+        if (is_float($number)) {
+            return $number;
+        }
+        throw new TypeError(
+            'Expected a numeric value.'
+        );
     }
 }

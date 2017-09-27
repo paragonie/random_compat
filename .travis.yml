@@ -16,10 +16,15 @@ matrix:
       env: USE_PSALM=1
     - php: "7.1"
       env: USE_PSALM=1
+    - php: "7.2"
+      env: USE_PSALM=1
     - php: "hhvm"
+      env: USE_PSALM=1
+    - php: "master"
       env: USE_PSALM=1
   allow_failures:
     - php: "hhvm"
+    - php: "master"
 
 install:
     - composer self-update

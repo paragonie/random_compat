@@ -1,3 +1,9 @@
+### Version 2.0.11 - 2017-09-27
+
+* Minor docblock corrections.
+* Re-issuing a PHP Archive to attempt to address an issue with the Phar provided.
+  See [#134](https://github.com/paragonie/random_compat/issues/134).
+
 ### Version 2.0.10 - 2017-03-13
 
 * Mcrypt can now be used on PHP < 5.3.7 if you're not on Windows.

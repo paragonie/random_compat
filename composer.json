@@ -24,7 +24,8 @@
     "php": ">=5.2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.*|5.*"
+    "phpunit/phpunit": "4.*|5.*",
+    "vimeo/psalm": "dev-master"
   },
   "suggest": {
     "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
