@@ -4,13 +4,17 @@ sudo: false
 matrix:
   fast_finish: true
   include:
-    - php: "5.3"
+    - dist: precise
+      php: "5.3"
       env: USE_PSALM=0
-    - php: "5.4"
+    - dist: precise
+      php: "5.4"
       env: USE_PSALM=0
-    - php: "5.5"
+    - dist: precise
+      php: "5.5"
       env: USE_PSALM=0
-    - php: "5.6"
+    - dist: precise
+      php: "5.6"
       env: USE_PSALM=1
     - php: "7.0"
       env: USE_PSALM=1
