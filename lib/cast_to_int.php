@@ -38,9 +38,10 @@ if (!is_callable('RandomCompat_intval')) {
      * through.
      * 
      * @param int|float $number    The number we want to convert to an int
-     * @param boolean   $fail_open Set to true to not throw an exception
+     * @param bool      $fail_open Set to true to not throw an exception
      * 
      * @return float|int
+     * @psalm-suppress InvalidReturnType
      *
      * @throws TypeError
      */
@@ -69,11 +70,6 @@ if (!is_callable('RandomCompat_intval')) {
                 'Expected an integer.'
             );
         }
-        if (is_float($number)) {
-            return $number;
-        }
-        throw new TypeError(
-            'Expected a numeric value.'
-        );
+        return $number;
     }
 }
