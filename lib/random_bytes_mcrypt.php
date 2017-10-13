@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-if (!is_callable('random_bytes')) {
+if (!function_exists('random_bytes')) {
     /**
      * Powered by ext/mcrypt (and thankfully NOT libmcrypt)
      *

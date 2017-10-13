@@ -1,6 +1,6 @@
 <?php
 
-if (!is_callable('random_int')) {
+if (!function_exists('random_int')) {
     /**
      * Random_* Compatibility Library
      * for using the new PHP 7 random_* API in PHP 5 projects

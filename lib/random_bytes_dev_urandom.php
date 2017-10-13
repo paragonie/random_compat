@@ -30,7 +30,7 @@ if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
     define('RANDOM_COMPAT_READ_BUFFER', 8);
 }
 
-if (!is_callable('random_bytes')) {
+if (!function_exists('random_bytes')) {
     /**
      * Unless open_basedir is enabled, use /dev/urandom for
      * random numbers in accordance with best practices
@@ -73,10 +73,10 @@ if (!is_callable('random_bytes')) {
                  *
                  * stream_set_read_buffer returns 0 on success
                  */
-                if (is_callable('stream_set_read_buffer')) {
+                if (function_exists('stream_set_read_buffer')) {
                     stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
                 }
-                if (is_callable('stream_set_chunk_size')) {
+                if (function_exists('stream_set_chunk_size')) {
                     stream_set_chunk_size($fp, RANDOM_COMPAT_READ_BUFFER);
                 }
             }
