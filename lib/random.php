@@ -58,7 +58,7 @@ require_once $RandomCompatDIR . '/byte_safe_strings.php';
 require_once $RandomCompatDIR . '/cast_to_int.php';
 require_once $RandomCompatDIR . '/error_polyfill.php';
 
-if (!is_callable('random_bytes')) {
+if (!function_exists('random_bytes')) {
     /**
      * PHP 5.2.0 - 5.6.x way to implement random_bytes()
      *
@@ -104,7 +104,7 @@ if (!is_callable('random_bytes')) {
         }
 
         if (
-            !is_callable('random_bytes')
+            !function_exists('random_bytes')
             &&
             $RandomCompatUrandom
             &&
@@ -144,7 +144,7 @@ if (!is_callable('random_bytes')) {
      *     we get insufficient entropy errors.
      */
     if (
-        !is_callable('random_bytes')
+        !function_exists('random_bytes')
         &&
         // Windows on PHP < 5.3.7 is broken, but non-Windows is not known to be.
         (DIRECTORY_SEPARATOR === '/' || PHP_VERSION_ID >= 50307)
@@ -168,7 +168,7 @@ if (!is_callable('random_bytes')) {
      * isn't loaded.
      */
     if (
-        !is_callable('random_bytes')
+        !function_exists('random_bytes')
         &&
         extension_loaded('com_dotnet')
         &&
@@ -197,7 +197,7 @@ if (!is_callable('random_bytes')) {
     /**
      * throw new Exception
      */
-    if (!is_callable('random_bytes')) {
+    if (!function_exists('random_bytes')) {
         /**
          * We don't have any more options, so let's throw an exception right now
          * and hope the developer won't let it fail silently.
@@ -216,7 +216,7 @@ if (!is_callable('random_bytes')) {
     }
 }
 
-if (!is_callable('random_int')) {
+if (!function_exists('random_int')) {
     require_once $RandomCompatDIR . '/random_int.php';
 }
 
