@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.org/paragonie/random_compat.svg?branch=master)](https://travis-ci.org/paragonie/random_compat)
 [![Scrutinizer](https://scrutinizer-ci.com/g/paragonie/random_compat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/paragonie/random_compat)
+[![Latest Stable Version](https://poser.pugx.org/paragonie/random_compat/v/stable)](https://packagist.org/packages/paragonie/random_compat)
+[![Latest Unstable Version](https://poser.pugx.org/paragonie/random_compat/v/unstable)](https://packagist.org/packages/paragonie/random_compat)
+[![License](https://poser.pugx.org/paragonie/random_compat/license)](https://packagist.org/packages/paragonie/random_compat)
 [![Downloads](https://img.shields.io/packagist/dt/paragonie/random_compat.svg)](https://packagist.org/packages/paragonie/random_compat)
 
 PHP 5.x polyfill for `random_bytes()` and `random_int()` created and maintained
