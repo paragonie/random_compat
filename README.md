@@ -143,7 +143,7 @@ try {
 
 ### Troubleshooting
 
-**Exception: "Could not gather sufficient random data"**
+#### Exception: "Could not gather sufficient random data"**
 
 If an Exception is thrown, then your operating system is not secure.
 
@@ -155,7 +155,7 @@ If an Exception is thrown, then your operating system is not secure.
 This library does not (and will not accept any patches to) fall back to
 an insecure random number generator.
 
-**Version Conflict with [Other PHP Project]**
+#### Version Conflict with [Other PHP Project]
 
 If you're using a project that has a line like this in its composer.json
 
