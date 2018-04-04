@@ -1,3 +1,7 @@
+### Version 2.0.12 - 2018-04-04
+
+* Minor docblock issue that's breaking Psalm downstream.
+
 ### Version 2.0.11 - 2017-09-27
 
 * Minor docblock corrections.
