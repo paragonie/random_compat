@@ -1,3 +1,11 @@
+### Version 1.4.3 - 2018-04-04
+
+* Fix version number in constant in lib/random.php
+* Upgrade your dependency from `^1` to `^1|^2` if you want other
+  changes (i.e. better compatibility with type-safety), because the
+  v2 branch is where most of the development effort is focused.
+  Continued support for v1.x is considered "only for emergencies".
+
 ### Version 1.4.2 - 2017-03-13
 
 * Backport changes from version 2:
