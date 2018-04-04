@@ -205,6 +205,7 @@ if (!is_callable('random_bytes')) {
          * @param mixed $length
          * @psalm-suppress MissingReturnType
          * @throws Exception
+         * @return string
          */
         function random_bytes($length)
         {
@@ -212,6 +213,7 @@ if (!is_callable('random_bytes')) {
             throw new Exception(
                 'There is no suitable CSPRNG installed on your system'
             );
+            return '';
         }
     }
 }
