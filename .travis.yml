@@ -10,6 +10,11 @@ php:
     - "hhvm"
 
 matrix:
+    include:
+        - php: 5.2
+          dist: precise
+        - php: 5.3
+          dist: precise
     fast_finish: true
     allow_failures:
         - php: "hhvm"
