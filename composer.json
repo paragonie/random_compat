@@ -22,9 +22,10 @@
     "source":     "https://github.com/paragonie/random_compat"
   },
   "require": {
-    "php": ">=5.2.0"
+    "php": "^7"
   },
   "require-dev": {
+    "vimeo/psalm": "^1",
     "phpunit/phpunit": "4.*|5.*"
   },
   "suggest": {
