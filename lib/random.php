@@ -3,8 +3,8 @@
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
  *
- * @version 2.0.10
- * @released 2017-03-13
+ * @version 2.0.14
+ * @released 2018-06-06
  *
  * The MIT License (MIT)
  *

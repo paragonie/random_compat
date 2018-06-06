@@ -1,3 +1,14 @@
+### Version 2.0.14 - 2018-06-06
+
+* Update version information.
+* Updated README with better instructions, including new information
+  about the `v9.99.99` tag.
+
+### Version 2.0.13 - 2018-06-06
+* #139 - Add `polyfill` keyword to composer.json
+* Ensure the docblocks are consistent to aid static analysis efforts in
+  other libraries; see https://github.com/paragonie/random_compat/commit/cbe0b11b78140bc62a921fec33a730fdaa6540d6
+
 ### Version 2.0.12 - 2018-04-04
 
 * Minor docblock issue that's breaking Psalm downstream.
