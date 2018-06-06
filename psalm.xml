@@ -14,5 +14,6 @@
         <InvalidOperand errorLevel="info" />
         <UndefinedConstant errorLevel="info" />
         <MissingReturnType errorLevel="info" />
+        <InvalidReturnType errorLevel="info" />
     </issueHandlers>
 </psalm>

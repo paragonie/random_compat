@@ -204,6 +204,7 @@ if (!is_callable('random_bytes')) {
          *
          * @param mixed $length
          * @psalm-suppress MissingReturnType
+         * @psalm-suppress InvalidReturnType
          * @throws Exception
          * @return string
          */
