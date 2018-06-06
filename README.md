@@ -206,6 +206,15 @@ this change instead:
 }
 ```
 
+#### Manifest Read Length Error
+
+If you're using the PHP Archive (Phar) approach rather than Composer, and
+you are getting an error message to the effect of "manifest read length
+was `{int1}` should be `{int2}`", the Phar extension may not be enabled.
+
+See [this comment](https://github.com/paragonie/random_compat/issues/134#issuecomment-365696289)
+for specific guidance on how to fix this issue.
+
 ## Contributors
 
 This project would not be anywhere near as excellent as it is today if it 
