@@ -38,10 +38,10 @@ to a newer version of PHP immediately.
 
     # For libraries and frameworks that support PHP 5 but may be used by
     # other software that only supports PHP 7:
-    composer require paragonie/random_compat:^2
+    composer require paragonie/random_compat:\>=2
 
     # For software that explicitly needs PHP 5 support:
-    composer require paragonie/random_compat:\<2.99
+    composer require paragonie/random_compat:\<9.99
 
 **Signed PHP Archive:**
 
@@ -181,27 +181,27 @@ version 2 and above to be used instead of hard-locking users to version 1.
 "require" {
     ...
 -    "paragonie/random_compat": "~1.1",
-+    "paragonie/random_compat": "^1|^2",
++    "paragonie/random_compat": ">=1",
     ...
 }
 ```
 
-**Note**: There is a special version called `2.99.99` which makes this
+**Note**: There is a special version called `9.99.99` which makes this
 library do nothing, but is only installable on PHP 7.
 
 If you're writing software (e.g. a library) that supports PHP 5, but may
-be used by software that doesn't, you'll want to allow `2.99.99` to be
+be used by software that doesn't, you'll want to allow `9.99.99` to be
 installed. The above diff is what you want.
 
 Conversely, if you're writing software that (in and of itself) supports
-PHP 5, you do not want 2.99.99 to be installed, so you'll want to make
+PHP 5, you do not want 9.99.99 to be installed, so you'll want to make
 this change instead:
 
 ```diff
 "require" {
     ...
 -    "paragonie/random_compat": "~1.1",
-+    "paragonie/random_compat": ">=1 <2.99",
++    "paragonie/random_compat": ">=1 <9.99",
     ...
 }
 ```
