@@ -1,3 +1,12 @@
+### Version 2.0.15 - 2018-06-08
+
+* A reported, but difficult to reproduce, problem with file inclusion on
+  [some Windows machines](https://github.com/paragonie/random_compat/issues/136)
+  was fixed by [replacing `/` with `DIRECTORY_SEPARATOR`](https://github.com/paragonie/random_compat/pull/141).
+  For most users (i.e. not running Windows) this change should be of zero
+  consequence. For everyone else, it should mean random_compat magically
+  works when it didn't before.
+
 ### Version 2.0.14 - 2018-06-06
 
 * Update version information.
