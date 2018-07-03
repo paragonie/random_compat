@@ -45,7 +45,7 @@ matrix:
 install:
     - composer self-update
     - composer install
-    - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:^1"; fi
+    - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:^0|^1|^2"; fi
 
 script:
     - vendor/bin/phpunit
