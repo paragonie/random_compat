@@ -203,7 +203,6 @@ if (!is_callable('random_bytes')) {
          * and hope the developer won't let it fail silently.
          *
          * @param mixed $length
-         * @psalm-suppress MissingReturnType
          * @psalm-suppress InvalidReturnType
          * @throws Exception
          * @return string

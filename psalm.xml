@@ -8,11 +8,16 @@
     </projectFiles>
     <issueHandlers>
         <RedundantConditionGivenDocblockType errorLevel="info" />
+            <!-- We have to be explicit because PHP 5 lacks scalar types -->
         <UnresolvableInclude errorLevel="info" />
+            <!-- Because we put the variants into their own subdirectory -->
         <DuplicateClass errorLevel="info" />
-        <InvalidOperand errorLevel="info" />
+            <!-- Later versions of Psalm are only PHP 7 compatible, which
+                 sees our redefinition of Error and TypeError as duplicate
+                 class errors. -->
         <UndefinedConstant errorLevel="info" />
-        <MissingReturnType errorLevel="info" />
+            <!-- The Mcrypt constants aren't defined in PHP 7.2 -->
         <InvalidReturnType errorLevel="info" />
+            <!-- The "last resort" function in lib/random.php -->
     </issueHandlers>
 </psalm>
