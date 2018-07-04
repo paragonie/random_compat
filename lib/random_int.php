@@ -139,6 +139,7 @@ if (!is_callable('random_int')) {
                 }
                 ++$bits;
                 $range >>= 1;
+                /** @var int $mask */
                 $mask = $mask << 1 | 1;
             }
             $valueShift = $min;
@@ -150,6 +151,7 @@ if (!is_callable('random_int')) {
          * Now that we have our parameters set up, let's begin generating
          * random integers until one falls between $min and $max
          */
+        /** @psalm-suppress RedundantCondition */
         do {
             /**
              * The rejection probability is at most 0.5, so this corresponds
