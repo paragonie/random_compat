@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <psalm
     autoloader="psalm-autoload.php"
-    stopOnFirstError="false"
     useDocblockTypes="true"
 >
     <projectFiles>
