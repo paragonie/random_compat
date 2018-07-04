@@ -74,7 +74,7 @@ if (!is_callable('random_bytes')) {
             $buf = \Sodium\randombytes_buf($bytes);
         }
 
-        if (!is_string($buf)) {
+        if (is_string($buf)) {
             if (RandomCompat_strlen($buf) === $bytes) {
                 return (string) $buf;
             }
