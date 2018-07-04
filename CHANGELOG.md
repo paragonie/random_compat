@@ -1,3 +1,9 @@
+### Version 2.0.17 - 2018-07-04
+
+* Version 2.0.16 failed Psalm checks on PHP v5.6 with Psalm v1.
+  We could not reproduce this failure locally, so we've suppressed the
+  `MissingReturnType` check (that is to say, demoted it to "info").
+
 ### Version 2.0.16 - 2018-07-04
 
 * Fixed type-checking consistencies that forced us to use Psalm in
