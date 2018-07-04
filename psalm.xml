@@ -18,6 +18,8 @@
                  class errors. -->
         <UndefinedConstant errorLevel="info" />
             <!-- The Mcrypt constants aren't defined in PHP 7.2 -->
+        <MissingReturnType errorLevel="info" />
+            <!-- False positive with some versions of (Psalm, PHP) -->
         <InvalidReturnType errorLevel="info" />
             <!-- The "last resort" function in lib/random.php -->
         <MixedInferredReturnType errorLevel="suppress" />
