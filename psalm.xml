@@ -2,6 +2,7 @@
 <psalm
     autoloader="psalm-autoload.php"
     useDocblockTypes="true"
+    totallyTyped="true"
 >
     <projectFiles>
         <directory name="lib" />
@@ -19,5 +20,7 @@
             <!-- The Mcrypt constants aren't defined in PHP 7.2 -->
         <InvalidReturnType errorLevel="info" />
             <!-- The "last resort" function in lib/random.php -->
+        <MixedInferredReturnType errorLevel="suppress" />
+            <!-- Only used in totallyTyped mode -->
     </issueHandlers>
 </psalm>
