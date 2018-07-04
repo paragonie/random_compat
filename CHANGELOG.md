@@ -1,3 +1,14 @@
+### Version 2.0.16 - 2018-07-04
+
+* Fixed type-checking consistencies that forced us to use Psalm in
+  non-strict mode (i.e. `totallyTyped="false"`).
+* README cleanup, added a header to the Version 9.99.99 section.
+  * If you're confused by `v9.99.99` and it's causing stuff to break, see
+    [this section of the README](https://github.com/paragonie/random_compat#version-99999)
+    for the solution to your problem.
+* Trimmed down and annotated our `psalm.xml` file with explanations
+  for why each assertion is suppressed.
+
 ### Version 2.0.15 - 2018-06-08
 
 * A reported, but difficult to reproduce, problem with file inclusion on
