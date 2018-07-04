@@ -53,12 +53,13 @@ if (!is_callable('RandomCompat_intval')) {
             /** @psalm-suppress InvalidOperand */
             $number += 0;
         }
+        /** @var int|float $number */
 
         if (
             is_float($number)
-            &&
+                &&
             $number > ~PHP_INT_MAX
-            &&
+                &&
             $number < PHP_INT_MAX
         ) {
             $number = (int) $number;

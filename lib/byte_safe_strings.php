@@ -94,7 +94,7 @@ if (!is_callable('RandomCompat_substr')) {
          *
          * @param string $binary_string
          * @param int $start
-         * @param int $length (optional)
+         * @param int|null $length (optional)
          *
          * @throws TypeError
          *
@@ -119,6 +119,7 @@ if (!is_callable('RandomCompat_substr')) {
                  * mb_substr($str, 0, NULL, '8bit') returns an empty string on
                  * PHP 5.3, so we have to find the length ourselves.
                  */
+                /** @var int $length */
                 $length = RandomCompat_strlen($binary_string) - $start;
             } elseif (!is_int($length)) {
                 throw new TypeError(
@@ -134,7 +135,12 @@ if (!is_callable('RandomCompat_substr')) {
                 return '';
             }
 
-            return (string) mb_substr($binary_string, $start, $length, '8bit');
+            return (string) mb_substr(
+                (string) $binary_string,
+                (int) $start,
+                (int) $length,
+                '8bit'
+            );
         }
 
     } else {
@@ -146,7 +152,7 @@ if (!is_callable('RandomCompat_substr')) {
          *
          * @param string $binary_string
          * @param int $start
-         * @param int $length (optional)
+         * @param int|null $length (optional)
          *
          * @throws TypeError
          *
@@ -173,10 +179,17 @@ if (!is_callable('RandomCompat_substr')) {
                     );
                 }
 
-                return (string) substr($binary_string, $start, $length);
+                return (string) substr(
+                    (string )$binary_string,
+                    (int) $start,
+                    (int) $length
+                );
             }
 
-            return (string) substr($binary_string, $start);
+            return (string) substr(
+                (string) $binary_string,
+                (int) $start
+            );
         }
     }
 }
