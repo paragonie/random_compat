@@ -148,7 +148,7 @@ try {
 
 ### Troubleshooting
 
-#### Exception: "Could not gather sufficient random data"**
+#### Exception: "Could not gather sufficient random data"
 
 If an Exception is thrown, then your operating system is not secure.
 
