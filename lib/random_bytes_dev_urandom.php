@@ -144,13 +144,14 @@ if (!is_callable('random_bytes')) {
                  */
                 $remaining -= RandomCompat_strlen($read);
                 /**
-                 * @var string|bool
+                 * @var string $buf
                  */
-                $buf = $buf . $read;
+                $buf .= $read;
             } while ($remaining > 0);
 
             /**
              * Is our result valid?
+             * @var string|bool $buf
              */
             if (is_string($buf)) {
                 if (RandomCompat_strlen($buf) === $bytes) {
