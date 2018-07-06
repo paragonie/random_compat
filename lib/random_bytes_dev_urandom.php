@@ -36,6 +36,7 @@ if (!is_callable('random_bytes')) {
      * random numbers in accordance with best practices
      *
      * Why we use /dev/urandom and not /dev/random
+     * @ref https://www.2uo.de/myths-about-urandom
      * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
      *
      * @param int $bytes
@@ -54,17 +55,35 @@ if (!is_callable('random_bytes')) {
          */
         if (empty($fp)) {
             /**
-             * We use /dev/urandom if it is a char device.
-             * We never fall back to /dev/random
+             * We don't want to ever read C:\dev\random, only /dev/urandom on
+             * Unix-like operating systems. While we guard against this
+             * condition in random.php, it doesn't hurt to be defensive in depth
+             * here.
+             *
+             * To that end, we only try to open /dev/urandom if we're on a Unix-
+             * like operating system (which means the directory separator is set
+             * to "/" not "\".
              */
-            /** @var resource|bool $fp */
-            $fp = fopen('/dev/urandom', 'rb');
-            if (is_resource($fp)) {
-                /** @var array<string, int> $st */
-                $st = fstat($fp);
-                if (($st['mode'] & 0170000) !== 020000) {
-                    fclose($fp);
-                    $fp = false;
+            if (DIRECTORY_SEPARATOR === '/') {
+                if (!is_readable('/dev/urandom')) {
+                    throw new Exception(
+                        'Environment misconfiguration: ' .
+                        '/dev/urandom cannot be read.'
+                    );
+                }
+                /**
+                 * We use /dev/urandom if it is a char device.
+                 * We never fall back to /dev/random
+                 */
+                /** @var resource|bool $fp */
+                $fp = fopen('/dev/urandom', 'rb');
+                if (is_resource($fp)) {
+                    /** @var array<string, int> $st */
+                    $st = fstat($fp);
+                    if (($st['mode'] & 0170000) !== 020000) {
+                        fclose($fp);
+                        $fp = false;
+                    }
                 }
             }
 
@@ -128,16 +147,14 @@ if (!is_callable('random_bytes')) {
                  */
                 $read = fread($fp, $remaining);
                 if (!is_string($read)) {
-                    if ($read === false) {
-                        /**
-                         * We cannot safely read from the file. Exit the
-                         * do-while loop and trigger the exception condition
-                         *
-                         * @var string|bool
-                         */
-                        $buf = false;
-                        break;
-                    }
+                    /**
+                     * We cannot safely read from the file. Exit the
+                     * do-while loop and trigger the exception condition
+                     *
+                     * @var string|bool
+                     */
+                    $buf = false;
+                    break;
                 }
                 /**
                  * Decrease the number of bytes returned from remaining
