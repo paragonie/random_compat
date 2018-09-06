@@ -30,7 +30,7 @@ if (!class_exists('Error', false)) {
     // We can't really avoid making this extend Exception in PHP 5.
     class Error extends Exception
     {
-        
+
     }
 }
 
@@ -38,12 +38,12 @@ if (!class_exists('TypeError', false)) {
     if (is_subclass_of('Error', 'Exception')) {
         class TypeError extends Error
         {
-            
+
         }
     } else {
         class TypeError extends Exception
         {
-            
+
         }
     }
 }
