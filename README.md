@@ -210,7 +210,7 @@ this change instead:
 
 To avoid installing "empty" version `9.99.99` you can add `replace` section
 in your root `composer.json`:
-    
+
     "replace": {
         "paragonie/random_compat": "9.99.99"
     },
