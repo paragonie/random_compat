@@ -29,6 +29,9 @@ matrix:
     - php: "7.2"
       env: USE_PSALM=1
            CHECK_MBSTRING=0
+   - php: "7.3"
+      env: USE_PSALM=1
+           CHECK_MBSTRING=0
     - php: "nightly"
       env: USE_PSALM=1
            CHECK_MBSTRING=0
