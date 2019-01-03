@@ -273,3 +273,8 @@ weren't for the contributions of the following individuals:
 * [@vinkla (Vincent Klaiber)](https://github.com/vinkla)
 * [@voku (Lars Moelleken)](https://github.com/voku)
 * [@xabbuh (Christian Flothmann)](https://github.com/xabbuh)
+
+## Support Contracts
+
+If your company uses this library in their products or services, you may be
+interested in [purchasing a support contract from Paragon Initiative Enterprises](https://paragonie.com/enterprise).

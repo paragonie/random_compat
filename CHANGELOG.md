@@ -1,3 +1,11 @@
+### Version 2.0.18 - 2019-01-03
+
+* If `/dev/urandom` cannot be read on Unix-based operating systems,
+  a Exception with a specific error message will be thrown.
+* Fixed Psalm nits.
+* Updated the README to include a reference to the support contract
+  offering by Paragon Initiative Enterprises.
+
 ### Version 2.0.17 - 2018-07-04
 
 * Version 2.0.16 failed Psalm checks on PHP v5.6 with Psalm v1.
