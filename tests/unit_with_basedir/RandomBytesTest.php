@@ -2,12 +2,12 @@
 class RandomBytesTest extends PHPUnit_Framework_TestCase
 {
     const NO_BASEDIR = 'There is no suitable CSPRNG installed on your system';
-    
+
     public function testFuncExists()
     {
         $this->assertTrue(function_exists('random_bytes'));
     }
-    
+
     public function testInvalidParams()
     {
         try {
@@ -23,7 +23,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
                 return;
             }
         }
-        
+
         try {
             $bytes = random_bytes(array(12));
             $this->fail("random_bytes() should accept only an integer");
@@ -34,7 +34,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         } catch (Exception $ex) {
             $this->assertTrue(true);
         }
-        
+
         // This should succeed:
         try {
             $bytes = random_bytes('123456');
@@ -45,7 +45,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
             );
         }
     }
-    
+
     public function testOutput()
     {
         try {
@@ -62,19 +62,19 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
             );
             return;
         }
-        
+
         $this->assertTrue(
             strlen(bin2hex($bytes[0])) === 24
         );
         $this->assertTrue(
             strlen(bin2hex($bytes[3])) === 2
         );
-        
+
         // This should never generate identical byte strings
         $this->assertFalse(
             $bytes[1] === $bytes[2]
         );
-        
+
         try {
             $x = random_bytes(~PHP_INT_MAX - 1000000000);
             $this->fail("Integer overflow (~PHP_INT_MAX - 1000000000).");
@@ -85,7 +85,7 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
         } catch (Exception $ex) {
             $this->assertTrue(true);
         }
-        
+
         try {
             $x = random_bytes(PHP_INT_MAX + 1000000000);
             $this->fail("Requesting too many bytes should fail.");

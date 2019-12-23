@@ -45,6 +45,7 @@ if (!defined('PHP_VERSION_ID')) {
  * PHP 7.0.0 and newer have these functions natively.
  */
 if (PHP_VERSION_ID >= 70000) {
+    class_alias('PHPUnit\\Framework\\TestCase', 'PHPUnit_Framework_TestCase');
     return;
 }
 

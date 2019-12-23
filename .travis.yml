@@ -32,7 +32,7 @@ matrix:
     - php: "7.3"
       env: USE_PSALM=1
            CHECK_MBSTRING=0
-    - php: "7.4snapshot"
+    - php: "7.4"
       env: USE_PSALM=1
            CHECK_MBSTRING=0
     - php: "nightly"
@@ -46,12 +46,14 @@ matrix:
            CHECK_MBSTRING=0
   allow_failures:
     - php: "hhvm"
+    - php: "nightly"
     - php: "master"
+    - php: "7.4"
 
 install:
     - composer self-update
-    - composer install
     - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:^0|^1|^2"; fi
+    - composer update
 
 script:
     - vendor/bin/phpunit

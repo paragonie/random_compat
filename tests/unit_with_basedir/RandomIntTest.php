@@ -2,12 +2,12 @@
 class RandomIntTest extends PHPUnit_Framework_TestCase
 {
     const NO_BASEDIR = 'There is no suitable CSPRNG installed on your system';
-    
+
     public function testFuncExists()
     {
         $this->assertTrue(function_exists('random_int'));
     }
-    
+
     public function testOutput()
     {
         try {
@@ -46,7 +46,7 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             );
             return;
         }
-        
+
         try {
             $h = random_int("2147483648", "2147483647");
             $i = random_int("9223372036854775808", "9223372036854775807");

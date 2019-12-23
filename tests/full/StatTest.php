@@ -1,10 +1,9 @@
 <?php
-
 class StatTest extends PHPUnit_Framework_TestCase
 {
     /**
      * All possible values should be > 30% but less than 170%
-     * 
+     *
      * This also catches 0 and 1000
      */
     public function testDistribution()
@@ -18,7 +17,7 @@ class StatTest extends PHPUnit_Framework_TestCase
             $this->assertFalse($integers[$i] > 170);
         }
     }
-    
+
     /**
      * This should be between 55% and 75%, always
      */
@@ -37,7 +36,7 @@ class StatTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($coverage >= 1150);
         $this->assertTrue($coverage <= 1350);
     }
-    
+
     public function testCompressionRatios()
     {
         $some_bytes = random_bytes(65536);

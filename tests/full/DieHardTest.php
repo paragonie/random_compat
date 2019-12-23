@@ -2,7 +2,7 @@
 class DieHardTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Birthday spacings: Choose random points on a large interval. 
+     * Birthday spacings: Choose random points on a large interval.
      * The spacings between the points should be asymptotically exponentially
      * distributed.
      */
@@ -15,10 +15,10 @@ class DieHardTest extends PHPUnit_Framework_TestCase
         $rand_min = 200000;
         $rand_max = 600000;
         $rand_step = 100000;
-        
+
         $minT = (1.00 - $tolerance);
         $maxT = (1.00 + $tolerance);
-        
+
         for ($nums_to_generate = $rand_min; $nums_to_generate < $rand_max; $nums_to_generate += $rand_step) {
             $buckets = array_fill(0, $num_buckets, 0);
 
@@ -32,14 +32,14 @@ class DieHardTest extends PHPUnit_Framework_TestCase
                 $buckets[$bucket]++;
             }
             for ($i = 0; $i < $num_buckets; ++$i) {
-                
+
                 // Debugging code:
-                
+
                 if ($buckets[$i] <= $min ) {
                     var_dump([
                         'bucket' => $i,
-                        'value' => $buckets[$i], 
-                        'min' => $min, 
+                        'value' => $buckets[$i],
+                        'min' => $min,
                         'nums' => $nums_to_generate,
                         'reason' => 'below min'
                     ]);
@@ -53,7 +53,7 @@ class DieHardTest extends PHPUnit_Framework_TestCase
                         'reason' => 'above max'
                     ]);
                 }
-                
+
                 $this->assertTrue($buckets[$i] < $max && $buckets[$i] > $min);
             }
         }
