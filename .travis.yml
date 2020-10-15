@@ -36,7 +36,7 @@ matrix:
       env: USE_PSALM=1
            CHECK_MBSTRING=0
     - php: "nightly"
-      env: USE_PSALM=1
+      env: USE_PSALM=0
            CHECK_MBSTRING=0
     - php: "hhvm"
       env: USE_PSALM=1
