@@ -32,7 +32,7 @@ matrix:
     - php: "7.3"
       env: USE_PSALM=1
            CHECK_MBSTRING=0
-    - php: "7.4snapshot"
+    - php: "7.4"
       env: USE_PSALM=1
            CHECK_MBSTRING=0
     - php: "nightly"
