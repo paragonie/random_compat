@@ -51,6 +51,8 @@ matrix:
 install:
     - travis_retry composer install
     - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "phpunit/phpunit:>=4"; fi
+    - if [[ $USE_PSALM -eq 1 ]]; then rm composer.lock; fi
+    - if [[ $USE_PSALM -eq 1 ]]; then rm -rf vendor; fi
     - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:^3"; fi
 
 script:
