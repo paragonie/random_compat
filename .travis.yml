@@ -45,6 +45,7 @@ matrix:
       env: USE_PSALM=1
            CHECK_MBSTRING=0
   allow_failures:
+    - php: "nightly"
     - php: "hhvm"
     - php: "master"
 
