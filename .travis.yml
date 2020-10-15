@@ -57,5 +57,5 @@ install:
 
 script:
     - vendor/bin/phpunit
-    - php -dmbstring.func_overload=7 vendor/bin/phpunit
+    - if [[ $CHECK_MBSTRING -eq 1 ]]; then php -dmbstring.func_overload=7 vendor/bin/phpunit; fi
     - if [[ $USE_PSALM -eq 1 ]]; then vendor/bin/psalm; fi
