@@ -18,16 +18,16 @@ matrix:
            CHECK_MBSTRING=1
     - dist: precise
       php: "5.6"
-      env: USE_PSALM=1
+      env: USE_PSALM=0
            CHECK_MBSTRING=1
     - php: "7.0"
-      env: USE_PSALM=1
+      env: USE_PSALM=0
            CHECK_MBSTRING=1
     - php: "7.1"
-      env: USE_PSALM=1
-           CHECK_MBSTRING=1
+      env: USE_PSALM=0
+           CHECK_MBSTRING=0
     - php: "7.2"
-      env: USE_PSALM=1
+      env: USE_PSALM=0
            CHECK_MBSTRING=0
     - php: "7.3"
       env: USE_PSALM=1
@@ -49,9 +49,9 @@ matrix:
     - php: "master"
 
 install:
-    - composer self-update
-    - composer install
-    - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:^0|^1|^2"; fi
+    - travis_retry composer install
+    - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "phpunit/phpunit:>=4"; fi
+    - if [[ $USE_PSALM -eq 1 ]]; then composer require --dev "vimeo/psalm:^3"; fi
 
 script:
     - vendor/bin/phpunit
