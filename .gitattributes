@@ -12,6 +12,7 @@
 /SECURITY.md export-ignore
 /phpunit.sh export-ignore
 /phpunit.xml.dist export-ignore
+/phpunit-autoload.php export-ignore
 /psalm.xml export-ignore
 /psalm-autoload.php export-ignore
 /other/ export-ignore
