@@ -32,5 +32,16 @@
         <!-- The "last resort" function in lib/random.php -->
         <MixedInferredReturnType errorLevel="suppress" />
         <!-- Only used in totallyTyped mode -->
+
+        <UnnecessaryVarAnnotation errorLevel="info" />
+        <!-- This is necessary for a polyfill -->
+        <UnusedFunctionCall errorLevel="info" />
+        <!-- Not interested in the result tbh -->
+        <RedundantCast errorLevel="info" />
+        <RedundantCastGivenDocblockType errorLevel="info" />
+        <!-- Doesn't matter -->
+        <UnusedVariable errorLevel="info" />
+        <ArgumentTypeCoercion errorLevel="info" />
+        <UnevaluatedCode errorLevel="info" />
     </issueHandlers>
 </psalm>

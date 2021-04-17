@@ -1,0 +1,102 @@
+name: CI
+
+on: [push]
+
+jobs:
+  old:
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-16.04']
+        php-versions: ['5.3', '5.4', '5.5', '5.6', '7.0']
+        phpunit-versions: ['7.5.20']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          tools: psalm, phpunit:${{ matrix.phpunit-versions }}
+
+      - name: Install dependencies
+        run: composer self-update --1; composer install
+
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v2
+        with:
+          memory_limit: 256M
+
+  moderate:
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['7.1', '7.2', '7.3']
+        phpunit-versions: ['latest']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl, sodium
+          ini-values: post_max_size=256M, max_execution_time=180
+          tools: psalm, phpunit:${{ matrix.phpunit-versions }}
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Modernize dependencies
+        run: composer require --dev "phpunit/phpunit:>=4"
+
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v2
+        timeout-minutes: 30
+        with:
+          memory_limit: 256M
+
+  modern:
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['7.4', '8.0']
+        phpunit-versions: ['latest']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl, sodium
+          ini-values: post_max_size=256M, max_execution_time=180
+          tools: psalm, phpunit:${{ matrix.phpunit-versions }}
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Modernize dependencies
+        run: composer require --dev "phpunit/phpunit:>=4"
+
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v2
+        timeout-minutes: 30
+        with:
+          memory_limit: 256M
+
+      - name: Install Psalm
+        run: rm composer.lock && composer require --dev vimeo/psalm:^4
+
+      - name: Static Analysis
+        run: vendor/bin/psalm
