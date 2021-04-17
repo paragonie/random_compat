@@ -1,6 +1,6 @@
 # random_compat
 
-[![Build Status](https://github.com/paragonie/random_compat/actions/workflows/ci.yml/badge.svg)](https://github.com/random_compat/actions)
+[![Build Status](https://github.com/paragonie/random_compat/actions/workflows/ci.yml/badge.svg)](https://github.com/paragonie/random_compat/actions)
 [![Scrutinizer](https://scrutinizer-ci.com/g/paragonie/random_compat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/paragonie/random_compat)
 [![Latest Stable Version](https://poser.pugx.org/paragonie/random_compat/v/stable)](https://packagist.org/packages/paragonie/random_compat)
 [![Latest Unstable Version](https://poser.pugx.org/paragonie/random_compat/v/unstable)](https://packagist.org/packages/paragonie/random_compat)
