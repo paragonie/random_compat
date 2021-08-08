@@ -19,6 +19,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
+          ini-values: error_reporting=-1, display_errors=On
           coverage: none
 
       - name: Use Composer 1.x
@@ -46,6 +47,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl, sodium
+          ini-values: error_reporting=-1, display_errors=On
           coverage: none
 
       - name: Modernize dependencies
