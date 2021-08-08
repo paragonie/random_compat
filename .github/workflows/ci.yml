@@ -24,8 +24,11 @@ jobs:
           tools: psalm, phpunit:${{ matrix.phpunit-versions }}
           coverage: none
 
-      - name: Install dependencies
-        run: composer self-update --1; composer install
+      - name: Use Composer 1.x
+        run: composer self-update --1
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v2
@@ -53,11 +56,11 @@ jobs:
           tools: psalm, phpunit:${{ matrix.phpunit-versions }}
           coverage: none
 
-      - name: Install dependencies
-        run: composer install
-
       - name: Modernize dependencies
-        run: composer require --dev "phpunit/phpunit:>=4"
+        run: composer require --dev --no-update "phpunit/phpunit:>=4"
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v2
@@ -86,11 +89,11 @@ jobs:
           tools: psalm, phpunit:${{ matrix.phpunit-versions }}
           coverage: none
 
-      - name: Install dependencies
-        run: composer install
-
       - name: Modernize dependencies
-        run: composer require --dev "phpunit/phpunit:>=4"
+        run: composer require --dev --no-update "phpunit/phpunit:>=4"
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v2
