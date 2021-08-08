@@ -30,40 +30,13 @@ jobs:
       - name: PHPUnit tests
         run: vendor/bin/phpunit
 
-  moderate:
+  moderate-modern:
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
         operating-system: ['ubuntu-latest']
-        php-versions: ['7.1', '7.2', '7.3']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, intl, sodium
-          coverage: none
-
-      - name: Modernize dependencies
-        run: composer require --dev --no-update "phpunit/phpunit:>=4"
-
-      - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
-
-      - name: PHPUnit tests
-        run: vendor/bin/phpunit
-
-  modern:
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['7.4', '8.0']
+        php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
