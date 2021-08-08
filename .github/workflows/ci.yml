@@ -37,7 +37,10 @@ jobs:
     strategy:
       matrix:
         operating-system: ['ubuntu-latest']
-        php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0']
+        php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+
+    continue-on-error: ${{ matrix.php-versions == '8.1' }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -53,8 +56,15 @@ jobs:
       - name: Modernize dependencies
         run: composer require --dev --no-update "phpunit/phpunit:>=4"
 
-      - name: Install Composer dependencies
+      - name: Install Composer dependencies (PHP < 8.1)
+        if: ${{ matrix.php-versions != '8.1' }}
         uses: "ramsey/composer-install@v1"
+
+      - name: Install Composer dependencies - ignore-platform-reqs (PHP 8.1)
+        if: ${{ matrix.php-versions == '8.1' }}
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --ignore-platform-reqs
 
       - name: PHPUnit tests
         run: vendor/bin/phpunit
