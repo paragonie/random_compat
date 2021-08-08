@@ -10,7 +10,6 @@ jobs:
       matrix:
         operating-system: ['ubuntu-18.04']
         php-versions: ['5.3', '5.4', '5.5', '5.6', '7.0']
-        phpunit-versions: ['7.5.20']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -20,8 +19,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
-          ini-values: post_max_size=256M, max_execution_time=180
-          tools: phpunit:${{ matrix.phpunit-versions }}
           coverage: none
 
       - name: Use Composer 1.x
@@ -31,9 +28,7 @@ jobs:
         uses: "ramsey/composer-install@v1"
 
       - name: PHPUnit tests
-        uses: php-actions/phpunit@v2
-        with:
-          memory_limit: 256M
+        run: vendor/bin/phpunit
 
   moderate:
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
@@ -42,7 +37,6 @@ jobs:
       matrix:
         operating-system: ['ubuntu-latest']
         php-versions: ['7.1', '7.2', '7.3']
-        phpunit-versions: ['latest']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -52,8 +46,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl, sodium
-          ini-values: post_max_size=256M, max_execution_time=180
-          tools: phpunit:${{ matrix.phpunit-versions }}
           coverage: none
 
       - name: Modernize dependencies
@@ -63,10 +55,7 @@ jobs:
         uses: "ramsey/composer-install@v1"
 
       - name: PHPUnit tests
-        uses: php-actions/phpunit@v2
-        timeout-minutes: 30
-        with:
-          memory_limit: 256M
+        run: vendor/bin/phpunit
 
   modern:
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
@@ -75,7 +64,6 @@ jobs:
       matrix:
         operating-system: ['ubuntu-latest']
         php-versions: ['7.4', '8.0']
-        phpunit-versions: ['latest']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -85,8 +73,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl, sodium
-          ini-values: post_max_size=256M, max_execution_time=180
-          tools: phpunit:${{ matrix.phpunit-versions }}
           coverage: none
 
       - name: Modernize dependencies
@@ -96,7 +82,4 @@ jobs:
         uses: "ramsey/composer-install@v1"
 
       - name: PHPUnit tests
-        uses: php-actions/phpunit@v2
-        timeout-minutes: 30
-        with:
-          memory_limit: 256M
+        run: vendor/bin/phpunit
