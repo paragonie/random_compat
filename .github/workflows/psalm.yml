@@ -1,0 +1,30 @@
+name: Psalm
+
+on: [push]
+
+jobs:
+  psalm:
+    name: Psalm on PHP ${{ matrix.php-versions }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['7.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: psalm:4
+          coverage: none
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --no-dev
+
+      - name: Static Analysis
+        run: psalm
