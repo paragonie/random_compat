@@ -22,6 +22,7 @@ jobs:
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
           tools: psalm, phpunit:${{ matrix.phpunit-versions }}
+          coverage: none
 
       - name: Install dependencies
         run: composer self-update --1; composer install
@@ -50,6 +51,7 @@ jobs:
           extensions: mbstring, intl, sodium
           ini-values: post_max_size=256M, max_execution_time=180
           tools: psalm, phpunit:${{ matrix.phpunit-versions }}
+          coverage: none
 
       - name: Install dependencies
         run: composer install
@@ -82,6 +84,7 @@ jobs:
           extensions: mbstring, intl, sodium
           ini-values: post_max_size=256M, max_execution_time=180
           tools: psalm, phpunit:${{ matrix.phpunit-versions }}
+          coverage: none
 
       - name: Install dependencies
         run: composer install
