@@ -26,7 +26,7 @@ jobs:
         run: composer self-update --1
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: PHPUnit tests
         run: vendor/bin/phpunit
@@ -58,11 +58,11 @@ jobs:
 
       - name: Install Composer dependencies (PHP < 8.1)
         if: ${{ matrix.php-versions != '8.1' }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: Install Composer dependencies - ignore-platform-reqs (PHP 8.1)
         if: ${{ matrix.php-versions == '8.1' }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
 
