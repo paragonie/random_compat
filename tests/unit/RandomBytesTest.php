@@ -40,7 +40,9 @@ class RandomBytesTest extends PHPUnit_Framework_TestCase
             random_bytes(12),
             random_bytes(64),
             random_bytes(64),
-            random_bytes(1.5)
+            PHP_VERSION_ID < 80100
+                ? random_bytes(1.5)
+                : random_bytes(1)
         );
         
         $this->assertTrue(
