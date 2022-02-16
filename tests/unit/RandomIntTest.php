@@ -16,10 +16,14 @@ class RandomIntTest extends PHPUnit_Framework_TestCase
             random_int(-1000, 1000),
             random_int(~PHP_INT_MAX, PHP_INT_MAX),
             random_int("0", "1"),
-            random_int(0.11111, 0.99999),
+            PHP_VERSION_ID < 80100
+                ? random_int(0.11111, 0.99999)
+                : 0,
             random_int($half_neg_max, PHP_INT_MAX),
             random_int(0.0, 255.0),
-            random_int(-4.5, -4.5),
+            PHP_VERSION_ID < 80100
+                ? random_int(-4.5, -4.5)
+                : -4,
             random_int("1337e3","1337e3")
         );
         
