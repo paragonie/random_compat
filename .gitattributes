@@ -11,4 +11,6 @@
 /SECURITY.md export-ignore
 /phpunit.sh export-ignore
 /phpunit.xml.dist export-ignore
+/psalm.xml export-ignore
+/psalm-autoload.php export-ignore
 /other/ide_stubs export-ignore
