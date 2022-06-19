@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <psalm
         autoloader="psalm-autoload.php"
+        errorLevel="1"
         useDocblockTypes="true"
-        totallyTyped="true"
 >
     <projectFiles>
         <directory name="lib" />
