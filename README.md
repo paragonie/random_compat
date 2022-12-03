@@ -38,7 +38,7 @@ to a newer version of PHP immediately.
 
     # For libraries and frameworks that support PHP 5 but may be used by
     # other software that only supports PHP 7:
-    composer require paragonie/random_compat:\>=2
+    composer require paragonie/random_compat:^2.0
 
     # For software that explicitly needs PHP 5 support:
     composer require paragonie/random_compat:\<9.99
