@@ -1,15 +1,19 @@
 name: Psalm
 
-on: [push]
+on:
+  - push
 
 jobs:
   psalm:
     name: Psalm on PHP ${{ matrix.php-versions }}
+
     runs-on: ${{ matrix.operating-system }}
+
     strategy:
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['7.4']
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.4', '8.3', '8.4', '8.5']
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,7 +26,7 @@ jobs:
           coverage: none
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: ramsey/composer-install@v3
         with:
           composer-options: --no-dev
 
